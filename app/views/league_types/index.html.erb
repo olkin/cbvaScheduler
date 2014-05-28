@@ -1,0 +1,37 @@
+<div class="center hero-unit">
+
+  <h1>Listing league_types</h1>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Desc</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @league_types.each do |league_type| %>
+        <tr>
+          <td><%= league_type.desc %></td>
+          <td><%= league_type.description %></td>
+          <td><%= link_to 'Show', league_type %></td>
+          <td><%= link_to 'Edit', edit_league_type_path(league_type) %></td>
+          <td><%= link_to 'Destroy', league_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New League type', new_league_type_path %>
+
+  <%= link_to 'All teams', controller: 'teams' %>
+
+  <%= link_to "Sign up now!", '#', class: "btn btn-large btn-primary" %>
+</div>
+
+
+
