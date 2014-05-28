@@ -11,7 +11,7 @@ describe "Static pages" do
   describe "Home page" do
     before { visit root_path }
 
-    let(:heading)    { 'Sample App' }
+    let(:heading)    { 'CBVA' }
     let(:page_title) { '' }
 
     it { should_not have_title('| Home') }
@@ -46,7 +46,7 @@ describe "Static pages" do
     click_link "Home"
     click_link "Sign up now!"
     expect(page).to have_selector('h1', text: 'Sign up')
-    click_link "sample app"
+    click_link "cbva"
     expect(page).to have_selector('h1', text: 'Welcome to')
   end
 
