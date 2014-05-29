@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140527194434) do
+ActiveRecord::Schema.define(version: 20140529172517) do
 
-  create_table "league_types", force: true do |t|
+  create_table "leagues", force: true do |t|
     t.string   "desc"
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "start_date"
   end
 
   create_table "matches", force: true do |t|
@@ -44,6 +45,9 @@ ActiveRecord::Schema.define(version: 20140527194434) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
+    t.string   "remember_token"
   end
+
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
 
 end

@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'
 
-  resources :league_types
+  resources :leagues
   resources :users
 
   get 'welcome/index'
@@ -21,7 +21,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   #root 'welcome#index'
-  #root 'league_types#index'
+  #root 'Leagues#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
