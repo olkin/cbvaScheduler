@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140529172517) do
+=======
+ActiveRecord::Schema.define(version: 20140528223335) do
+>>>>>>> sign-in-out
 
   create_table "leagues", force: true do |t|
     t.string   "desc"
