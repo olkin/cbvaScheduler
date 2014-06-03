@@ -1,0 +1,9 @@
+<li>
+  <span class="team-name"><%= link_to "#{team.name}", team  %></span>
+  <span class="team-captain"><%= team.captain %></span>
+  <span class="team-email"><%= team.email %></span>
+  <span class="team-actions">
+      <%= link_to 'Edit', edit_team_path(team) %>
+      <%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %>
+  </span>
+</li>

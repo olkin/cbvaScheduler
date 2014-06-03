@@ -8,13 +8,15 @@ Rails.application.routes.draw do
   match '/about',   to: 'static_pages#about',   via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'
 
-  resources :leagues
-  resources :users
-
-  resources :teams do
-  	resources :matches
+  resources :leagues do
+    resources :teams, :shallow => true
+  #    resources :matches
+  #  end
   end
 
+  resources :teams, :only => [:index]
+
+  resources :users
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -8,6 +8,7 @@ describe League do
   it { should respond_to(:desc) }
   it { should respond_to(:description) }
   it { should respond_to(:start_date)}
+  it { should respond_to(:teams) }
 
   describe "when desc is not present" do
     before { league.desc = " " }

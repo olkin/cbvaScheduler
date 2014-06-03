@@ -1,5 +1,7 @@
 class TeamsController < ApplicationController
+  before_action :set_league, only: [:new, :create]
   before_action :set_team, only: [:show, :edit, :update, :destroy]
+
 
   # GET /teams
   # GET /teams.json
@@ -24,11 +26,11 @@ class TeamsController < ApplicationController
   # POST /teams
   # POST /teams.json
   def create
-    @team = Team.new(team_params)
+    @team = @league.teams.build(team_params)
 
     respond_to do |format|
       if @team.save
-        format.html { redirect_to @team, notice: 'Team was successfully created.' }
+        format.html { redirect_to @league, notice: 'Team was successfully created.' }
         format.json { render :show, status: :created, location: @team }
       else
         format.html { render :new }
@@ -56,7 +58,7 @@ class TeamsController < ApplicationController
   def destroy
     @team.destroy
     respond_to do |format|
-      format.html { redirect_to teams_url, notice: 'Team was successfully destroyed.' }
+      format.html { redirect_to @team.league, notice: 'Team was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -64,7 +66,15 @@ class TeamsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_team
-      @team = Team.find(params[:id])
+      if @league
+        @team = @league.teams.find(params[:id])
+      else
+        @team = Team.find(params[:id])
+      end
+    end
+
+    def set_league
+      @league = League.find(params[:league_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

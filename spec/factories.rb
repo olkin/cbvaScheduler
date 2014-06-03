@@ -10,4 +10,10 @@ FactoryGirl.define do
     desc "T8"
     description "Test8"
   end
+
+  factory :team do
+    name "VB Team"
+    captain "Captain Jack"
+    league
+  end
 end

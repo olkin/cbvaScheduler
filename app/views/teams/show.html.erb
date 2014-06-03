@@ -15,5 +15,10 @@
   <%= @team.email %>
 </p>
 
+<p>
+  <strong>League:</strong>
+  <%= @team.league_id %>
+</p>
+
 <%= link_to 'Edit', edit_team_path(@team) %> |
-<%= link_to 'Back', teams_path %>
+<%= link_to 'To League', @team.league %>

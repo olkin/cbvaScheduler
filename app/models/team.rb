@@ -1,7 +1,10 @@
 class Team < ActiveRecord::Base
-	has_many :matches
-  validates :name, :captain, presence:true
-  validates :email, format: { with: /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/,
-                                    message: "format is wrong" },
-            allow_nil: true, allow_blank: true
+  before_save { email.downcase! if email}
+
+  belongs_to :league
+  validates :name, presence: true, uniqueness: {scope: :league_id}
+  validates :captain, presence: true
+  validates :league_id, presence: true
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
+  validates :email, format: { with: VALID_EMAIL_REGEX }, :allow_nil => true, :allow_blank => true
 end
