@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :tier_settings
-
   root 'static_pages#home'
   resources :sessions, only: [:new, :create, :destroy]
   match '/signup',  to: 'users#new',            via: 'get'
@@ -12,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :leagues do
     resources :teams, :shallow => true
+    resources :tier_settings, :shallow => true
   #    resources :matches
   #  end
   end

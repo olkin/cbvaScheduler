@@ -25,7 +25,7 @@ describe TierSettingsController do
   # adjust the attributes here as well.
   let(:league) {FactoryGirl.create(:league)}
   let(:tier_settings) { FactoryGirl.create(:tier_setting, league: league)}
-  let(:valid_attributes) {FactoryGirl.attributes_for(:tier_setting).merge({league_id: league.to_param})}
+  let(:valid_attributes) {FactoryGirl.attributes_for(:tier_setting).merge({league_id: league.id})}
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -39,7 +39,7 @@ describe TierSettingsController do
 
     describe "GET index" do
       it "assigns all tier_settings as @tier_settings" do
-        get :index, {}, valid_session
+        get :index, {:league_id => league.to_param}, valid_session
         assigns(:tier_settings).should eq([tier_settings])
       end
     end
@@ -101,13 +101,13 @@ describe TierSettingsController do
     describe "DELETE destroy" do
       it "destroys the requested tier_setting" do
         expect {
-          delete :destroy, {:id => tier_settings.to_param}, valid_session
+          delete :destroy, {:id => tier_settings.to_param, league_id: league.to_param}, valid_session
         }.to change(TierSetting, :count).by(-1)
       end
 
       it "redirects to the tier_settings list" do
-        delete :destroy, {:id => tier_settings.to_param}, valid_session
-        response.should redirect_to(tier_settings_url)
+        delete :destroy, {:id => tier_settings.to_param, league_id: league.to_param}, valid_session
+        response.should redirect_to(league_tier_settings_url(league))
       end
     end
 
@@ -117,7 +117,7 @@ describe TierSettingsController do
 
   describe "GET new" do
     it "assigns a new tier_setting as @tier_setting" do
-      get :new, {}, valid_session
+      get :new, {:league_id=> league.to_param}, valid_session
       assigns(:tier_setting).should be_a_new(TierSetting)
     end
   end
@@ -127,18 +127,19 @@ describe TierSettingsController do
     describe "with valid params" do
       it "creates a new TierSetting" do
         expect {
-          post :create, {:tier_setting => valid_attributes}, valid_session
+          post :create, {:tier_setting => valid_attributes,
+                         league_id: league.to_param}, valid_session
         }.to change(TierSetting, :count).by(1)
       end
 
       it "assigns a newly created tier_setting as @tier_setting" do
-        post :create, {:tier_setting => valid_attributes}, valid_session
+        post :create, {:tier_setting => valid_attributes, league_id: league.to_param}, valid_session
         assigns(:tier_setting).should be_a(TierSetting)
         assigns(:tier_setting).should be_persisted
       end
 
       it "redirects to the created tier_setting" do
-        post :create, {:tier_setting => valid_attributes}, valid_session
+        post :create, {:tier_setting => valid_attributes, league_id: league.to_param}, valid_session
         response.should redirect_to(TierSetting.last)
       end
     end
@@ -147,14 +148,14 @@ describe TierSettingsController do
       it "assigns a newly created but unsaved tier_setting as @tier_setting" do
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        post :create, {:tier_setting => { "league_id" => "invalid value" }}, valid_session
+        post :create, {:tier_setting => { "league_id" => "invalid value" }, league_id: league.to_param}, valid_session
         assigns(:tier_setting).should be_a_new(TierSetting)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        post :create, {:tier_setting => { "league_id" => "invalid value" }}, valid_session
+        post :create, {:tier_setting => { "league_id" => "invalid value" }, league_id: league.to_param}, valid_session
         response.should render_template("new")
       end
     end

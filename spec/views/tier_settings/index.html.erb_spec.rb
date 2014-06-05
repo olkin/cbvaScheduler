@@ -1,23 +1,26 @@
 require 'spec_helper'
 
 describe "tier_settings/index" do
+  let (:league) {FactoryGirl.create(:league)}
   before(:each) do
     assign(:tier_settings, [
       stub_model(TierSetting,
-        :league_id => 1,
+        :league_id => league.id,
         :tier => 2,
         :total_teams => 3,
         :teams_down => 4,
         :schedule_pattern => "Schedule Pattern"
       ),
       stub_model(TierSetting,
-        :league_id => 1,
+        :league_id => league.id,
         :tier => 2,
         :total_teams => 3,
         :teams_down => 4,
         :schedule_pattern => "Schedule Pattern"
       )
     ])
+
+    assign(:league, league)
   end
 
   it "renders a list of tier_settings" do

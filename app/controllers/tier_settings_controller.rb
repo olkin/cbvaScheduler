@@ -1,10 +1,11 @@
 class TierSettingsController < ApplicationController
+  before_action :set_league, only: [:new, :index, :create]
   before_action :set_tier_setting, only: [:show, :edit, :update, :destroy]
 
   # GET /tier_settings
   # GET /tier_settings.json
   def index
-    @tier_settings = TierSetting.all
+    @tier_settings = @league.tier_settings
   end
 
   # GET /tier_settings/1
@@ -56,7 +57,7 @@ class TierSettingsController < ApplicationController
   def destroy
     @tier_setting.destroy
     respond_to do |format|
-      format.html { redirect_to tier_settings_url, notice: 'Tier setting was successfully destroyed.' }
+      format.html { redirect_to league_tier_settings_url(@tier_setting.league), notice: 'Tier setting was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -65,6 +66,10 @@ class TierSettingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_tier_setting
       @tier_setting = TierSetting.find(params[:id])
+    end
+
+    def set_league
+      @league = League.find(params[:league_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
