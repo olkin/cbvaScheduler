@@ -16,4 +16,10 @@ FactoryGirl.define do
     captain "Captain Jack"
     league
   end
+
+  factory :tier_setting do
+    tier "1"
+    day "Sun"
+    league
+  end
 end

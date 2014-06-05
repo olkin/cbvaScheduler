@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Team do
     let(:league) { FactoryGirl.create(:league) }
     before do
-      # This code is not idiomatically correct.
       @team = FactoryGirl.create(:team, league: league)
     end
 
@@ -65,10 +64,14 @@ describe Team do
       it { should_not be_valid }
     end
 
-    it "should destroy associated microposts" do
-      teams = league.teams.to_a
+    it "should destroy associated teams" do
+      puts "Test"
+      teams = league.teams.all.to_a
+      puts Team.all.to_a.to_s
+      puts league.id
       league.destroy
       expect(teams).not_to be_empty
+      puts Team.all.to_a.to_s
       teams.each do |team|
         expect(Team.where(id: team.id)).to be_empty
       end
