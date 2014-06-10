@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe "tier_settings/show" do
   before(:each) do
+    league = FactoryGirl.create(:league)
     @tier_setting = assign(:tier_setting, stub_model(TierSetting,
-      :league_id => 1,
+      :league_id => league.id,
       :tier => 2,
       :total_teams => 3,
       :teams_down => 4,

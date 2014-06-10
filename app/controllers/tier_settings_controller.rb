@@ -25,7 +25,7 @@ class TierSettingsController < ApplicationController
   # POST /tier_settings
   # POST /tier_settings.json
   def create
-    @tier_setting = TierSetting.new(tier_setting_params)
+    @tier_setting = @league.tier_settings.build(tier_setting_params)
 
     respond_to do |format|
       if @tier_setting.save

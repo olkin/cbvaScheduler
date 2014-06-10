@@ -1,5 +1,6 @@
 class TierSetting < ActiveRecord::Base
   belongs_to :league
+
   validates :tier,
             presence: true,
             uniqueness: {scope: :league_id},
@@ -10,16 +11,17 @@ class TierSetting < ActiveRecord::Base
                            greater_than_or_equal_to: 0, less_than_or_equal_to: :total_teams,
                            message: "%(value) for teams moving down is invalid"}
 
-  validates :day, inclusion: { in: %w(Sun Mon Tue Wed Thu Fri Sat),
-                                message: "'%{value}' is not a valid day" }
+  validates :day, inclusion: { in: Date::ABBR_DAYNAMES,
+                               message: "'%{value}' is not a valid day" }
 
   validates :league_id, presence: true
+
+  validates :schedule_pattern, tier_schedule_pattern: true
 
   def initialize(attributes=nil)
     attr_with_defaults = {:total_teams => 2, :teams_down => 0}
     attr_with_defaults.merge!(attributes) if attributes
     super(attr_with_defaults)
   end
-
 
 end

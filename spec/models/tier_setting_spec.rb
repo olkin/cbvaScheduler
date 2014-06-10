@@ -101,5 +101,23 @@ describe TierSetting do
     end
   end
 
+  it "when schedule pattern is invalid" do
+    invalid_formats = ["","[]","[[]]",
+                       "[[[1,2,3]],[[1,2,3]]]",
+                       "[[[1,3,3]],[[1,2,3]]]",
+                       "[[[1,2,3],[1,2,4],[[1,2,3]],[[1,2,3]]]]",
+                       "[[[1,2,3],[1,2,3],[[1,2,3]],[[1,2,3]]]]",
+                       "[[[1,2,13],[[1,2,3]],[[1,2,3]]]]",
+                       "[[[1,2,3],[[]],[[1,2,3]]]]",
+                       "[[[1,2,3],[],[[1,2,3]]]]",
+                       "[[[1,2,3],1,[[1,2,3]]]]",
+                       "[[[1,2,3],nil,[[1,2,3]]]]"
+
+    ]
+
+    invalid_formats.each {|invalid_schedule|
+      FactoryGirl.build(:tier_setting, league: league, schedule_pattern: invalid_schedule, total_teams: 2, tier: 2).should_not be_valid
+    }
+  end
 
 end

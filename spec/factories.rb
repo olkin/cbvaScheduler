@@ -20,6 +20,8 @@ FactoryGirl.define do
   factory :tier_setting do
     tier "1"
     day "Sun"
+    total_teams 2
+    schedule_pattern "[[[[1,2,1]],[[1,2,1]],[[1,2,1]]]]"
     league
   end
 end

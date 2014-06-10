@@ -12,26 +12,30 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :league_id %><br>
-    <%= f.number_field :league_id %>
-  </div>
-  <div class="field">
     <%= f.label :tier %><br>
-    <%= f.number_field :tier %>
+    <%= f.number_field :tier, min: 1 %>
   </div>
+
   <div class="field">
     <%= f.label :total_teams %><br>
-    <%= f.number_field :total_teams %>
+    <%= f.number_field :total_teams, min: 2 %>
   </div>
+
   <div class="field">
     <%= f.label :teams_down %><br>
-    <%= f.number_field :teams_down %>
+    <%= f.number_field :teams_down, min: 0 %>
   </div>
+
   <div class="field">
     <%= f.label :schedule_pattern %><br>
     <%= f.text_field :schedule_pattern %>
   </div>
+  <div class = "field">
+    <%= f.label :day %><br>
+    <%= f.select :day, [nil] + Date::ABBR_DAYNAMES, selected: f.object[:day] %>
+  </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Create Tier" %>
   </div>
 <% end %>
