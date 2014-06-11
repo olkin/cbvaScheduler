@@ -29,4 +29,14 @@ describe League do
     it { should_not be_valid }
   end
 
+  describe "when tier settings invalid" do
+    before{
+      league.save!
+      FactoryGirl.create(:tier_setting, league: league, tier: 2)
+    }
+
+    it {should_not be_valid}
+
+  end
+
 end

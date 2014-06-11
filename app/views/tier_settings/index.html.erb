@@ -1,6 +1,18 @@
 <% provide(:title, @league.description + " | Settings") %>
 <h1>League settings</h1>
 
+<% if @league.errors.any?%>
+    <div id="error_explanation">
+      <h2> <%=pluralize(@league.errors.count, "problem") %> to fix:</h2>
+
+      <ul>
+        <% @league.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+<%end%>
+
 <table>
   <thead>
     <tr>

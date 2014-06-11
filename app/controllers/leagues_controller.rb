@@ -70,10 +70,6 @@ class LeaguesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def league_type_params
-      league_params = params.require(:league).permit(:desc, :description)
-      league_params["start_date"] =  Date.new(params[:start_date][:year].to_i,
-                                           params[:start_date][:month].to_i,
-                                           params[:start_date][:day].to_i).to_s if params[:start_date]
-      league_params
+      params.require(:league).permit(:desc, :description, :start_date)
     end
 end

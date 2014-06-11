@@ -17,5 +17,4 @@ class TierSetting < ActiveRecord::Base
   validates :league_id, presence: true
 
   validates :schedule_pattern, tier_schedule_pattern: true
-
 end

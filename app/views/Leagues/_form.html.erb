@@ -22,7 +22,7 @@
 
   <div class="field">
       <%= f.label :start_date %><br>
-      <%= select_date Date.today, prefix: :start_date %>
+      <%= f.date_select :start_date, order: [:month, :day, :year], default: f.object[:start_date]%>
   </div>
 
   <div class="actions">
