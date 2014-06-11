@@ -11,10 +11,6 @@ describe TierSettingsController do
       get("leagues/1/tier_settings/new").should route_to("tier_settings#new", :league_id => "1")
     end
 
-    it "routes to #show" do
-      get("/tier_settings/1").should route_to("tier_settings#show", :id => "1")
-    end
-
     it "routes to #edit" do
       get("/tier_settings/1/edit").should route_to("tier_settings#edit", :id => "1")
     end

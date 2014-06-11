@@ -44,13 +44,6 @@ describe TierSettingsController do
       end
     end
 
-    describe "GET show" do
-      it "assigns the requested tier_setting as @tier_setting" do
-        get :show, {:id => tier_settings.to_param, league_id: league.to_param}, valid_session
-        assigns(:tier_setting).should eq(tier_settings)
-      end
-    end
-
     describe "GET edit" do
       it "assigns the requested tier_setting as @tier_setting" do
         get :edit, {:id => tier_settings.to_param}, valid_session
@@ -75,9 +68,9 @@ describe TierSettingsController do
           assigns(:tier_setting).should eq(tier_settings)
         end
 
-        it "redirects to the tier_setting" do
+        it "redirects to the tier_settings" do
           put :update, {:id => tier_settings.to_param, :tier_setting => valid_attributes}, valid_session
-          response.should redirect_to(tier_settings)
+          response.should redirect_to(league_tier_settings_url(tier_settings.league))
         end
       end
 
@@ -138,9 +131,9 @@ describe TierSettingsController do
         assigns(:tier_setting).should be_persisted
       end
 
-      it "redirects to the created tier_setting" do
+      it "redirects to all tier_settings" do
         post :create, {:tier_setting => valid_attributes, league_id: league.to_param}, valid_session
-        response.should redirect_to(TierSetting.last)
+        response.should redirect_to(league_tier_settings_url)
       end
     end
 

@@ -21,6 +21,7 @@ FactoryGirl.define do
     tier "1"
     day "Sun"
     total_teams 2
+    teams_down 0
     schedule_pattern "[[[[1,2,1]],[[1,2,1]],[[1,2,1]]]]"
     league
   end

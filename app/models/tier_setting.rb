@@ -18,10 +18,4 @@ class TierSetting < ActiveRecord::Base
 
   validates :schedule_pattern, tier_schedule_pattern: true
 
-  def initialize(attributes=nil)
-    attr_with_defaults = {:total_teams => 2, :teams_down => 0}
-    attr_with_defaults.merge!(attributes) if attributes
-    super(attr_with_defaults)
-  end
-
 end

@@ -31,7 +31,7 @@ class TierSchedulePatternValidator < ActiveModel::Validator
       cycle_schedule.each_with_index { |timeslot_schedule, timeslot_idx |
         error_desc = "game ##{timeslot_idx + 1}[#{idx + 1}]"
         add_error["Invalid format for #{error_desc}"] \
-          unless timeslot_schedule.is_a?Array and timeslot_schedule.any?
+          unless timeslot_schedule.is_a?Array
 
         timeslot_schedule.each { |game_schedule|
           add_error["Invalid format for #{error_desc}: #{game_schedule.to_s}"] \

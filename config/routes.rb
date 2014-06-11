@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   resources :leagues do
     resources :teams, :shallow => true
-    resources :tier_settings, :shallow => true
+    resources :tier_settings, :shallow => true, except: :show
   #    resources :matches
   #  end
   end
