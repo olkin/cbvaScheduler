@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604213043) do
+ActiveRecord::Schema.define(version: 20140611215449) do
 
   create_table "leagues", force: true do |t|
     t.string   "desc"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 20140604213043) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "day"
+    t.integer  "week"
   end
 
   create_table "users", force: true do |t|

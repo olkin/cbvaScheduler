@@ -5,15 +5,11 @@ describe TeamsController do
   describe "routing" do
 
     it "routes to #index" do
-      get("/teams").should route_to("teams#index")
+      get("leagues/1/teams").should route_to("teams#index", :league_id => "1")
     end
 
     it "routes to #new" do
       get("/leagues/1/teams/new").should route_to("teams#new", league_id: "1")
-    end
-
-    it "routes to #show" do
-      get("/teams/1").should route_to("teams#show", :id => "1")
     end
 
     it "routes to #edit" do

@@ -1,5 +1,5 @@
 <% provide(:title, @league.description + " | Settings") %>
-<h1>League settings</h1>
+<h1>League settings for <%= @league.description%></h1>
 
 <% if @league.errors.any?%>
     <div id="error_explanation">

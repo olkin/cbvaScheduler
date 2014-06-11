@@ -35,15 +35,8 @@ describe TeamsController do
 
     describe "GET index" do
       it "assigns all teams as @teams" do
-        get :index, {}, valid_session
+        get :index, {league_id: league.id}, valid_session
         assigns(:teams).should eq([@team])
-      end
-    end
-
-    describe "GET show" do
-      it "assigns the requested team as @team" do
-        get :show, {:id => @team.to_param}, valid_session
-        assigns(:team).should eq(@team)
       end
     end
 
@@ -71,7 +64,7 @@ describe TeamsController do
 
       it "redirects to the league teams list" do
         delete :destroy, {:id => @team.to_param}, valid_session
-        response.should redirect_to(league_url)
+        response.should redirect_to(league_teams_url(@team.league))
       end
     end
 
@@ -92,9 +85,9 @@ describe TeamsController do
           assigns(:team).should eq(@team)
         end
 
-        it "redirects to the team" do
+        it "redirects to all team" do
           put :update, {:id => @team.to_param, :team => { "name" => "MyString" }}, valid_session
-          response.should redirect_to(@team)
+          response.should redirect_to(league_teams_path(@team.league))
         end
       end
 
@@ -132,7 +125,7 @@ describe TeamsController do
 
       it "redirects to the league team list" do
         post :create, {:team => valid_attributes, league_id: league.id}, valid_session
-        response.should redirect_to(league_url(league))
+        response.should redirect_to(league_teams_url(league))
         #notice: 'Team was successfully created.'
       end
     end

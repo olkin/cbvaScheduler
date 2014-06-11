@@ -12,8 +12,20 @@ describe "Teams" do
     end
   end
 
+  describe "team page" do
+    before{
+      @team1 = FactoryGirl.create(:team, league: league, name: "Team1")
+      @team2 = FactoryGirl.create(:team, league: league, name: "Team2")
+      visit league_teams_path(league)
+    }
+
+      it { should have_content(@team1.name) }
+      it { should have_content(@team2.name) }
+      it { should have_content(league.teams.count) }
+  end
+
   describe "team creation" do
-    before {visit league_path(league)}
+    before {visit league_teams_path(league)}
     it "should not create a team" do
       expect { click_link "Add Team" }.not_to change(Team, :count)
     end

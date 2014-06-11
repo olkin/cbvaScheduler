@@ -18,6 +18,8 @@ describe "teams/index" do
         :league_id => league.id
       )
     ])
+
+    assign(:league, league)
   end
 
   it "renders a list of teams" do

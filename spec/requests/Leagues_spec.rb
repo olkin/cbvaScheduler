@@ -14,18 +14,10 @@ describe "Leagues" do
 
   describe "league page" do
     let(:league) { FactoryGirl.create(:league) }
-    let!(:team1) { FactoryGirl.create(:team, league: league, name: "Team1") }
-    let!(:team2) { FactoryGirl.create(:team, league: league, name: "Team2") }
     before { visit league_path(league) }
 
     it { should have_content(league.description) }
     it { should have_title(league.description) }
-
-    describe "teams" do
-      it { should have_content(team1.name) }
-      it { should have_content(team2.name) }
-      it { should have_content(league.teams.count) }
-    end
   end
 
 

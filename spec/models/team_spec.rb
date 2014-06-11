@@ -67,11 +67,8 @@ describe Team do
     it "should destroy associated teams" do
       puts "Test"
       teams = league.teams.all.to_a
-      puts Team.all.to_a.to_s
-      puts league.id
       league.destroy
       expect(teams).not_to be_empty
-      puts Team.all.to_a.to_s
       teams.each do |team|
         expect(Team.where(id: team.id)).to be_empty
       end
