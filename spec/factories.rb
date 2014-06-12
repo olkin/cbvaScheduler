@@ -25,4 +25,11 @@ FactoryGirl.define do
     schedule_pattern "[[[[1,2,1]],[[1,2,1]],[[1,2,1]]]]"
     league
   end
+
+  factory :standing do
+    week 0
+    rank 1
+    tier 1
+    team
+  end
 end

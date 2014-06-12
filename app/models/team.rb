@@ -2,6 +2,8 @@ class Team < ActiveRecord::Base
   before_save { email.downcase! if email}
 
   belongs_to :league
+  has_many :standings
+
   validates :name, presence: true, uniqueness: {scope: :league_id}
   validates :captain, presence: true
   validates :league_id, presence: true
