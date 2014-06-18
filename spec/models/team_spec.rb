@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe Team do
-    let(:league) { FactoryGirl.create(:league) }
     before do
-      @team = FactoryGirl.create(:team, league: league)
+      @team = FactoryGirl.create(:team)
     end
 
     subject { @team }
@@ -13,7 +12,7 @@ describe Team do
     it { should respond_to(:email) }
     it { should respond_to(:league) }
     it { should respond_to(:league_id) }
-    its(:league) { should eq league }
+    its(:league) { should eq @team.league }
 
     it { should be_valid }
 
@@ -65,9 +64,8 @@ describe Team do
     end
 
     it "should destroy associated teams" do
-      puts "Test"
-      teams = league.teams.all.to_a
-      league.destroy
+      teams = @team.league.teams.all.to_a
+      @team.league.destroy
       expect(teams).not_to be_empty
       teams.each do |team|
         expect(Team.where(id: team.id)).to be_empty
@@ -82,7 +80,7 @@ describe Team do
     end
     it "accepts a team with same name for different league" do
       team2 = @team.dup
-      league2 = league.dup
+      league2 = @team.league.dup
       league2.desc = "Another name"
       league2.save
 

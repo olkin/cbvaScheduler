@@ -2,15 +2,12 @@ require 'spec_helper'
 
 describe Standing do
   before do
-    @league = FactoryGirl.create(:league)
-    @tier_settings = FactoryGirl.create(:tier_setting, league: @league)
-    @team = FactoryGirl.create(:team, league: @league)
+    @team = FactoryGirl.create(:team)
+    @tier_settings = FactoryGirl.create(:tier_setting, league: @team.league)
     @standing = FactoryGirl.create(:standing, team: @team)
   end
 
-  subject { @standing }
-
-  it {should be_valid}
+  it {@standing.should be_valid}
 
   it "when 2 teams from different leagues can have same rank" do
     league2 = FactoryGirl.create(:league, desc: "another league")
@@ -30,7 +27,7 @@ describe Standing do
     end
 
     it "when 2 teams from same league has same rank" do
-      team2 = FactoryGirl.create(:team, league: @league, name: "Another name")
+      team2 = FactoryGirl.create(:team, league: @team.league, name: "Another name")
       FactoryGirl.build(:standing, team: team2).should_not be_valid
     end
 

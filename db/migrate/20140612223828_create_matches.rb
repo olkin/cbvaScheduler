@@ -3,9 +3,9 @@ class CreateMatches < ActiveRecord::Migration
     create_table :matches do |t|
       t.integer :team1_id
       t.integer :team2_id
-      t.integer :score1
-      t.integer :score2
+      t.string :score
       t.integer :court
+      t.integer :week
 
       t.timestamps
     end

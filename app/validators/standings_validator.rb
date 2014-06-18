@@ -4,7 +4,7 @@ class StandingsValidator < ActiveModel::Validator
 
     return if record.errors.any?
 
-    tiers_settings = record.team.league.tier_settings.all
+    tiers_settings = record.league.tier_settings.all
 
     record.errors[:tier] << "Tier# #{record[:tier]} is invalid - max #{tiers_settings.size}" \
       if record[:tier] > tiers_settings.size

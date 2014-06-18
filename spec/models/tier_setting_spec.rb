@@ -1,10 +1,8 @@
 require 'spec_helper'
 
 describe TierSetting do
-  let(:league) { FactoryGirl.create(:league) }
-
   before(:each) do
-    @tier_setting = FactoryGirl.create(:tier_setting, league: league)
+    @tier_setting = FactoryGirl.create(:tier_setting)
   end
 
   subject { @tier_setting }
@@ -16,7 +14,7 @@ describe TierSetting do
   it { should respond_to(:league_id) }
   it { should respond_to(:total_teams) }
   it { should respond_to(:teams_down) }
-  its(:league) { should eq league }
+  its(:league) { should eq @tier_setting.league }
 
   it { should be_valid }
 
@@ -75,8 +73,8 @@ describe TierSetting do
   end
 
   it "should destroy associated settings" do
-    tier_settings = league.tier_settings.to_a
-    league.destroy
+    tier_settings = @tier_setting.league.tier_settings.to_a
+    @tier_setting.league.destroy
     expect(tier_settings).not_to be_empty
     tier_settings.each do |tier_settings|
       expect(Team.where(id: tier_settings.id)).to be_empty
@@ -92,7 +90,7 @@ describe TierSetting do
 
     it "accepts a setting for tier nrfor different league" do
       tier_settings2 = @tier_setting.dup
-      league2 = league.dup
+      league2 = @tier_setting.league.dup
       league2.desc = "Another name"
       league2.save
 
@@ -116,7 +114,7 @@ describe TierSetting do
     ]
 
     invalid_formats.each {|invalid_schedule|
-      FactoryGirl.build(:tier_setting, league: league, schedule_pattern: invalid_schedule, total_teams: 2, tier: 2).should_not be_valid
+      FactoryGirl.build(:tier_setting, league: @tier_setting.league, schedule_pattern: invalid_schedule, total_teams: 2, tier: 2).should_not be_valid
     }
   end
 

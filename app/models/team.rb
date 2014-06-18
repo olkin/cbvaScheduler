@@ -3,6 +3,7 @@ class Team < ActiveRecord::Base
 
   belongs_to :league
   has_many :standings
+  has_many :matches
 
   validates :name, presence: true, uniqueness: {scope: :league_id}
   validates :captain, presence: true
