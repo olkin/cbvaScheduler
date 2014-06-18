@@ -18,6 +18,9 @@ describe "TierSettings" do
       click_link "Settings"
       page.should have_title("Settings")
       page.should have_title(league.description)
+      page.should have_link('Teams', href: league_teams_path(league))
+      page.should have_link('League', href: league_path(league))
+
     end
   end
 

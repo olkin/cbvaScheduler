@@ -3,7 +3,7 @@ class Team < ActiveRecord::Base
 
   belongs_to :league
   has_many :standings
-  has_many :matches
+  has_many :matches, foreign_key: "team1_id"
 
   validates :name, presence: true, uniqueness: {scope: :league_id}
   validates :captain, presence: true

@@ -1,6 +1,20 @@
 <% provide(:title, @league.description + " | Teams") %>
 <h1> Teams for <%= @league.description%></h1>
 
+
+<% if @league.errors.any?%>
+    <div id="error_explanation">
+      <h2> <%=pluralize(@league.errors.count, "problem") %> to fix:</h2>
+
+      <ul>
+        <% @league.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+<%end%>
+
+
 <table>
   <thead>
     <tr>
@@ -28,6 +42,7 @@
 </table>
 
 <%= link_to 'Add Team', new_league_team_path(@league)%> |
-<%= link_to 'Back', league_path(@league)%>
+<%= link_to 'Settings', league_tier_settings_path(@league)%> |
+<%= link_to 'League', league_path(@league)%>
 
 <br>

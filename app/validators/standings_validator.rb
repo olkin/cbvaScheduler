@@ -1,4 +1,3 @@
-
 class StandingsValidator < ActiveModel::Validator
   def validate(record)
 

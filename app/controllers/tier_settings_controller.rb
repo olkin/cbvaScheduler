@@ -82,10 +82,11 @@ class TierSettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tier_setting_params
-      params.require(:tier_setting).permit(:league_id, :tier, :total_teams, :teams_down, :schedule_pattern, :day)
+      params.require(:tier_setting).permit(:tier, :total_teams, :teams_down, :schedule_pattern, :day)
     end
 
     def validate_tiers_settings
       @league.validate_settings
+      @league.validate_registration
     end
 end

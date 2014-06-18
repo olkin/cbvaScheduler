@@ -18,6 +18,7 @@ describe "Leagues" do
 
     it { should have_content(league.description) }
     it { should have_title(league.description) }
+    it { should have_content("Registration is not finished")}
   end
 
 

@@ -23,9 +23,11 @@ describe TierSettingsController do
   # This should return the minimal set of attributes required to create a valid
   # TierSetting. As you add validations to TierSetting, be sure to
   # adjust the attributes here as well.
-  let(:league) {FactoryGirl.create(:league)}
-  let(:tier_settings) { FactoryGirl.create(:tier_setting, league: league)}
-  let(:valid_attributes) {FactoryGirl.attributes_for(:tier_setting).merge({league_id: league.id})}
+  #let(:league) {FactoryGirl.create(:league)}
+  #let(:tier_settings) { FactoryGirl.create(:tier_setting)}
+  #let(:league) {FactoryGirl.create(:league)}
+  let(:tier_settings) {FactoryGirl.build(:tier_setting)}
+  let(:valid_attributes) {tier_settings.attributes}
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -33,13 +35,11 @@ describe TierSettingsController do
   let(:valid_session) { {} }
 
   context "entry exists" do
-    before(:each) do
-      tier_settings
-    end
+    before(:each) {tier_settings.save}
 
     describe "GET index" do
       it "assigns all tier_settings as @tier_settings" do
-        get :index, {:league_id => league.to_param}, valid_session
+        get :index, {:league_id => tier_settings.league.to_param}, valid_session
         assigns(:tier_settings).should eq([tier_settings])
       end
     end
@@ -59,8 +59,8 @@ describe TierSettingsController do
           # specifies that the TierSetting created on the previous line
           # receives the :update_attributes message with whatever params are
           # submitted in the request.
-          TierSetting.any_instance.should_receive(:update).with({ "league_id" => "2" })
-          put :update, {:id => tier_settings.to_param, :tier_setting => { "league_id" => "2" }}, valid_session
+          TierSetting.any_instance.should_receive(:update).with({ "tier" => "2" })
+          put :update, {:id => tier_settings.to_param, :tier_setting => { "tier" => "2" }}, valid_session
         end
 
         it "assigns the requested tier_setting as @tier_setting" do
@@ -94,13 +94,13 @@ describe TierSettingsController do
     describe "DELETE destroy" do
       it "destroys the requested tier_setting" do
         expect {
-          delete :destroy, {:id => tier_settings.to_param, league_id: league.to_param}, valid_session
+          delete :destroy, {:id => tier_settings.to_param, league_id: tier_settings.league.to_param}, valid_session
         }.to change(TierSetting, :count).by(-1)
       end
 
       it "redirects to the tier_settings list" do
-        delete :destroy, {:id => tier_settings.to_param, league_id: league.to_param}, valid_session
-        response.should redirect_to(league_tier_settings_url(league))
+        delete :destroy, {:id => tier_settings.to_param, league_id: tier_settings.league.to_param}, valid_session
+        response.should redirect_to(league_tier_settings_url(tier_settings.league))
       end
     end
 
@@ -110,7 +110,7 @@ describe TierSettingsController do
 
   describe "GET new" do
     it "assigns a new tier_setting as @tier_setting" do
-      get :new, {:league_id=> league.to_param}, valid_session
+      get :new, {:league_id=> tier_settings.league.to_param}, valid_session
       assigns(:tier_setting).should be_a_new(TierSetting)
     end
   end
@@ -121,19 +121,19 @@ describe TierSettingsController do
       it "creates a new TierSetting" do
         expect {
           post :create, {:tier_setting => valid_attributes,
-                         league_id: league.to_param}, valid_session
+                         league_id: tier_settings.league.to_param}, valid_session
         }.to change(TierSetting, :count).by(1)
       end
 
       it "assigns a newly created tier_setting as @tier_setting" do
-        post :create, {:tier_setting => valid_attributes, league_id: league.to_param}, valid_session
+        post :create, {:tier_setting => valid_attributes, league_id: tier_settings.league.id}, valid_session
         assigns(:tier_setting).should be_a(TierSetting)
         assigns(:tier_setting).should be_persisted
       end
 
       it "redirects to all tier_settings" do
-        post :create, {:tier_setting => valid_attributes, league_id: league.to_param}, valid_session
-        response.should redirect_to(league_tier_settings_url)
+        post :create, {:tier_setting => valid_attributes, league_id: tier_settings.league.id}, valid_session
+        response.should redirect_to(league_tier_settings_url(tier_settings.league))
       end
     end
 
@@ -141,14 +141,14 @@ describe TierSettingsController do
       it "assigns a newly created but unsaved tier_setting as @tier_setting" do
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        post :create, {:tier_setting => { "league_id" => "invalid value" }, league_id: league.to_param}, valid_session
+        post :create, {:tier_setting => { "league_id" => "invalid value" }, league_id: tier_settings.league.to_param}, valid_session
         assigns(:tier_setting).should be_a_new(TierSetting)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        post :create, {:tier_setting => { "league_id" => "invalid value" }, league_id: league.to_param}, valid_session
+        post :create, {:tier_setting => { "league_id" => "invalid value" }, league_id: tier_settings.league.to_param}, valid_session
         response.should render_template("new")
       end
     end

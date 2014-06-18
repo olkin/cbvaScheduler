@@ -3,7 +3,20 @@
 
 <h1><%= @league.description %></h1>
 
+<%
+   matches = @league.matches.all
+   matches_week = matches.group_by{|t| t.week}
+%>
+
+<% if matches_week.any?%>
+    <h2>Schedule</h2>
+    <h3>Available weeks <%= matches_week.keys.sort.to_s%> </h3>
+    <!--<%= render 'schedule' %> -->
+<%else%>
+    <h3>Registration is not finished yet</h3>
+<%end%>
+
 <%= link_to 'Edit', edit_league_path(@league) %> |
 <%= link_to 'Settings', league_tier_settings_path(@league) %> |
 <%= link_to 'Teams', league_teams_path(@league) %> |
-<%= link_to 'Back', leagues_path %>
+<%= link_to 'All Leagues', leagues_path %>
