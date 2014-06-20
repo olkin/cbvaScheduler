@@ -32,15 +32,6 @@ ActiveRecord::Schema.define(version: 20140612224847) do
     t.integer  "game"
   end
 
-  create_table "standings", force: true do |t|
-    t.integer  "team_id"
-    t.integer  "rank"
-    t.integer  "tier"
-    t.integer  "week"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "teams", force: true do |t|
     t.string   "name"
     t.string   "captain"
