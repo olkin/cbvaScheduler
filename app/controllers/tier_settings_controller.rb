@@ -1,7 +1,6 @@
 class TierSettingsController < ApplicationController
   before_action :set_league, only: [:new, :index, :create]
   before_action :set_tier_setting, only: [:edit, :update, :destroy]
-  before_action :validate_tiers_settings, only:[:index]
 
   # GET /tier_settings
   # GET /tier_settings.json
@@ -83,10 +82,5 @@ class TierSettingsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def tier_setting_params
       params.require(:tier_setting).permit(:tier, :total_teams, :teams_down, :schedule_pattern, :day)
-    end
-
-    def validate_tiers_settings
-      @league.validate_settings
-      @league.validate_registration
     end
 end

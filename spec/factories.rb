@@ -1,4 +1,6 @@
 FactoryGirl.define do
+
+
   factory :user do
     name     "Jerry Brown"
     email    "jerry@brown.cc"
@@ -7,12 +9,12 @@ FactoryGirl.define do
   end
 
   factory :league do
-    desc "T8"
-    description "Test8"
+    sequence(:desc) {|n| "L#{n}"}
+    sequence(:description) {|n| "League#{n}"}
   end
 
   factory :team do
-    name "VB Team"
+    sequence(:name) {|n| "Team##{n}"}
     captain "Captain Jack"
     league
   end
@@ -31,6 +33,10 @@ FactoryGirl.define do
     rank 1
     tier 1
     team
+  end
+
+  factory :week do
+    league
   end
 
   factory :match do

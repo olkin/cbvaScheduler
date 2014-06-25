@@ -1,7 +1,6 @@
 class TeamsController < ApplicationController
   before_action :set_league, only: [:new, :create, :index]
   before_action :set_team, only: [:edit, :update, :destroy]
-  before_action :validate_tiers_settings, only:[:index]
 
 
   # GET /teams
@@ -76,9 +75,5 @@ class TeamsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def team_params
       params.require(:team).permit(:name, :captain, :email)
-    end
-
-    def validate_tiers_settings
-      @league.validate_registration
     end
 end

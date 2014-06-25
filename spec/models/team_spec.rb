@@ -78,6 +78,7 @@ describe Team do
       team2.save
       team2.should_not be_valid
     end
+
     it "accepts a team with same name for different league" do
       team2 = @team.dup
       league2 = @team.league.dup
