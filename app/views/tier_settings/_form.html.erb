@@ -1,41 +1,24 @@
-<%= form_for [@league, @tier_setting] do |f| %>
-  <% if @tier_setting.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@tier_setting.errors.count, "error") %> prohibited this tier_setting from being saved:</h2>
-
-      <ul>
-      <% @tier_setting.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<%= form_tag do %>
   <div class="field">
-    <%= f.label :tier %><br>
-    <%= f.number_field :tier, min: 1 %>
+    <%= label_tag :total_teams %><br>
+    <%= number_field_tag :total_teams, @tier_setting.total_teams, min: 2 %>
   </div>
 
   <div class="field">
-    <%= f.label :total_teams %><br>
-    <%= f.number_field :total_teams, min: 2 %>
+    <%= label_tag :teams_down %><br>
+    <%= number_field_tag :teams_down, @tier_setting.teams_down, min: 0 %>
   </div>
 
   <div class="field">
-    <%= f.label :teams_down %><br>
-    <%= f.number_field :teams_down, min: 0 %>
-  </div>
-
-  <div class="field">
-    <%= f.label :schedule_pattern %><br>
-    <%= f.text_field :schedule_pattern %>
+    <%= label_tag :schedule_pattern %><br>
+    <%= text_field_tag :schedule_pattern, @tier_setting.schedule_pattern %>
   </div>
   <div class = "field">
-    <%= f.label :day %><br>
-    <%= f.select :day, [nil] + Date::ABBR_DAYNAMES, selected: f.object[:day] %>
+    <%= label_tag :day %><br>
+    <%= select_tag :day, options_for_select([nil] + Date::ABBR_DAYNAMES, @tier_setting.day) %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Create Tier" %>
+    <%= submit_tag "Create Tier" %>
   </div>
 <% end %>

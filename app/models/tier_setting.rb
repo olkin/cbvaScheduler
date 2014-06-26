@@ -1,6 +1,20 @@
-class TierSetting < ActiveRecord::Base
-  belongs_to :league
+class TierSetting
 
+  attr_reader :total_teams, :teams_down, :tier, :day, :schedule_pattern
+
+  def initialize(args)
+    @total_teams = args[:total_teams] || 0
+    @teams_down = args[:teams_down] || 0
+    @tier = args[:tier] || 1
+    @day = args[:day]
+    @schedule_pattern = args[:schedule_pattern]
+  end
+
+  def valid?
+
+  end
+
+=begin
   validates :tier,
             presence: true,
             uniqueness: {scope: :league_id},
@@ -14,9 +28,6 @@ class TierSetting < ActiveRecord::Base
   validates :day, inclusion: { in: Date::ABBR_DAYNAMES,
                                message: "'%{value}' is not a valid day" }
 
-  validates :league_id, presence: true
-
   validates :schedule_pattern, tier_schedule_pattern: true
-
- # validates_with SettingsValidator
+=end
 end

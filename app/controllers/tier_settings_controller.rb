@@ -10,17 +10,13 @@ class TierSettingsController < ApplicationController
 
   # GET /tier_settings/new
   def new
-    existing_tiers = []
-    @league.tier_settings.each{|setting|
-      existing_tiers += [setting.tier]
-    }
+    settings_week = @league.weeks.find_by_week(nil)
+    settings = settings_week ? settings_week[:settings] : []
 
-    default_tier = 1
-    default_day = nil
-    while (settings = @league.tier_settings.where(tier: default_tier)).any?
-      default_tier += 1
-      default_day = settings[0].day if settings[0].day
-    end
+    no_setting_tier = settings.index{|setting| setting == nil}
+    default_tier = (no_setting_tier || settings.size) + 1
+    #TODO: get default day from next available tier?
+    default_day = settings[default_tier - 1][:day] if settings[default_tier - 1]
 
     @tier_setting = TierSetting.new(total_teams: 2, teams_down: 0, tier: default_tier, day: default_day)
   end

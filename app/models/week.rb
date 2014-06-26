@@ -1,16 +1,14 @@
 class Week < ActiveRecord::Base
   belongs_to :league
+  has_many :tier_settings
+
+  attr_reader :settings
+
   serialize :standings
   serialize :settings
   validates_uniqueness_of :league, :scope => :week
-  validate :no_nil_settings, :no_dups_standings, :no_nil_standings, :valid_retier
-  validate  :valid_nr_of_registered_teams, :valid_nr_of_cycles
-
-  def no_nil_settings
-    return unless settings
-    nil_tiers = settings.map.with_index{|setting, idx| idx + 1 unless setting}.compact
-    errors.add(:settings, "No settings for #{'tier'.pluralize(nil_tiers.size)} #{nil_tiers.join(', ')}") if nil_tiers.any?
-  end
+  validate :no_dups_standings, :no_nil_standings
+  validate :valid_nr_of_registered_teams, :valid_nr_of_cycles, :valid_retier, on: :index
 
   def no_dups_standings
     return unless standings
@@ -29,8 +27,8 @@ class Week < ActiveRecord::Base
     return if errors[:settings].any?
     teams_up = 0  # number of teams to move up for tier 1
     settings.each_with_index { |setting, tier|
-      teams_down = setting[:teams_down] || 0
-      total_teams = setting[:total_teams] || 0
+      teams_down = setting[:teams_down].to_i || 0
+      total_teams = setting[:total_teams].to_i || 0
       errors.add(:settings, "No retier between tier #{tier + 1} and #{tier + 2}") if teams_down == 0 and tier + 1 < settings.size
       errors.add(:settings, "Tier #{tier + 1}: can't move #{teams_down} #{'team'.pluralize(teams_down)} down (total: #{total_teams})") unless teams_down.between?(0, total_teams)
       errors.add(:settings, "Tier #{tier + 1}: can't move #{teams_up} #{'team'.pluralize(teams_up)} up (total: #{total_teams})") unless teams_up.between?(0, total_teams)

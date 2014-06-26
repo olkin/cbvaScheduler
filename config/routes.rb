@@ -9,9 +9,24 @@ Rails.application.routes.draw do
   match '/contact', to: 'static_pages#contact', via: 'get'
 
   resources :leagues do
-    resources :teams, :shallow => true, except: :show
+    resources :weeks, only: :index, path: "settings" do
+      get 'new_tier', on: :collection
+      post 'create_tier', on: :collection
+      get 'edit_tier', on: :collection
+      patch 'update_tier', on: :collection
+      put 'update_tier', on: :collection
+      delete 'destroy_tier', on: :collection
+    end
 
-    resources :tier_settings, :shallow => true, except: :show
+  #  match '/settings', to: 'weeks#show', via: 'get'
+  #  match '/settings/create_tier', to: 'weeks#add_tier', via: 'post'
+  #  match '/settings/new_tier', to: 'weeks#add_tier', via: 'get'
+  # resources :teams, :shallow => true, except: :show
+
+   # match '/settings/add_tier', to: 'weeks#new', via: 'get'
+   # match '/settings/add_tier', to: 'weeks#create', via: 'post'
+
+  #  resources :tier_settings, :shallow => true, except: :show
   #    resources :matches
   #  end
   end
