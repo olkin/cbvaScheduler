@@ -22,7 +22,7 @@ describe "Teams" do
       it { should have_content(@team1.name) }
       it { should have_content(@team2.name) }
       it { should have_content(league.teams.count) }
-      it { should have_link('Settings', href: league_tier_settings_path(league)) }
+      it { should have_link('Settings', href: league_weeks_path(league)) }
       it { should have_link('League', href: league_path(league))}
   end
 

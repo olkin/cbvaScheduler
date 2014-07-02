@@ -20,12 +20,10 @@ FactoryGirl.define do
   end
 
   factory :tier_setting do
-    tier "1"
     day "Sun"
     total_teams 2
     teams_down 0
-    schedule_pattern "[[[[1,2,1]],[[1,2,1]],[[1,2,1]]]]"
-    league
+    schedule_pattern [[[[1,2,1]],[[1,2,1]],[[1,2,1]]]]
   end
 
   factory :standing do
@@ -40,14 +38,10 @@ FactoryGirl.define do
   end
 
   factory :match do
-    ignore do
-      league {}
-    end
-
     week 0
     court 1
     game 1
-    team1 {association :team, league: league, name: "Team1"}
-    team2 {association :team, league: league, name: "Team2"}
+    team1 {association :team, name: "Team1"}
+    team2 {association :team, league: team1.league, name: "Team2"}
   end
 end

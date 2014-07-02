@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Match do
   before do
-    @tier_settings = FactoryGirl.create(:tier_setting)
-    @match = FactoryGirl.create(:match, league: @tier_settings.league)
+    @tier_settings = FactoryGirl.build(:tier_setting)
+    @match = FactoryGirl.create(:match)
   end
 
   it {@match.should be_valid}

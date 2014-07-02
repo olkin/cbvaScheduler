@@ -9,7 +9,6 @@ describe League do
   it { should respond_to(:description) }
   it { should respond_to(:start_date)}
   it { should respond_to(:teams) }
-  it { should respond_to(:tier_settings)}
 
   it {should be_valid}
 

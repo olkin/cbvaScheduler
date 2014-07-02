@@ -23,7 +23,7 @@
         <td><%= setting[:schedule_pattern] %></td>
         <td><%= setting[:day] %></td>
       </tr>
-  <% end if @settings.any? %>
+  <% end if @settings and @settings.any? %>
   </tbody>
 </table>
 

@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   #  match '/settings', to: 'weeks#show', via: 'get'
   #  match '/settings/create_tier', to: 'weeks#add_tier', via: 'post'
   #  match '/settings/new_tier', to: 'weeks#add_tier', via: 'get'
-  # resources :teams, :shallow => true, except: :show
+  resources :teams, :shallow => true, except: :show
 
    # match '/settings/add_tier', to: 'weeks#new', via: 'get'
    # match '/settings/add_tier', to: 'weeks#create', via: 'post'

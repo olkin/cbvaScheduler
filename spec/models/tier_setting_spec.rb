@@ -2,120 +2,75 @@ require 'spec_helper'
 
 describe TierSetting do
   before(:each) do
-    @tier_setting = FactoryGirl.create(:tier_setting)
+    @tier_setting = FactoryGirl.build(:tier_setting)
   end
 
   subject { @tier_setting }
 
-  it { should respond_to(:tier) }
   it { should respond_to(:schedule_pattern) }
   it { should respond_to(:day) }
-  it { should respond_to(:league) }
-  it { should respond_to(:league_id) }
   it { should respond_to(:total_teams) }
   it { should respond_to(:teams_down) }
-  its(:league) { should eq @tier_setting.league }
 
-  it { should be_valid }
-
-  describe "when tier is not present" do
-    before { @tier_setting.tier = nil }
-    it { should_not be_valid }
+  it "has valid factory" do
+    @tier_setting.valid?
+    puts "New test" + @tier_setting.errors.to_s
+    expect(@tier_setting.valid?).to be_true
   end
 
-  describe "when tier nr is invalid" do
-    before { @tier_setting.tier = 0 }
-    it { should_not be_valid }
-  end
+  context "is invalid" do
 
-  describe "when nr of teams is missing" do
-    before { @tier_setting.total_teams = 0 }
-    it { should_not be_valid }
-  end
+    it "when nr of teams is invalid/missing" do
+      invalid_total_teams_values = [nil, 0, 1, -1, 1.5, "5"]
+      invalid_total_teams_values.each{ |invalid_value|
+        @tier_setting.total_teams = invalid_value
+        expect(@tier_setting.valid?).to be_false
+      }
+    end
 
-  describe "when nr of teams is invalid" do
-    before { @tier_setting.total_teams = 1 }
-    it { should_not be_valid }
-  end
+    it "when nr of teams down is invalid/missing" do
+      invalid_down_teams_values = [-1, 1.5, "5"]
+      invalid_down_teams_values.each{ |invalid_value|
+        @tier_setting.teams_down = invalid_value
+        expect(@tier_setting.valid?).to be_false
+      }
+    end
 
-  describe "when teams down is missing" do
-    before { @tier_setting.teams_down = -1 }
-    it { should_not be_valid }
-  end
+    it "when day is format is invalid/missing" do
+      invalid_day_formats = %w[Tuesday tues thur] + [nil]
+      invalid_day_formats.each{ |invalid_value|
+        @tier_setting.day = invalid_value
+        expect(@tier_setting.valid?).to be_false
+      }
+    end
 
-  describe "when teams down is more than total teams is invalid" do
-    before {
+    it "when teams down is more than total teams is invalid" do
       @tier_setting.total_teams = 2
       @tier_setting.teams_down = 3
-    }
-    it { should_not be_valid }
-  end
-
-  describe "when day is missing" do
-    before { @tier_setting.day = nil }
-    it { should_not be_valid }
-  end
-
-  describe "when day format is invalid" do
-    it "should be invalid" do
-      day_formats = %w[Tuesday tues thur]
-      day_formats.each do |invalid_day|
-        #@tier_setting.day = invalid_day
-        @tier_setting.day = invalid_day
-        expect(@tier_setting).not_to be_valid
-      end
-    end
-  end
-
-  describe "when league_id is not present" do
-    before { @tier_setting.league_id = nil }
-    it { should_not be_valid }
-  end
-
-  it "should destroy associated settings" do
-    tier_settings = @tier_setting.league.tier_settings.to_a
-    @tier_setting.league.destroy
-    expect(tier_settings).not_to be_empty
-    tier_settings.each do |tier_settings|
-      expect(Team.where(id: tier_settings.id)).to be_empty
-    end
-  end
-
-  describe "when tier nr already exists" do
-    it "doesn't accept another setting for same tier" do
-      tier_settings2 = @tier_setting.dup
-      tier_settings2.save
-      tier_settings2.should_not be_valid
+      expect(@tier_setting.valid?).to be_false
     end
 
-    it "accepts a setting for tier nrfor different league" do
-      tier_settings2 = @tier_setting.dup
-      league2 = @tier_setting.league.dup
-      league2.desc = "Another name"
-      league2.save
+    it "when schedule pattern is invalid" do
+      invalid_formats = [nil,[],[[]],
+                         [[[1,2,3]],[[1,2,3]]],
+                         [[[1,3,3]],[[1,2,3]]],
+                         [[[1,2,3],[1,2,4],[[1,2,3]],[[1,2,3]]]],
+                         [[[1,2,3],[1,2,3],[[1,2,3]],[[1,2,3]]]],
+                         [[[1,2,13],[[1,2,3]],[[1,2,3]]]],
+                         [[[1,2,3],[[]],[[1,2,3]]]],
+                         [[[1,2,3],[],[[1,2,3]]]],
+                         [[[1,2,3],1,[[1,2,3]]]],
+                         [[[1,2,3],nil,[[1,2,3]]]]
 
-      tier_settings2.league_id = league2.id
-      tier_settings2.should be_valid
+      ]
+
+      invalid_formats.each {|invalid_schedule|
+        tier_setting = FactoryGirl.build(:tier_setting,  schedule_pattern: invalid_schedule, total_teams: 2)
+        expect(tier_setting.valid?).to be_false
+      }
     end
-  end
 
-  it "when schedule pattern is invalid" do
-    invalid_formats = ["","[]","[[]]",
-                       "[[[1,2,3]],[[1,2,3]]]",
-                       "[[[1,3,3]],[[1,2,3]]]",
-                       "[[[1,2,3],[1,2,4],[[1,2,3]],[[1,2,3]]]]",
-                       "[[[1,2,3],[1,2,3],[[1,2,3]],[[1,2,3]]]]",
-                       "[[[1,2,13],[[1,2,3]],[[1,2,3]]]]",
-                       "[[[1,2,3],[[]],[[1,2,3]]]]",
-                       "[[[1,2,3],[],[[1,2,3]]]]",
-                       "[[[1,2,3],1,[[1,2,3]]]]",
-                       "[[[1,2,3],nil,[[1,2,3]]]]"
 
-    ]
-
-    invalid_formats.each {|invalid_schedule|
-      FactoryGirl.build(:tier_setting, league: @tier_setting.league, schedule_pattern: invalid_schedule, total_teams: 2, tier: 2).should_not be_valid
-    }
   end
 
 end
