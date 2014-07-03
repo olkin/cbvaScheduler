@@ -1,5 +1,3 @@
-require 'json'
-
 class TierSchedulePatternValidator < ActiveModel::Validator
   MAX_GAMES_PER_DAY = 4
   MAX_BYES = 1
@@ -8,18 +6,12 @@ class TierSchedulePatternValidator < ActiveModel::Validator
 
   def validate(record)
     add_error = Proc.new {
-        |error_msg| record.errors[:schedule_pattern] << error_msg
-        return
+      |error_msg| record.errors[:schedule_pattern] << error_msg
+      return
     }
 
-    begin
-      schedule_pattern = JSON.parse(record[:schedule_pattern])
-    rescue JSON::ParserError => exc
-      puts exc.message
-      add_error["Invalid format"]
-    end
-
     #Check out format first
+    schedule_pattern = record.schedule_pattern
     add_error["Invalid format of cycles or empty"] unless schedule_pattern.is_a?Array and schedule_pattern.any?
 
     schedule_pattern.each_with_index { |cycle_schedule, idx|
@@ -36,62 +28,54 @@ class TierSchedulePatternValidator < ActiveModel::Validator
         timeslot_schedule.each { |game_schedule|
           add_error["Invalid format for #{error_desc}: #{game_schedule.to_s}"] \
             unless game_schedule.is_a?Array and game_schedule.size == GAME_SCH_MEMBERS_COUNT
+
+          team1, team2, court = game_schedule
+          add_error["Invalid format for team for #{error_desc}: #{game_schedule.to_s}"] \
+            unless team1.is_a?Fixnum and team1 > 0 and team2.is_a?Fixnum and team2 > 0
+
+          add_error["Team #{team1} plays itself for #{error_desc}"] if team1 == team2
+
+          add_error["Court #{court} is invalid for #{error_desc}"] \
+            unless court.is_a?Fixnum and court.between?(1, MAX_COURTS)
         }
       }
     }
-
-    # get all played teams
-    ranks_involved = Array.new
-    courts_involved = Array.new
-    schedule_pattern.each_with_index { |cycle_schedule, idx|
-      cycle_schedule.each_with_index { |timeslot_schedule, timeslot_idx |
-        timeslot_schedule.each { |game_schedule|
-          ranks_involved += [game_schedule[0].to_i, game_schedule[1].to_i]
-          courts_involved += [game_schedule[2].to_i]
-        }
-      }
-    }
-
-    ranks_involved.uniq!
-    teams = Array(1..record[:total_teams])
-
-    missing_teams = teams - ranks_involved
-    add_error["No games for #{'team'.pluralize(missing_teams.size)} #{missing_teams.join(',')}"] if missing_teams.any?
-
-    extra_teams = ranks_involved - teams
-    add_error["Schedule for extra #{'team'.pluralize(extra_teams.size)} #{extra_teams.join(',')}"] if extra_teams.any?
-
-    courts_involved.uniq!
-    available_courts = Array(1..MAX_COURTS)
-    extra_courts = courts_involved - available_courts
-    add_error["Unknown #{'court'.pluralize(extra_courts.size())} #{extra_courts.join(', ')}"] if extra_courts.any?
-
 
     # check out that same team/court is not played/used at the same time
     schedule_pattern.each_with_index { |cycle_schedule, idx|
-      cycle_schedule.each_with_index { |timeslot_schedule, timeslot_idx |
-        courts_used = []
-        teams_involved = []
-        timeslot_schedule.each { |game_schedule|
-          teams_involved += [game_schedule[0], game_schedule[1]]
-          courts_used += [game_schedule[2]]
-        }
+      ranks_involved = cycle_schedule.map {|ts_schedule| ts_schedule.inject([]){|teams, game| teams + [game[0], game[1]]}}
+      courts_involved = cycle_schedule.map {|ts_schedule| ts_schedule.inject([]){|teams, game| teams + [game[2]]}}
 
-      repeated_courts = courts_used.dup
-      repeated_courts.keep_if{|court| courts_used.count(court) > 1}
-      repeated_courts.uniq!
-
-      error_desc = "game ##{timeslot_idx + 1}[#{idx + 1}]"
-      add_error["#{'Court'.pluralize(repeated_courts.size)} #{repeated_courts.join(',')} used more than once for #{error_desc}"] \
-        if repeated_courts.any?
-
-      repeated_ranks = teams_involved.dup
-      repeated_ranks.keep_if{|rank| repeated_ranks.count(rank) > 1}
-      repeated_ranks.uniq!
-      add_error["#{'Team'.pluralize(repeated_ranks.size)} #{repeated_ranks.join(', ')} used more than once for #{error_desc}"] \
-        if repeated_ranks.any?
+      find_ts_duplicates = Proc.new {
+          |ts_array| ts_array.map.with_index{
+            |items,ts| [items.select{|item| items.count(item)>1}.uniq, ts] \
+              if items.uniq.size != items.size}.compact
       }
-    }
 
+      dup_ranks_ts =  find_ts_duplicates.call ranks_involved
+      dup_courts_ts = find_ts_duplicates.call courts_involved
+
+      dup_desc = Proc.new { |ts_array, item_str|
+        descriptions = ts_array.map{|items, game| "game #{game+1}: #{pluralize(items.count, item_str)} #{items.join(', ')}"}
+        descriptions.any? ? "Duplicates: #{descriptions.join(', ')}" : "No duplicates"
+      }
+
+      add_error[dup_desc.call dup_ranks_ts, 'team'] if dup_ranks_ts.any?
+      add_error[dup_desc.call dup_courts_ts, 'court'] if dup_courts_ts.any?
+
+      teams_played = ranks_involved.flatten
+      not_enough_games_teams = teams_played.select{|rank| !teams_played.count(rank).between?(1, MAX_GAMES_PER_DAY - MAX_BYES)}.uniq
+      add_error["#{'Team'.pluralize(not_enough_games_teams.size)} #{not_enough_games_teams.join(', ')} didn't get enough games"] if not_enough_games_teams.any?
+
+      if record.errors[:total_teams].empty?
+        teams = Array(1..record.total_teams)
+
+        missing_teams = teams - teams_played
+        add_error["No games for #{'team'.pluralize(missing_teams.size)} #{missing_teams.join(',')}"] if missing_teams.any?
+
+        extra_teams = teams_played - teams
+        add_error["Schedule for extra #{'team'.pluralize(extra_teams.size)} #{extra_teams.join(',')}"] if extra_teams.any?
+      end
+    }
   end
 end

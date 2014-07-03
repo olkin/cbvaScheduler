@@ -1,10 +1,10 @@
 class Standing < ActiveRecord::Base
   belongs_to :team
+  belongs_to :week
   has_one :league, through: :team
 
-  validates :team_id, uniqueness: {scope: :week}
-  validates :rank, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :week, presence: true
+  validates :team, uniqueness: {scope: :week}, presence: true
+  validates :rank, presence: true, numericality: { only_integer: true, greater_than: 0 }, uniqueness: {scope: :week}
   validates :tier, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :week, presence: true, numericality: { only_integer: true }
-  validates_with StandingsValidator
 end

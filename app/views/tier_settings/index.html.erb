@@ -1,26 +1,14 @@
-<% provide(:title, @league.description + " | Settings") %>
-<h1>League settings for <%= @league.description%></h1>
-
-<% if @league.errors.any?%>
-    <div id="error_explanation">
-      <h2> <%=pluralize(@league.errors.count, "problem") %> to fix:</h2>
-
-      <ul>
-        <% @league.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-<%end%>
+<h1>Listing tier_settings</h1>
 
 <table>
   <thead>
     <tr>
+      <th>Week</th>
       <th>Tier</th>
       <th>Total teams</th>
       <th>Teams down</th>
-      <th>Schedule pattern</th>
       <th>Day</th>
+      <th>Schedule pattern</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -28,11 +16,13 @@
   <tbody>
     <% @tier_settings.each do |tier_setting| %>
       <tr>
+        <td><%= tier_setting.week_id %></td>
         <td><%= tier_setting.tier %></td>
         <td><%= tier_setting.total_teams %></td>
         <td><%= tier_setting.teams_down %></td>
-        <td><%= tier_setting.schedule_pattern %></td>
         <td><%= tier_setting.day %></td>
+        <td><%= tier_setting.schedule_pattern %></td>
+        <td><%= link_to 'Show', tier_setting %></td>
         <td><%= link_to 'Edit', edit_tier_setting_path(tier_setting) %></td>
         <td><%= link_to 'Destroy', tier_setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -42,10 +32,4 @@
 
 <br>
 
-<%= link_to 'Add Tier', new_league_tier_setting_path(@league)%> |
-<%= link_to 'Teams', league_teams_path(@league)%> |
-<%= link_to 'League', league_path(@league)%>
-
-<br>
-
-<%= button_to "Apply settings", league_tier_settings_path(@league), class: "btn btn-large btn-primary", disabled: @league.errors.any?  %>
+<%= link_to 'New Tier setting', new_tier_setting_path %>

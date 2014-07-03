@@ -20,21 +20,23 @@ FactoryGirl.define do
   end
 
   factory :tier_setting do
+    week
+    tier 1
     day "Sun"
     total_teams 2
     teams_down 0
     schedule_pattern [[[[1,2,1]],[[1,2,1]],[[1,2,1]]]]
   end
 
-  factory :standing do
-    week 0
-    rank 1
-    tier 1
-    team
-  end
-
   factory :week do
     league
+  end
+
+  factory :standing do
+    week
+    rank 1
+    tier 1
+    team {association :team, league: week.league}
   end
 
   factory :match do
