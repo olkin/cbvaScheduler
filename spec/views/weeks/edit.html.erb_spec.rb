@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe "weeks/edit" do
   before(:each) do
-    @week = assign(:week, stub_model(Week))
+    league = FactoryGirl.create(:league)
+    @week = assign(:week, stub_model(Week, league_id: league.to_param))
   end
 
   it "renders the edit week form" do

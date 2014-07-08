@@ -1,11 +1,14 @@
 require 'spec_helper'
 
 describe "weeks/index" do
+  let(:league) {FactoryGirl.create(:league)}
   before(:each) do
     assign(:weeks, [
-      stub_model(Week),
-      stub_model(Week)
+      stub_model(Week, league: league),
+      stub_model(Week, league: league)
     ])
+
+    assign(:league, league)
   end
 
   it "renders a list of weeks" do

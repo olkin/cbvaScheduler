@@ -1,16 +1,15 @@
 require 'spec_helper'
 
-describe "tier_settings/show" do
+describe "standings/show" do
   let(:week) {FactoryGirl.create(:week, id: 1)}
+  let(:team) {FactoryGirl.create(:team, league: week.league, id:2)}
 
   before(:each) do
-    assign(:tier_setting, stub_model(TierSetting,
-      :week_id => 1,
-      :tier => 2,
-      :total_teams => 3,
-      :teams_down => 4,
-      :day => "Day",
-      :schedule_pattern => "MyText"
+    assign(:standing, stub_model(Standing,
+                                 :week_id => week.to_param,
+                                 :team_id => team.id,
+                                 :rank => 3,
+                                 :tier => 4
     ))
     assign(:week, week)
   end
@@ -22,7 +21,5 @@ describe "tier_settings/show" do
     rendered.should match(/2/)
     rendered.should match(/3/)
     rendered.should match(/4/)
-    rendered.should match(/Day/)
-    rendered.should match(/MyText/)
   end
 end

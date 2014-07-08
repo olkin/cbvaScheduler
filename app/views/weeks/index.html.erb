@@ -1,33 +1,23 @@
-<p id="notice"><%= notice %></p>
+<h1>Weeks for <%= @league.description %></h1>
 
 <table>
   <thead>
   <tr>
-    <th colspan="2"></th>
-    <th>Tier</th>
-    <th>Total teams</th>
-    <th>Teams down</th>
-    <th>Schedule pattern</th>
-    <th>Day</th>
+    <th>Week</th>
+    <th>Cycle</th>
+    <th/>
   </tr>
   </thead>
 
   <tbody>
-  <% @settings.each_with_index do |setting, tier| %>
+  <% @weeks.each do |week| %>
       <tr>
-        <td><%= link_to 'Edit', edit_tier_league_weeks_path(@league, params.merge(tier: tier)) %></td>
-        <td><%= link_to 'Destroy', destroy_tier_league_weeks_path(@league, params.merge(tier: tier)), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= tier + 1 %></td>
-        <td><%= setting[:total_teams] %></td>
-        <td><%= setting[:teams_down] %></td>
-        <td><%= setting[:schedule_pattern] %></td>
-        <td><%= setting[:day] %></td>
+        <td><%= week.week %></td>
+        <td><%= week.cycle %></td>
+        <td><%= link_to 'Show', week_path(week) %></td>
       </tr>
-  <% end if @settings and @settings.any? %>
+  <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'Add Tier', new_tier_league_weeks_path(@league) %> |
 <%= link_to 'Back', league_path(@league) %>

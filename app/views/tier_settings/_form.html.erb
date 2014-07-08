@@ -1,4 +1,4 @@
-<%= form_for(@tier_setting) do |f| %>
+<%= form_for [@week, @tier_setting] do |f| %>
   <% if @tier_setting.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@tier_setting.errors.count, "error") %> prohibited this tier_setting from being saved:</h2>

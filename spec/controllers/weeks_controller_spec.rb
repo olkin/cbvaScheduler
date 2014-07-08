@@ -23,7 +23,8 @@ describe WeeksController do
   # This should return the minimal set of attributes required to create a valid
   # Week. As you add validations to Week, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { {  } }
+  let(:league) {FactoryGirl.create(:league)}
+  let(:valid_attributes) {FactoryGirl.build(:week, league: league).attributes}
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -32,30 +33,24 @@ describe WeeksController do
 
   describe "GET index" do
     it "assigns all weeks as @weeks" do
-      week = Week.create! valid_attributes
-      get :index, {}, valid_session
+      week = league.weeks.create! valid_attributes
+      get :index, {league_id: league.to_param}, valid_session
       assigns(:weeks).should eq([week])
     end
   end
 
   describe "GET show" do
     it "assigns the requested week as @week" do
-      week = Week.create! valid_attributes
+      week = league.weeks.create! valid_attributes
       get :show, {:id => week.to_param}, valid_session
       assigns(:week).should eq(week)
     end
   end
 
-  describe "GET new" do
-    it "assigns a new week as @week" do
-      get :new, {}, valid_session
-      assigns(:week).should be_a_new(Week)
-    end
-  end
 
   describe "GET edit" do
     it "assigns the requested week as @week" do
-      week = Week.create! valid_attributes
+      week = league.weeks.create! valid_attributes
       get :edit, {:id => week.to_param}, valid_session
       assigns(:week).should eq(week)
     end
@@ -65,19 +60,19 @@ describe WeeksController do
     describe "with valid params" do
       it "creates a new Week" do
         expect {
-          post :create, {:week => valid_attributes}, valid_session
+          post :create, {:week => valid_attributes, league_id: league.to_param}, valid_session
         }.to change(Week, :count).by(1)
       end
 
       it "assigns a newly created week as @week" do
-        post :create, {:week => valid_attributes}, valid_session
+        post :create, {:week => valid_attributes, league_id: league.to_param}, valid_session
         assigns(:week).should be_a(Week)
         assigns(:week).should be_persisted
       end
 
       it "redirects to the created week" do
-        post :create, {:week => valid_attributes}, valid_session
-        response.should redirect_to(Week.last)
+        post :create, {:week => valid_attributes, league_id: league.to_param}, valid_session
+        response.should redirect_to(league_weeks_path(league))
       end
     end
 
@@ -85,14 +80,14 @@ describe WeeksController do
       it "assigns a newly created but unsaved week as @week" do
         # Trigger the behavior that occurs when invalid params are submitted
         Week.any_instance.stub(:save).and_return(false)
-        post :create, {:week => {  }}, valid_session
+        post :create, {:week => {}, league_id: league.to_param}, valid_session
         assigns(:week).should be_a_new(Week)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Week.any_instance.stub(:save).and_return(false)
-        post :create, {:week => {  }}, valid_session
+        post :create, {:week => {  }, league_id: league.to_param}, valid_session
         response.should render_template("new")
       end
     end
@@ -106,8 +101,8 @@ describe WeeksController do
         # specifies that the Week created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Week.any_instance.should_receive(:update).with({ "these" => "params" })
-        put :update, {:id => week.to_param, :week => { "these" => "params" }}, valid_session
+        Week.any_instance.should_receive(:update).with({ "week" => "5" })
+        put :update, {:id => week.to_param, :week => { "week" => "5" }}, valid_session
       end
 
       it "assigns the requested week as @week" do
@@ -119,7 +114,7 @@ describe WeeksController do
       it "redirects to the week" do
         week = Week.create! valid_attributes
         put :update, {:id => week.to_param, :week => valid_attributes}, valid_session
-        response.should redirect_to(week)
+        response.should redirect_to(league_weeks_path(league))
       end
     end
 
@@ -153,7 +148,7 @@ describe WeeksController do
     it "redirects to the weeks list" do
       week = Week.create! valid_attributes
       delete :destroy, {:id => week.to_param}, valid_session
-      response.should redirect_to(weeks_url)
+      response.should redirect_to(league_weeks_url(league))
     end
   end
 

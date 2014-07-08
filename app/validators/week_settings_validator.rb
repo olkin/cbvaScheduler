@@ -10,7 +10,7 @@ class WeekSettingsValidator < ActiveModel::Validator
       if missing_tiers.any?
 
     no_retier_tiers = settings.select{|setting| setting.teams_down == 0 and setting.tier != tiers.max}
-    record.errors[:settings] << "No information ahout retiering for #{'tier'.pluralize(no_retier_tiers.count)} #{no_retier_tiers.join(', ')}}" \
+    record.errors[:settings] << "No information about retiering for #{'tier'.pluralize(no_retier_tiers.count)} #{no_retier_tiers.join(', ')}}" \
       if no_retier_tiers.any?
 
     return if record.errors[:settings].any?

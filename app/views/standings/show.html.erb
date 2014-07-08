@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Week:</strong>
+  <%= @standing.week_id %>
+</p>
+
+<p>
+  <strong>Team:</strong>
+  <%= @standing.team_id %>
+</p>
+
+<p>
+  <strong>Tier:</strong>
+  <%= @standing.tier %>
+</p>
+
+<p>
+  <strong>Rank:</strong>
+  <%= @standing.rank %>
+</p>
+
+
+<%= link_to 'Edit', edit_standing_path(@standing) %> |
+<%= link_to 'Back', week_standings_path(@standing.week) %>

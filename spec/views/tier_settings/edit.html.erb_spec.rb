@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe "tier_settings/edit" do
+  let(:week) {FactoryGirl.create(:week)}
   before(:each) do
     @tier_setting = assign(:tier_setting, stub_model(TierSetting,
-      :week_id => 1,
+      :week_id => week.to_param,
       :tier => 1,
       :total_teams => 1,
       :teams_down => 1,

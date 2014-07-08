@@ -12,7 +12,7 @@ class TierSchedulePatternValidator < ActiveModel::Validator
 
     #Check out format first
     schedule_pattern = record.schedule_pattern
-    add_error["Invalid format of cycles or empty"] unless schedule_pattern.is_a?Array and schedule_pattern.any?
+    add_error["Invalid format of cycles or empty: #{schedule_pattern.to_s}"] unless schedule_pattern.is_a?Array and schedule_pattern.any?
 
     schedule_pattern.each_with_index { |cycle_schedule, idx|
       error_desc = "cycle # #{idx + 1}"
@@ -29,6 +29,7 @@ class TierSchedulePatternValidator < ActiveModel::Validator
           add_error["Invalid format for #{error_desc}: #{game_schedule.to_s}"] \
             unless game_schedule.is_a?Array and game_schedule.size == GAME_SCH_MEMBERS_COUNT
 
+          game_schedule.map!{|x| x.to_i if x}
           team1, team2, court = game_schedule
           add_error["Invalid format for team for #{error_desc}: #{game_schedule.to_s}"] \
             unless team1.is_a?Fixnum and team1 > 0 and team2.is_a?Fixnum and team2 > 0
@@ -43,8 +44,8 @@ class TierSchedulePatternValidator < ActiveModel::Validator
 
     # check out that same team/court is not played/used at the same time
     schedule_pattern.each_with_index { |cycle_schedule, idx|
-      ranks_involved = cycle_schedule.map {|ts_schedule| ts_schedule.inject([]){|teams, game| teams + [game[0], game[1]]}}
-      courts_involved = cycle_schedule.map {|ts_schedule| ts_schedule.inject([]){|teams, game| teams + [game[2]]}}
+      ranks_involved = cycle_schedule.map {|ts_schedule| ts_schedule.inject([]){|teams, game| teams + [game[0].to_i, game[1].to_i]}}
+      courts_involved = cycle_schedule.map {|ts_schedule| ts_schedule.inject([]){|teams, game| teams + [game[2].to_i]}}
 
       find_ts_duplicates = Proc.new {
           |ts_array| ts_array.map.with_index{

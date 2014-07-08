@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe "tier_settings/index" do
+  let(:week) {FactoryGirl.create(:week)}
   before(:each) do
     assign(:tier_settings, [
       stub_model(TierSetting,
-        :week_id => 1,
+        :week_id => week.to_param,
         :tier => 2,
         :total_teams => 3,
         :teams_down => 4,
@@ -12,7 +13,7 @@ describe "tier_settings/index" do
         :schedule_pattern => "MyText"
       ),
       stub_model(TierSetting,
-        :week_id => 1,
+        :week_id => week.to_param,
         :tier => 2,
         :total_teams => 3,
         :teams_down => 4,
@@ -20,6 +21,8 @@ describe "tier_settings/index" do
         :schedule_pattern => "MyText"
       )
     ])
+
+    assign(:week, week)
   end
 
   it "renders a list of tier_settings" do

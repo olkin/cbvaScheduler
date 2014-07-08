@@ -1,4 +1,4 @@
-<h1>Listing tier_settings</h1>
+<h1>Tier settings for <%= @week.league.description%>, week <%= @week.week%></h1>
 
 <table>
   <thead>
@@ -32,4 +32,6 @@
 
 <br>
 
-<%= link_to 'New Tier setting', new_tier_setting_path %>
+<%= link_to 'New Tier setting', new_week_tier_setting_path(@week) %> |
+<%= link_to 'Back', @week %>
+

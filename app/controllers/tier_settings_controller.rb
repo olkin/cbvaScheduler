@@ -1,10 +1,11 @@
 class TierSettingsController < ApplicationController
+  before_action :set_week, only: [:new, :create, :index]
   before_action :set_tier_setting, only: [:show, :edit, :update, :destroy]
 
   # GET /tier_settings
   # GET /tier_settings.json
   def index
-    @tier_settings = TierSetting.all
+    @tier_settings = @week.tier_settings.all
   end
 
   # GET /tier_settings/1
@@ -24,11 +25,11 @@ class TierSettingsController < ApplicationController
   # POST /tier_settings
   # POST /tier_settings.json
   def create
-    @tier_setting = TierSetting.new(tier_setting_params)
+    @tier_setting = @week.tier_settings.build(tier_setting_params)
 
     respond_to do |format|
       if @tier_setting.save
-        format.html { redirect_to @tier_setting, notice: 'Tier setting was successfully created.' }
+        format.html { redirect_to week_tier_settings_path(@week), notice: 'Tier setting was successfully created.' }
         format.json { render :show, status: :created, location: @tier_setting }
       else
         format.html { render :new }
@@ -56,7 +57,7 @@ class TierSettingsController < ApplicationController
   def destroy
     @tier_setting.destroy
     respond_to do |format|
-      format.html { redirect_to tier_settings_url, notice: 'Tier setting was successfully destroyed.' }
+      format.html { redirect_to week_tier_settings_url(@tier_setting.week), notice: 'Tier setting was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +70,13 @@ class TierSettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tier_setting_params
-      params.require(:tier_setting).permit(:week_id, :tier, :total_teams, :teams_down, :day, :schedule_pattern)
+      tier_params = params.require(:tier_setting).permit(:week_id, :tier, :total_teams, :teams_down, :day)
+      #work-around to accept array of arrays
+      tier_params[:schedule_pattern] = params[:tier_setting][:schedule_pattern] if params[:tier_setting][:schedule_pattern]
+      tier_params
+    end
+
+    def set_week
+        @week = Week.find(params[:week_id])
     end
 end
