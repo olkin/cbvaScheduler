@@ -4,6 +4,8 @@ class Week < ActiveRecord::Base
   has_many :standings, dependent:  :destroy
 
   validates_uniqueness_of :league, :scope => :week
+  validates :week, numericality:{ greater_than_or_equal_to: 0, only_integer: true}, allow_nil: true
+  validates :cycle, numericality:{ greater_than_or_equal_to: 0, only_integer: true}, allow_nil: true
 
   validates_with RegistrationValidator
   validates_with WeekSettingsValidator

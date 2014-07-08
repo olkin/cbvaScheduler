@@ -43,7 +43,7 @@ class TierSettingsController < ApplicationController
   def update
     respond_to do |format|
       if @tier_setting.update(tier_setting_params)
-        format.html { redirect_to @tier_setting, notice: 'Tier setting was successfully updated.' }
+        format.html { redirect_to week_tier_settings_path(@tier_setting.week), notice: 'Tier setting was successfully updated.' }
         format.json { render :show, status: :ok, location: @tier_setting }
       else
         format.html { render :edit }

@@ -12,6 +12,14 @@ class TierSchedulePatternValidator < ActiveModel::Validator
 
     #Check out format first
     schedule_pattern = record.schedule_pattern
+    if schedule_pattern.is_a?String
+      begin
+        schedule_pattern = eval(schedule_pattern)
+      rescue TypeError
+        add_error["Invalid format of schedule: #{schedule_pattern.class.to_s}"]
+      end
+    end
+
     add_error["Invalid format of cycles or empty: #{schedule_pattern.to_s}"] unless schedule_pattern.is_a?Array and schedule_pattern.any?
 
     schedule_pattern.each_with_index { |cycle_schedule, idx|

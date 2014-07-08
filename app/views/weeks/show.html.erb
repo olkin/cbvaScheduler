@@ -1,13 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Week <%= @week.week %> for <%= @league.description %></h1>
+<h1>Week <%= @week.week %> for <%= @week.league.description %></h1>
 
 <p>
-  <%= link_to 'Settings', league_week_tier_settings_path(@week.league, @week) %>
+  <%= link_to 'Settings', week_tier_settings_path(@week) %>
 </p>
 
 <p>
-  <%= link_to 'Standings', league_week_standings_path(@week.league, @week) %>
+  <%= link_to 'Standings', week_standings_path(@week) %>
 </p>
 
 <p>
@@ -15,4 +15,4 @@
   <%= @week.cycle %>
 </p>
 
-<%= link_to 'Back', league_weeks_path %>
+<%= link_to 'Back', league_weeks_path(@week.league) %>

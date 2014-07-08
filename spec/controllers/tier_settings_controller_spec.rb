@@ -123,7 +123,7 @@ describe TierSettingsController do
       it "redirects to the tier_setting" do
         tier_setting.save!
         put :update, {:id => tier_setting.to_param, :tier_setting => valid_attributes}, valid_session
-        response.should redirect_to(tier_setting)
+        response.should redirect_to(week_tier_settings_path(tier_setting.week))
       end
     end
 

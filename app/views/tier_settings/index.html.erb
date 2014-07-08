@@ -3,7 +3,6 @@
 <table>
   <thead>
     <tr>
-      <th>Week</th>
       <th>Tier</th>
       <th>Total teams</th>
       <th>Teams down</th>
@@ -16,7 +15,6 @@
   <tbody>
     <% @tier_settings.each do |tier_setting| %>
       <tr>
-        <td><%= tier_setting.week_id %></td>
         <td><%= tier_setting.tier %></td>
         <td><%= tier_setting.total_teams %></td>
         <td><%= tier_setting.teams_down %></td>

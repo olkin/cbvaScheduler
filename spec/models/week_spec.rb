@@ -13,6 +13,22 @@ describe Week do
     week.should be_valid
   end
 
+  it "cannot have negative week_nr" do
+    week.week = -1
+    week.should_not be_valid
+  end
+
+
+  it "can have unspecified cycle" do
+    week.cycle = nil
+    week.should be_valid
+  end
+
+  it "cannot have negative cycle" do
+    week.cycle = -1
+    week.should_not be_valid
+  end
+
   it "can't have same week nr for same league" do
     week.save
     week2 = week.dup
