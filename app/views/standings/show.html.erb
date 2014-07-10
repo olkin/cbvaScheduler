@@ -7,8 +7,21 @@
 
 <p>
   <strong>Team:</strong>
-  <%= @standing.team_id %>
+  <%= @standing.team.name %>
 </p>
+
+
+<p>
+  <strong>Captain:</strong>
+  <%= @standing.team.captain %>
+</p>
+
+
+<p>
+  <strong>Email:</strong>
+  <%= @standing.team.email %>
+</p>
+
 
 <p>
   <strong>Tier:</strong>

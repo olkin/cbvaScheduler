@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "standings/show" do
   let(:week) {FactoryGirl.create(:week, id: 1)}
-  let(:team) {FactoryGirl.create(:team, league: week.league, id:2)}
+  let(:team) {FactoryGirl.create(:team, league: week.league, id:2, name: "Name", captain: "Cap", email: "email@good.com")}
 
   before(:each) do
     assign(:standing, stub_model(Standing,
@@ -18,7 +18,9 @@ describe "standings/show" do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     rendered.should match(/1/)
-    rendered.should match(/2/)
+    rendered.should match(/Name/)
+    rendered.should match(/Cap/)
+    rendered.should match(/email/)
     rendered.should match(/3/)
     rendered.should match(/4/)
   end

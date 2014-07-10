@@ -16,6 +16,7 @@ class StandingsController < ApplicationController
   # GET /tier_settings/new
   def new
     @standing = Standing.new
+    @standing.build_team
   end
 
   # GET /tier_settings/1/edit
@@ -70,7 +71,7 @@ class StandingsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def standing_params
-    params.require(:standing).permit(:week_id, :tier, :rank, :team_id)
+    params.require(:standing).permit(:week_id, :tier, :rank, :team_id, team_attributes: [:id, :name, :captain, :email, :league_id])
   end
 
   def set_week

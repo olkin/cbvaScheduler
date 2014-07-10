@@ -22,7 +22,9 @@ describe "standings/new" do
     assert_select "form[action=?][method=?]", week_standings_path(week), "post" do
       assert_select "input#standing_tier[name=?]", "standing[tier]"
       assert_select "input#standing_rank[name=?]", "standing[rank]"
-      assert_select "input#standing_team_id[name=?]", "standing[team_id]"
+    #  assert_select "input#standing_team_name[name=?]", "standing[team][name]"
+    #  assert_select "input#standing_team_captain[name=?]", "standing[team][captain]"
+    #  assert_select "input#standing_team_email[name=?]", "standing[team][email]"
     end
   end
 end

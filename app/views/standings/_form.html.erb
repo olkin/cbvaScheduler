@@ -11,10 +11,25 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :team_id %><br>
-    <%= f.number_field :team_id %>
-  </div>
+    <%= f.fields_for :team do |builder| %>
+
+        <%= builder.hidden_field :league_id, value: @standing.week.league.id %>
+
+        <div class="field">
+          <%= builder.label :name %><br>
+          <%= builder.text_field :name %>
+        </div>
+        <div class="field">
+          <%= builder.label :captain %><br>
+          <%= builder.text_field :captain %>
+        </div>
+        <div class="field">
+          <%= builder.label :email %><br>
+          <%= builder.text_field :email %>
+        </div>
+
+    <% end -%>
+
   <div class="field">
     <%= f.label :rank %><br>
     <%= f.number_field :rank %>
