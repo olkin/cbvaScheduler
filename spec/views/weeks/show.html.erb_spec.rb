@@ -9,6 +9,7 @@ describe "weeks/show.html.erb" do
                                      :week => 2,
                                      :cycle => 3
     ))
+
   end
 
   it "renders attributes in <p>" do

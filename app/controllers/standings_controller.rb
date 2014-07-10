@@ -15,7 +15,7 @@ class StandingsController < ApplicationController
 
   # GET /tier_settings/new
   def new
-    @standing = Standing.new
+    @standing = @week.standings.new
     @standing.build_team
   end
 
@@ -30,8 +30,8 @@ class StandingsController < ApplicationController
 
     respond_to do |format|
       if @standing.save
-        format.html { redirect_to week_standings_url(@week), notice: 'STanding setting was successfully created.' }
-        format.json { render :show, status: :created, location: @standing }
+        format.html { redirect_to @week, notice: 'Standing setting was successfully created.' }
+        format.json { render :show, status: :created, location: week }
       else
         format.html { render :new }
         format.json { render json: @standing.errors, status: :unprocessable_entity }
@@ -44,8 +44,8 @@ class StandingsController < ApplicationController
   def update
     respond_to do |format|
       if @standing.update(standing_params)
-        format.html { redirect_to @standing, notice: 'Standing setting was successfully updated.' }
-        format.json { render :show, status: :ok, location: @standing }
+        format.html { redirect_to @standing.week, notice: 'Standing setting was successfully updated.' }
+        format.json { render :show, status: :ok, location: @week }
       else
         format.html { render :edit }
         format.json { render json: @standing.errors, status: :unprocessable_entity }
@@ -58,7 +58,7 @@ class StandingsController < ApplicationController
   def destroy
     @standing.destroy
     respond_to do |format|
-      format.html { redirect_to week_standings_url(@standing.week), notice: 'Standing was successfully destroyed.' }
+      format.html { redirect_to @standing.week, notice: 'Standing was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

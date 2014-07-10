@@ -35,7 +35,7 @@ describe WeeksController do
     it "assigns all weeks as @weeks" do
       week = league.weeks.create! valid_attributes
       get :index, {league_id: league.to_param}, valid_session
-      assigns(:weeks).should eq([week])
+      response.should redirect_to(week)
     end
   end
 

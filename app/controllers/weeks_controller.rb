@@ -3,7 +3,11 @@ class WeeksController < ApplicationController
   before_action :set_week, only: [:edit, :update, :destroy, :show]
 
   def index
-    @weeks = @league.weeks.all
+    setting_week = @league.weeks.find_or_create_by(week: nil)
+    respond_to do |format|
+      format.html { redirect_to week_path(setting_week) }
+      format.json { render :show, location: setting_week }
+    end
   end
 
   def new
@@ -14,6 +18,9 @@ class WeeksController < ApplicationController
   end
 
   def show
+    @week.save
+    @tier_settings = @week.tier_settings.order("tier")
+    @standings = @week.standings.order("tier")
   end
 
   def create

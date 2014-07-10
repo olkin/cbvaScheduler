@@ -81,7 +81,7 @@ describe StandingsController do
 
       it "redirects to the created tier_setting" do
         post :create, {:standing => valid_attributes, week_id: standing.week.to_param}, valid_session
-        response.should redirect_to(week_standings_url(standing.week))
+        response.should redirect_to(standing.week)
       end
     end
 
@@ -123,7 +123,7 @@ describe StandingsController do
       it "redirects to the tier_setting" do
         standing.save!
         put :update, {:id => standing.to_param, :standing => valid_attributes}, valid_session
-        response.should redirect_to(standing)
+        response.should redirect_to(standing.week)
       end
     end
 
@@ -157,7 +157,7 @@ describe StandingsController do
     it "redirects to the tier_settings list" do
       standing.save!
       delete :destroy, {:id => standing.to_param}, valid_session
-      response.should redirect_to(week_standings_url(standing.week))
+      response.should redirect_to(standing.week)
     end
   end
 

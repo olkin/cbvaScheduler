@@ -15,7 +15,10 @@ class TierSettingsController < ApplicationController
 
   # GET /tier_settings/new
   def new
-    @tier_setting = TierSetting.new
+    all_tiers = @week.tier_settings.all.map{|setting| setting[:tier]}.uniq.sort
+    missing_tiers = (1..all_tiers.size).to_a - all_tiers
+    default_tier = missing_tiers[0] || all_tiers.size + 1
+    @tier_setting = TierSetting.new(tier: default_tier)
   end
 
   # GET /tier_settings/1/edit
@@ -29,8 +32,8 @@ class TierSettingsController < ApplicationController
 
     respond_to do |format|
       if @tier_setting.save
-        format.html { redirect_to week_tier_settings_path(@week), notice: 'Tier setting was successfully created.' }
-        format.json { render :show, status: :created, location: @tier_setting }
+        format.html { redirect_to @tier_setting.week, notice: 'Tier setting was successfully created.' }
+        format.json { render :show, status: :created, location: week }
       else
         format.html { render :new }
         format.json { render json: @tier_setting.errors, status: :unprocessable_entity }
@@ -43,8 +46,8 @@ class TierSettingsController < ApplicationController
   def update
     respond_to do |format|
       if @tier_setting.update(tier_setting_params)
-        format.html { redirect_to week_tier_settings_path(@tier_setting.week), notice: 'Tier setting was successfully updated.' }
-        format.json { render :show, status: :ok, location: @tier_setting }
+        format.html { redirect_to @tier_setting.week, notice: 'Tier setting was successfully updated.' }
+        format.json { render :show, status: :ok, location: week }
       else
         format.html { render :edit }
         format.json { render json: @tier_setting.errors, status: :unprocessable_entity }
@@ -57,7 +60,7 @@ class TierSettingsController < ApplicationController
   def destroy
     @tier_setting.destroy
     respond_to do |format|
-      format.html { redirect_to week_tier_settings_url(@tier_setting.week), notice: 'Tier setting was successfully destroyed.' }
+      format.html { redirect_to @tier_setting.week, notice: 'Tier setting was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

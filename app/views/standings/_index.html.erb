@@ -1,0 +1,31 @@
+<table>
+  <thead>
+  <tr>
+    <th>Rank</th>
+    <th>Tier</th>
+    <th>Team</th>
+    <th>Captain</th>
+    <th>Email</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @standings.each do |standing| %>
+      <tr>
+        <td><%= standing.rank %></td>
+        <td><%= standing.tier %></td>
+        <td><%= standing.team.name %></td>
+        <td><%= standing.team.captain %></td>
+        <td><%= standing.team.email %></td>
+        <td><%= link_to 'Show', standing %></td>
+        <td><%= link_to 'Edit', edit_standing_path(standing) %></td>
+        <td><%= link_to 'Destroy', standing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end  if @standings%>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Add team', new_week_standing_path(@week) %>

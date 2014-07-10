@@ -1,18 +1,35 @@
 <p id="notice"><%= notice %></p>
+<div class="center hero-unit">
 
-<h1>Week <%= @week.week %> for <%= @week.league.description %></h1>
+  <% week_name = @week.week ? "week ##{@week.week}" : "registration week"%>
+    <h1><%= @week.league.description %>: <%= week_name%> setup</h1>
 
-<p>
-  <%= link_to 'Settings', week_tier_settings_path(@week) %>
-</p>
+  <% if @week.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@week.errors.count, "error") %> to fix setup:</h2>
 
-<p>
-  <%= link_to 'Standings', week_standings_path(@week) %>
-</p>
+        <ul>
+          <% @week.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+  <% end %>
 
-<p>
-  <strong>Cycle</strong>
-  <%= @week.cycle %>
-</p>
+  <%= render "tier_settings/index"%>
+  <%= render "standings/index"%>
 
-<%= link_to 'Back', league_weeks_path(@week.league) %>
+    <p>
+      <strong>Cycle</strong>
+      <%= @week.cycle %>
+    </p>
+
+  <% if @week.errors.empty? %>
+    <%= link_to "Save settings", signup_path, class: "btn btn-large btn-primary" %>
+    <br>
+  <% end %>
+
+  <%= link_to 'Edit', edit_week_path(@week) %> |
+    <%= link_to 'Back', league_path(@week.league) %>
+
+</div>

@@ -32,11 +32,12 @@
 
   <div class="field">
     <%= f.label :rank %><br>
-    <%= f.number_field :rank %>
+    <%= f.number_field :rank, min: 1 %>
   </div>
+
   <div class="field">
     <%= f.label :tier %><br>
-    <%= f.number_field :tier %>
+    <%= f.number_field :tier, min: 1 %>
   </div>
   <div class="actions">
     <%= f.submit %>
