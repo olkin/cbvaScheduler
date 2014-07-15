@@ -4,7 +4,7 @@
 
     <h1><%= @league.description %></h1>
 
-    <% if @matches.any?%>
+    <% if @matches and @matches.any?%>
         <h2>Schedule</h2>
         <%= render 'matches/index'%>
         <%= render 'matches/cross_results'%>

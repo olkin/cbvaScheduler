@@ -13,8 +13,10 @@ class LeaguesController < ApplicationController
     #show only for last week
     cur_week_nr = @league.weeks.maximum("week") || 0
     @week = @league.weeks.find_by_week(cur_week_nr)
-    @matches = @week.matches
-    @standings = @week.standings
+    if @week
+      @matches = @week.matches
+      @standings = @week.standings
+    end
   end
 
   # GET /leagues/new
