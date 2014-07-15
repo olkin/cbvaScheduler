@@ -6,7 +6,7 @@ class ScoreValidator < ActiveModel::Validator
   MIN_SCORE_SET_SUM = 8
 
   def validate(record)
-    return true if record[:score].nil?
+    return true if record[:score].nil? or record[:score].blank?
 
     add_error = Proc.new {|error_msg|
       record.errors[:score] << error_msg

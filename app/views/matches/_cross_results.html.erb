@@ -1,33 +1,24 @@
-<% standings_by_tier = @week.standings.group_by{|standing| standing.tier}%>
-
-<% standings_by_tier.each do |tier, standings|%>
-    Tier #<%=tier%>
-    <table>
-    <thead>
-    <tr>
-      <th></th>
-      <% standings.each do |standing| %>
-        <th><%= standing.team.name %></th>
-      <% end %>
-      <th>Games played</th>
-      <th>Games won</th>
-      <th>Points diff won</th>
-      <th>Cur Rank</th>
-    </tr>
-    </thead>
-    <tbody>
-        <%standings.each do |standing|%>
-        <tr>
-          <td><%= link_to "(#{standing.rank}) #{standing.team.name}", standing.team %>
-                <br/> <%= standing.team.captain %> </td>
-          <% standings.each do |standing| %>
-              <td> <%= text_field_tag "score" %></td>
-          <% end %>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <%end%>
-    </tbody>
-    </table>
-<%end%>
+<table>
+  <thead>
+  <tr>
+    <th>Rank</th>
+    <th>Team</th>
+    <th>Games played</th>
+    <th>Games won</th>
+    <th>Points diff won</th>
+    <th>Cur Rank</th>
+  </tr>
+  </thead>
+  <tbody>
+  <%@tier_standings.each do |standing|%>
+      <tr>
+        <td><%=standing.rank%></td>
+        <td><%= link_to "#{standing.team.name}", standing.team %>
+          <br/> <%= standing.team.captain %> </td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+  <%end%>
+  </tbody>
+</table>

@@ -1,20 +1,51 @@
 <% provide(:title, @league.description) %>
 <div class="center hero-unit">
-    <p id="notice"><%= notice %></p>
+  <p id="notice"><%= notice %></p>
 
-    <h1><%= @league.description %></h1>
+  <h1><%= @league.description %></h1>
 
-    <% if @matches and @matches.any?%>
-        <h2>Schedule</h2>
-        <%= render 'matches/index'%>
-        <%= render 'matches/cross_results'%>
-    <%else%>
-        <h3>Registration is not finished yet</h3>
-    <%end%>
+  <% if @matches and @matches.any?%>
+      <h2>Schedule for day #<%= @week.week + 1%></h2>
+      <%   matches_by_tier = @week.matches.group_by{ |match|
+        team = match.team1
+        standing = @standings.all.find_by(team: team)
+        standing.tier if standing
+      } %>
+      <% @week.tier_settings.each do |setting|%>
+          <a onclick="myFunction(<%=setting.tier%>);"> Tier #<%=setting.tier%></a><br/>
+          <div id = "show_tier<%=setting.tier%>">
 
-    <%= link_to 'Edit', edit_league_path(@league) %> |
-    <%= link_to 'Settings', league_weeks_path(@league) %> |
-    <%= link_to 'All leagues', leagues_path %>
+            Tier Setting <br/>
+            <% standings_by_tier = @week.standings.group_by{|standing| standing.tier}%>
+
+            <% @tier_standings = standings_by_tier[setting.tier]%>
+            <%= render 'matches/cross_results'%>
+
+            <% @tier_matches = matches_by_tier[setting.tier]%>
+            Tier Schedule <br/>
+            <%= render 'matches/index'%>
+
+          </div>
+      <%end%>
+  <%else%>
+      <h3>Registration is not finished yet</h3>
+  <%end%>
+
+  <%if admin?%>
+      <%= link_to 'Edit', edit_league_path(@league) %> |
+      <%= link_to 'Settings', league_weeks_path(@league) %> |
+  <%end%>
+  <%= link_to 'All leagues', leagues_path %>
 
 </div>
+
+
+<script>
+    function myFunction(tier) {
+        var visible = document.getElementById("show_tier"+tier).style.display != 'none';
+        document.getElementById("show_tier"+tier).style.display = (visible ? 'none' : '');
+    }
+</script>
+
+
 

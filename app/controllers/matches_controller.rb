@@ -43,7 +43,7 @@ class MatchesController < ApplicationController
   def update
     respond_to do |format|
       if @match.update(match_params)
-        format.html { redirect_to @match, notice: 'Match was successfully updated.' }
+        format.html { redirect_to @match.league, notice: 'Match was successfully updated.' }
         format.json { render :show, status: :ok, location: @match }
       else
         format.html { render :edit }
@@ -70,7 +70,9 @@ class MatchesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def match_params
-      params.require(:match).permit(:team1_id, :team2_id, :score1, :score2, :court)
+      match_params = params.require(:match).permit(:team1_id, :team2_id, :score, :court)
+      match_params[:score] = match_params[:score].scan(/(\d+)[:-](\d+)/).map{|x,y|[x.to_i,y.to_i]} if match_params[:score]
+      match_params
     end
 
     def set_week

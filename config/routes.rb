@@ -24,7 +24,11 @@ Rails.application.routes.draw do
     resources :teams, :shallow => true, except: :show
   end
 
-  resources :users
+  resources :users do
+    member do
+      put :change_vip_status
+    end
+  end
 
 
   # The priority is based upon order of creation: first created -> highest priority.

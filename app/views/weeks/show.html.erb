@@ -19,12 +19,13 @@
   <%= render "tier_settings/index"%>
   <%= render "standings/index"%>
 
-  <% if @week.errors.empty? %>
+  <% if admin? and @week.errors.empty? %>
       <%= link_to "Save settings", save_settings_week_path(@week), method: :put, class: "btn btn-large btn-primary" %>
       <br>
   <% end %>
 
-  <%= link_to 'Edit', edit_week_path(@week) %> |
-  <%= link_to 'Back', league_path(@week.league) %>
-
+  <% if admin? %>
+      <%= link_to 'Edit', edit_week_path(@week) %> |
+      <%= link_to 'Back', league_path(@week.league) %>
+   <%end%>
 </div>

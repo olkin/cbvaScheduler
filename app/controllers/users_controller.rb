@@ -18,6 +18,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def index
+    @users = User.all
+  end
+
+  def change_vip_status
+    @user = User.find(params[:id])
+    @user.update_attribute(:vip, !@user.vip)
+    redirect_to users_path
+  end
+
   private
 
   def user_params

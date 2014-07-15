@@ -100,6 +100,10 @@ class WeeksController < ApplicationController
           setting.save
         end
 
+        new_setting = setting.dup
+        new_setting.week_id = cur_week.id
+        new_setting.save
+
         schedule = cycles_schedule[cycle - 1]
 
         schedule.each_with_index { |ts_schedule, game_idx|
@@ -112,11 +116,9 @@ class WeeksController < ApplicationController
             new_match.save
           }
         }
-
-
-
         team_offset += setting[:total_teams]
       }
+
 
 
       respond_to do |format|

@@ -6,7 +6,9 @@
     <th>Team</th>
     <th>Captain</th>
     <th>Email</th>
-    <th colspan="3"></th>
+    <% if admin? %>
+        <th colspan="3"></th>
+    <%end%>
   </tr>
   </thead>
 
@@ -18,9 +20,11 @@
         <td><%= standing.team.name %></td>
         <td><%= standing.team.captain %></td>
         <td><%= standing.team.email %></td>
-        <td><%= link_to 'Show', standing %></td>
-        <td><%= link_to 'Edit', edit_standing_path(standing) %></td>
-        <td><%= link_to 'Destroy', standing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if admin? %>
+            <td><%= link_to 'Show', standing %></td>
+            <td><%= link_to 'Edit', edit_standing_path(standing) %></td>
+            <td><%= link_to 'Destroy', standing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%end%>
       </tr>
   <% end  if @standings%>
   </tbody>
@@ -28,4 +32,6 @@
 
 <br>
 
-<%= link_to 'Add team', new_week_standing_path(@week) %>
+<% if admin? %>
+    <%= link_to 'Add team', new_week_standing_path(@week) %>
+<%end%>

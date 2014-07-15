@@ -1,0 +1,24 @@
+<%if admin?%>
+<table>
+  <thead>
+  <tr>
+    <th>User</th>
+    <th>Email</th>
+    <th>VIP?</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= link_to (user.vip ? "Take out VIP" : "Grant VIP"),
+                        change_vip_status_user_path(user), method: :put %></td>
+      </tr>
+  <% end if @users %>
+  </tbody>
+</table>
+<%end%>
+<br>
+<%= link_to 'Leagues', leagues_path%>
