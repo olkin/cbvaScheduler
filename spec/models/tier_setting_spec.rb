@@ -27,6 +27,17 @@ describe TierSetting do
     expect(tier_setting2).to be_valid
   end
 
+  it "can have unspecified cycle" do
+    @tier_setting.cycle = nil
+    @tier_setting.should be_valid
+  end
+
+  it "cannot have negative cycle" do
+    @tier_setting.cycle = -1
+    @tier_setting.should_not be_valid
+  end
+
+
   context "is invalid" do
     it "when tier nr is invalid/missing" do
       invalid_tier_numbers = [nil, 0, -1]

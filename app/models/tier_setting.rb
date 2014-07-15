@@ -9,6 +9,7 @@ class TierSetting < ActiveRecord::Base
   validates :day, inclusion: {in: Date::ABBR_DAYNAMES, message: "Invalid day format %{value}"}
   validates_with TeamsMovementValidator
   validates :schedule_pattern, tier_schedule_pattern: true, allow_nil: true
+  validates :cycle, numericality:{ greater_than_or_equal_to: 0, only_integer: true}, allow_nil: true
 
   serialize :schedule_pattern
 end

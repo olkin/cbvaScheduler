@@ -1,10 +1,11 @@
 class MatchesController < ApplicationController
   before_action :set_match, only: [:show, :edit, :update, :destroy]
+  before_action :set_week, only: [:new, :create, :index]
 
   # GET /matches
   # GET /matches.json
   def index
-    @matches = Match.all
+    @matches = @week.matches
   end
 
   # GET /matches/1
@@ -70,5 +71,9 @@ class MatchesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def match_params
       params.require(:match).permit(:team1_id, :team2_id, :score1, :score2, :court)
+    end
+
+    def set_week
+      @week = Week.find(params[:week_id])
     end
 end

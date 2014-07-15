@@ -7,6 +7,6 @@ class Standing < ActiveRecord::Base
 
   validates :week, presence: true
   validates :team, uniqueness: {scope: :week}, presence: true
-  validates :rank, presence: true, numericality: { only_integer: true, greater_than: 0 }, uniqueness: {scope: :week}
+  validates :rank, presence: true, numericality: { only_integer: true, greater_than: 0 }, uniqueness: {scope: :week}, allow_nil: true
   validates :tier, presence: true, numericality: { only_integer: true, greater_than: 0 }
 end

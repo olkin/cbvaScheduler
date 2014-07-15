@@ -1,11 +1,9 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to "cbva", root_path, id: "logo" %>
+      <%= link_to "Schanks+CBVA", root_path, id: "logo" %>
       <nav>
         <ul class="nav pull-right">
-          <li><%= link_to "Home", root_path %></li>
-
           <li><%= link_to "Leagues", leagues_path%> </li>
           <% if signed_in? %>
               <li><%= link_to "Users", '#' %></li>

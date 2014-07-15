@@ -17,6 +17,12 @@ describe Standing do
     FactoryGirl.create(:standing, team: @standing.team, week: week2).should be_valid
   end
 
+  it "valid when rank is missing" do
+    @standing.rank = nil
+    @standing.should be_valid
+  end
+
+
   describe "invalid standings" do
     it "when week is missing" do
       @standing.week = nil
@@ -30,11 +36,6 @@ describe Standing do
 
     it "same team can't have 2 standings for same week" do
        FactoryGirl.build(:standing, team: @standing.team, week: @standing.week, rank: @standing.rank + 1).should_not be_valid
-    end
-
-    it "when rank is missing" do
-      @standing.rank = nil
-      @standing.should_not be_valid
     end
 
     it "when rank is 0" do

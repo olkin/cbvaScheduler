@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
-  get 'weeks/show'
+  #get 'weeks/show'
 
-  root 'static_pages#home'
+  root 'leagues#index'
   resources :sessions, only: [:new, :create, :destroy]
   match '/signup',  to: 'users#new',            via: 'get'
   match '/signin',  to: 'sessions#new',         via: 'get'
@@ -12,8 +12,13 @@ Rails.application.routes.draw do
 
   resources :leagues do
     resources :weeks, path: "settings", :shallow => true do
-      resources :tier_settings, :shallow => true
-      resources :standings, :shallow => true
+      member do
+        put :save_settings
+      end
+
+      resources :tier_settings
+      resources :standings
+      resources :matches
     end
 
     resources :teams, :shallow => true, except: :show

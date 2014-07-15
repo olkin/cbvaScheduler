@@ -4,14 +4,10 @@
 
     <h1><%= @league.description %></h1>
 
-    <%
-       matches = @league.matches.all
-       matches_week = matches.group_by{|t| t.week}
-    %>
-
-    <% if matches_week.any?%>
+    <% if @matches.any?%>
         <h2>Schedule</h2>
-        <h3>Available weeks <%= matches_week.keys.sort.to_s%> </h3>
+        <%= render 'matches/index'%>
+        <%= render 'matches/cross_results'%>
     <%else%>
         <h3>Registration is not finished yet</h3>
     <%end%>
@@ -21,3 +17,4 @@
     <%= link_to 'All Leagues', leagues_path %>
 
 </div>
+

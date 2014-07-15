@@ -1,0 +1,56 @@
+<%
+   matches_by_tier = @week.matches.group_by{ |match|
+     team = match.team1
+     standing = @standings.all.find_by(team: team)
+     standing.tier if standing
+   }
+%>
+
+
+<% matches_by_tier.each do |tier, matches| %>
+    <a onclick="myFunction(<%=tier%>);">Tier #<%=tier%></a><br/>
+    <div id = "demo<%=tier%>">
+      <%= form_tag do %>
+          <% matches_by_game = matches.group_by{ |match| match.game}%>
+          <%matches_by_game.each do |game, game_matches|%>
+
+              <% game_matches.each do |match| %>
+                  <table>
+                    <thead>
+                    <tr>
+                      <th><%=game%> @<%=match.court%></th>
+                      <th>G1</th>
+                      <th>G2</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td><%= link_to match.team1.name, match.team1 %><br/><%= match.team1.captain%></td>
+                      <td><%= text_field_tag 'score[]', match.score, size: 2 %></td>
+                      <td><%= text_field_tag 'score[]', match.score, size: 2 %></td>
+                    </tr>
+
+                    <tr>
+                      <td><%= link_to match.team2.name, match.team2 %><br/><%= match.team2.captain%></td>
+                      <td><%= text_field_tag 'score[]', match.score, size: 2 %></td>
+                      <td><%= text_field_tag 'score[]', match.score, size: 2 %></td>
+                    </tr>
+
+                    </tbody>
+                  </table>
+              <% end %>
+          <%end%>
+
+          <%= submit_tag("Update results") %>
+          <%end%>
+          </div>
+
+      <%end%>
+
+      <script>
+          function myFunction(tier) {
+              var visible = document.getElementById("demo"+tier).style.display != 'none';
+              document.getElementById("demo"+tier).style.display = (visible ? 'none' : '');
+          }
+      </script>
+

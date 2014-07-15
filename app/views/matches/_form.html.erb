@@ -11,6 +11,11 @@
     </div>
   <% end %>
 
+    <div class="field">
+      <%= f.label :game %><br>
+      <%= f.number_field :game %>
+    </div>
+
   <div class="field">
     <%= f.label :team1_id %><br>
     <%= f.number_field :team1_id %>
@@ -20,12 +25,8 @@
     <%= f.number_field :team2_id %>
   </div>
   <div class="field">
-    <%= f.label :score1 %><br>
-    <%= f.number_field :score1 %>
-  </div>
-  <div class="field">
-    <%= f.label :score2 %><br>
-    <%= f.number_field :score2 %>
+    <%= f.label :score %><br>
+    <%= f.number_field :score %>
   </div>
   <div class="field">
     <%= f.label :court %><br>

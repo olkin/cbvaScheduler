@@ -19,6 +19,9 @@
     <%= f.label :total_teams %><br>
     <%= f.number_field :total_teams, min: 2 %>
   </div>
+
+  <a onclick="Generate();"> Generate settings</a>
+
   <div class="field">
     <%= f.label :teams_down %><br>
     <%= f.number_field :teams_down, min: 0 %>
@@ -31,7 +34,33 @@
     <%= f.label :schedule_pattern %><br>
     <%= f.text_area :schedule_pattern %>
   </div>
-  <div class="actions">
+
+    <div class="field">
+      <%= f.label :cycle %><br>
+      <%= f.number_field :cycle, min: 0 %>
+    </div>
+
+    <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
+<script>
+    function Generate() {
+        var total_teams = document.getElementsByName("tier_setting[total_teams]")[0].value;
+        var teams_down = "0";
+        var schedule_pattern = "";
+        if (total_teams == "2"){
+            teams_down = "0";
+            schedule_pattern = "[[[[1,2,1]],[[2,1,3]],[[1,2,1]]]]"
+        } else {
+            teams_down = "1";
+            //schedule_pattern = ""
+        }
+
+        document.getElementsByName("tier_setting[teams_down]")[0].value = teams_down;
+        document.getElementsByName("tier_setting[schedule_pattern]")[0].value = schedule_pattern;
+
+    }
+</script>
+

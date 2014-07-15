@@ -12,12 +12,7 @@
 
 <p>
   <strong>Score1:</strong>
-  <%= @match.score1 %>
-</p>
-
-<p>
-  <strong>Score2:</strong>
-  <%= @match.score2 %>
+  <%= @match.score %>
 </p>
 
 <p>
@@ -26,4 +21,4 @@
 </p>
 
 <%= link_to 'Edit', edit_match_path(@match) %> |
-<%= link_to 'Back', matches_path %>
+<%= link_to 'Back', week_matches_path(@match.week) %>

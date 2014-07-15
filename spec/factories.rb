@@ -40,10 +40,10 @@ FactoryGirl.define do
   end
 
   factory :match do
-    week 0
+    week
     court 1
     game 1
-    team1 {association :team, name: "Team1"}
-    team2 {association :team, league: team1.league, name: "Team2"}
+    team1 {association :team}
+    team2 {association :team, league: team1.league}
   end
 end
