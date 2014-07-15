@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Leagues/edit" do
+describe "leagues/edit" do
   before(:each) do
     @league = assign(:league, stub_model(League,
       FactoryGirl.attributes_for(:league)

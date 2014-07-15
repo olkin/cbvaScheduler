@@ -14,7 +14,7 @@ describe LeaguesController do
     end
 
     describe "GET index" do
-      it "assigns all Leagues as leagues" do
+      it "assigns all leagues as leagues" do
         get :index, {}
         assigns(:leagues).should eq([league])
       end
@@ -36,7 +36,7 @@ describe LeaguesController do
 
     describe "PUT update" do
       it "updates the requested league" do
-        # Assuming there are no other Leagues in the database, this
+        # Assuming there are no other leagues in the database, this
         # specifies that the League created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
@@ -71,7 +71,7 @@ describe LeaguesController do
       }.to change(League, :count).by(-1)
     end
 
-    it "redirects to the Leagues list" do
+    it "redirects to the leagues list" do
       delete :destroy, {:id => @league.to_param}
       response.should redirect_to(leagues_url)
     end

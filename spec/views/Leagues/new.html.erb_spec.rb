@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Leagues/new" do
+describe "leagues/new" do
   before(:each) do
     assign(:league, stub_model(League, FactoryGirl.attributes_for(:league)
     ).as_new_record)

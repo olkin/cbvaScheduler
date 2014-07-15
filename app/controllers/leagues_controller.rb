@@ -1,14 +1,14 @@
 class LeaguesController < ApplicationController
   before_action :set_league_type, only: [:show, :edit, :update, :destroy]
 
-  # GET /Leagues
-  # GET /Leagues.json
+  # GET /leagues
+  # GET /leagues.json
   def index
     @leagues = League.all
   end
 
-  # GET /Leagues/1
-  # GET /Leagues/1.json
+  # GET /leagues/1
+  # GET /leagues/1.json
   def show
     #show only for last week
     cur_week_nr = @league.weeks.maximum("week") || 0
@@ -17,17 +17,17 @@ class LeaguesController < ApplicationController
     @standings = @week.standings
   end
 
-  # GET /Leagues/new
+  # GET /leagues/new
   def new
     @league = League.new
   end
 
-  # GET /Leagues/1/edit
+  # GET /leagues/1/edit
   def edit
   end
 
-  # POST /Leagues
-  # POST /Leagues.json
+  # POST /leagues
+  # POST /leagues.json
   def create
     @league = League.new(league_type_params)
 
@@ -42,8 +42,8 @@ class LeaguesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /Leagues/1
-  # PATCH/PUT /Leagues/1.json
+  # PATCH/PUT /leagues/1
+  # PATCH/PUT /leagues/1.json
   def update
     respond_to do |format|
       if @league.update(league_type_params)
@@ -56,8 +56,8 @@ class LeaguesController < ApplicationController
     end
   end
 
-  # DELETE /Leagues/1
-  # DELETE /Leagues/1.json
+  # DELETE /leagues/1
+  # DELETE /leagues/1.json
   def destroy
     @league.destroy
     respond_to do |format|
