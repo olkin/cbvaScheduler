@@ -1,0 +1,21 @@
+<div class="center hero-unit">
+  <h1>Welcome to Schanks CBVA tournament!</h1>
+
+  <table>
+    <tbody>
+    <% @leagues.each do |league_type| %>
+        <tr>
+          <td><%= league_type.desc %></td>
+          <td><%= link_to "#{league_type.description}", league_type %></td>
+          <td><%= link_to 'Edit', edit_league_path(league_type) %></td>
+          <td><%= link_to 'Destroy', league_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to 'New League type', new_league_path %>
+
+  <br>
+</div>
+
