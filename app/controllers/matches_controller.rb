@@ -48,7 +48,7 @@ class MatchesController < ApplicationController
         format.html { redirect_to @match.league, notice: 'Match was successfully updated.' }
         format.json { render :show, status: :ok, location: @match }
       else
-        format.html { render :edit }
+        format.html { render :edit}
         format.json { render json: @match.errors, status: :unprocessable_entity }
       end
     end

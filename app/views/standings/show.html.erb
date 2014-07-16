@@ -2,7 +2,7 @@
 
 <p>
   <strong>Week:</strong>
-  <%= @standing.week.week %>
+  <%= (@standing.week.week||0) + 1 %>
 </p>
 
 <p>
@@ -50,8 +50,8 @@
           </thead>
           <tbody>
           <tr>
-            <td><%= match.game %></td>
-            <td><%= match.court %></td>
+            <td><%= eval(@standing.tier_setting.match_times)[match.game - 1] %></td>
+            <td><%= match.court > 12 ? "S#{match.court - 12}" : "C#{match.court}" if match.court %></td>
             <td>
               <% opponent = (match.team1 == @standing.team ? match.team2 : match.team1) %>
               <%= link_to "#{opponent.name}(#{opponent.captain})", @standing.week.standings.all.find_by(team: opponent) %>

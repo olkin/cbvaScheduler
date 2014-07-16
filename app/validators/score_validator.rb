@@ -1,9 +1,5 @@
 class ScoreValidator < ActiveModel::Validator
-  MAX_NR_OF_SETS = 3
-  MAX_POINTS_FOR_SET = 21
-  TOTAL_POINTS_MATCH = 6
-  MAX_SCORE_SET = 21
-  MIN_SCORE_SET_SUM = 8
+  MIN_SCORE_SET_SUM = 0
 
   def validate(record)
     return true if record[:score].nil? or record[:score].blank?
@@ -13,8 +9,10 @@ class ScoreValidator < ActiveModel::Validator
       return
     }
 
+    max_nr_of_sets = eval(record.team1_standing.tier_setting.set_points).size
     record.errors[:score] << "Wrong format of score" unless record[:score].is_a?Array and record[:score].any?
     scores = record[:score]
+    add_error["More than #{max_nr_of_sets} sets is reported"] if scores.size > max_nr_of_sets
     team1_wins, team2_wins = 0, 0
     scores.each_with_index{ |game_score, idx|
       error_desc = "game #{idx + 1} : #{game_score}"
@@ -30,14 +28,15 @@ class ScoreValidator < ActiveModel::Validator
 
       add_error["Scores sum should be >= #{MIN_SCORE_SET_SUM} #{error_desc}"] if score1 + score2 < MIN_SCORE_SET_SUM
 
-      add_error["Scores should be <= #{MAX_SCORE_SET} #{error_desc}"]  if [score1, score2].max > MAX_SCORE_SET \
+      max_score_set = eval(record.team1_standing.tier_setting.set_points)[idx]
+      puts "Max score: #{max_score_set}"
+      add_error["Scores should be <= #{max_score_set} #{error_desc}"]  if [score1, score2].max > max_score_set \
         and (score1 - score2).abs > 2
 
       if idx > 0
-        add_error["Set #{idx} is not completed #{scores.to_s}"] if scores[0].max < MAX_POINTS_FOR_SET
-        add_error["More than #{MAX_NR_OF_SETS} is reported"] if idx >= MAX_NR_OF_SETS
+        add_error["Set #{idx} is not completed #{scores.to_s}"] if scores[0].max < max_score_set
 
-        sets_to_play = MAX_NR_OF_SETS - (team1_wins + team2_wins)
+        sets_to_play = max_nr_of_sets - (team1_wins + team2_wins)
         if team1_wins != team2_wins and sets_to_play > 0
           add_error["Set#{idx + 1} is redundant"] \
             if [team1_wins, team2_wins].min + sets_to_play < [team1_wins, team2_wins].max

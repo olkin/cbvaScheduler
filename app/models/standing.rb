@@ -37,4 +37,8 @@ class Standing < ActiveRecord::Base
 
     self.update_attributes(team_stats)
   end
+
+  def tier_setting
+    self.week.tier_settings.find_by(tier: self.tier)
+  end
 end

@@ -1,8 +1,8 @@
 class TierSchedulePatternValidator < ActiveModel::Validator
-  MAX_GAMES_PER_DAY = 4
-  MAX_BYES = 1
+  MAX_GAMES_PER_DAY = 1000
+  MAX_BYES = 1000
   GAME_SCH_MEMBERS_COUNT = 3
-  MAX_COURTS = 12
+  MAX_COURTS = 14
 
   def validate(record)
     add_error = Proc.new {
@@ -73,8 +73,8 @@ class TierSchedulePatternValidator < ActiveModel::Validator
       add_error[dup_desc.call dup_courts_ts, 'court'] if dup_courts_ts.any?
 
       teams_played = ranks_involved.flatten
-      not_enough_games_teams = teams_played.select{|rank| !teams_played.count(rank).between?(1, MAX_GAMES_PER_DAY - MAX_BYES)}.uniq
-      add_error["#{'Team'.pluralize(not_enough_games_teams.size)} #{not_enough_games_teams.join(', ')} didn't get enough games"] if not_enough_games_teams.any?
+      #not_enough_games_teams = teams_played.select{|rank| !teams_played.count(rank).between?(1, MAX_GAMES_PER_DAY - MAX_BYES)}.uniq
+      #add_error["#{'Team'.pluralize(not_enough_games_teams.size)} #{not_enough_games_teams.join(', ')} didn't get enough games"] if not_enough_games_teams.any?
 
       if record.errors[:total_teams].empty?
         teams = Array(1..record.total_teams)

@@ -73,7 +73,7 @@ class TierSettingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tier_setting_params
-      tier_params = params.require(:tier_setting).permit(:week_id, :tier, :total_teams, :teams_down, :day, :cycle)
+      tier_params = params.require(:tier_setting).permit(:week_id, :tier, :total_teams, :teams_down, :day, :cycle, :set_points, :match_times)
       #work-around to accept array of arrays
       tier_params[:schedule_pattern] = params[:tier_setting][:schedule_pattern] if params[:tier_setting][:schedule_pattern]
       tier_params

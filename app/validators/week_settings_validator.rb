@@ -29,10 +29,11 @@ class WeekSettingsValidator < ActiveModel::Validator
 
 
     max_cycle = settings.inject(0){|max, setting|
-      cycles = setting.schedule_pattern.size
-      cycles > max ? cycles : max}
+      cycles = eval(setting.schedule_pattern).size
+      cycles > max ? cycles : max
+    }
 
-    invalid_cycle_tiers = settings.select{|setting| setting.schedule_pattern.size != max_cycle}.map{|setting| setting.tier}
+    invalid_cycle_tiers = settings.select{|setting| eval(setting.schedule_pattern).size != max_cycle}.map{|setting| setting.tier}
     record.errors.add(:settings, "Number of cycles for #{'tier'.pluralize(invalid_cycle_tiers.size)} #{invalid_cycle_tiers.join(', ')} is invalid (should be #{max_cycle})") if invalid_cycle_tiers.any?
   end
 end

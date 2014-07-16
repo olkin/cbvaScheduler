@@ -1,38 +1,64 @@
 <%= form_for(@match) do |f| %>
-  <% if @match.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@match.errors.count, "error") %> prohibited this match from being saved:</h2>
+    <% if @match.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@match.errors.count, "error") %> prohibited this match from being saved:</h2>
 
-      <ul>
-      <% @match.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+          <ul>
+            <% @match.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
 
-    <div class="field">
-      <%= f.label :game %><br>
-      <%= f.number_field :game %>
-    </div>
 
-  <div class="field">
-    <%= f.label :team1_id %><br>
-    <%= f.number_field :team1_id %>
-  </div>
-  <div class="field">
-    <%= f.label :team2_id %><br>
-    <%= f.number_field :team2_id %>
-  </div>
-  <div class="field">
-    <%= f.label :score %><br>
-    <%= f.number_field :score %>
-  </div>
-  <div class="field">
-    <%= f.label :court %><br>
-    <%= f.number_field :court %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <% sets = eval(@match.team1_standing.tier_setting.set_points).size %>
+    <table>
+      <thead>
+      <tr>
+        <th rowspan="2">T</th>
+        <th rowspan="2">@</th>
+        <th>Teams</th>
+        <% sets.times do |game_idx|%>
+            <th>G<%= game_idx + 1%></th>
+        <%end%>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><%= eval(@match.team1_standing.tier_setting.match_times)[@match.game - 1] %></td>
+        <td><%= f.object.court > 12 ? "S#{f.object.court - 12}" : "C#{f.object.court}" if f.object.court %></td>
+        <td><%= link_to @match.team1.name, standing_path(@match.team1_standing) %><br/><%= @match.team1.captain%></td>
+        <% if vip? %>
+            <td colspan="<%= sets %>" rowspan="2"><%= f.text_field :score, value: (f.object.score.map{|x,y| "#{x}:#{y}"}.join(", ") if f.object.score) %></td>
+        <%else%>
+            <%sets.times do |game_idx|%>
+                <td><%= @match.score[game_idx][0] if @match.score and @match.score[game_idx] %></td>
+            <%end%>
+        <%end%>
+
+      </tr>
+
+      <tr>
+        <td></td>
+        <td></td>
+        <td><%= link_to @match.team2.name, standing_path(@match.team2_standing) %><br/><%= @match.team2.captain%></td>
+        <% if vip? %>
+            <%sets.times {%> </td> <%}%>
+        <%else%>
+            <%sets.times do |game_idx|%>
+                <td><%= @match.score[game_idx][1] if @match.score and @match.score[game_idx] %></td>
+            <%end%>
+        <%end%>
+      </tr>
+
+      <%if vip?%>
+          <tr>
+            <td colspan="<%= 2 + sets%>" ><%= f.submit "Update" if vip? %></td>
+          </tr>
+
+      <%end%>
+
+      </tbody>
+    </table>
 <% end %>
