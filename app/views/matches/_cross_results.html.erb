@@ -3,8 +3,10 @@
   <tr>
     <th>Rank</th>
     <th>Team</th>
-    <th>Games played</th>
-    <th>Games won</th>
+    <th>Matches played</th>
+    <th>Matches won</th>
+    <th>Sets played</th>
+    <th>Sets won</th>
     <th>Points diff won</th>
     <th>Cur Rank</th>
   </tr>
@@ -15,8 +17,11 @@
         <td><%=standing.rank%></td>
         <td><%= link_to "#{standing.team.name}", standing.team %>
           <br/> <%= standing.team.captain %> </td>
-        <td></td>
-        <td></td>
+        <td><%= standing.matches_played %></td>
+        <td><%= standing.matches_won %></td>
+        <td><%= standing.sets_played %></td>
+        <td><%= standing.sets_won %></td>
+        <td><%= standing.points_diff %></td>
         <td></td>
       </tr>
   <%end%>

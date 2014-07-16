@@ -43,6 +43,8 @@ class MatchesController < ApplicationController
   def update
     respond_to do |format|
       if @match.update(match_params)
+        @match.week.standings.all.find_by(team_id: @match.team1).update_stats
+        @match.week.standings.all.find_by(team_id: @match.team2).update_stats
         format.html { redirect_to @match.league, notice: 'Match was successfully updated.' }
         format.json { render :show, status: :ok, location: @match }
       else
