@@ -2,7 +2,7 @@
 
 <p>
   <strong>Week:</strong>
-  <%= @standing.week_id %>
+  <%= @standing.week.week %>
 </p>
 
 <p>
@@ -33,6 +33,54 @@
   <%= @standing.rank %>
 </p>
 
+<% if @standing.matches.any?%>
+    <p>
+      <strong>Schedule:</strong>
+      <%@standing.matches.each do |match|%>
+        <table>
+          <thead>
+          <tr>
+            <th>Time</th>
+            <th>Court</th>
+            <th>Team</th>
+            <th>Score</th>
+            <th>Match won</th>
+            <th>Sets won</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><%= match.game %></td>
+            <td><%= match.court %></td>
+            <td>
+              <% opponent = (match.team1 == @standing.team ? match.team2 : match.team1) %>
+              <%= link_to "#{opponent.name}(#{opponent.captain})", @standing.week.standings.all.find_by(team: opponent) %>
+            </td>
 
-<%= link_to 'Edit', edit_standing_path(@standing) %> |
-<%= link_to 'Back', @standing.week %>
+            <td><% if match.score and !match.score.blank? %>
+                  <% score = match.score
+                     score = match.score.map{|score| score.reverse} if match.team2 == @standing.team
+                  %>
+                  <%= score.map{|x,y| "#{x}:#{y}"}.join(", ") %>
+                  <%end%>
+            </td>
+            <% stats = match.stats %>
+            <% if stats %>
+                   <%
+                       matches_won = (match.team1 == @standing.team ? stats[:matches_won][0] : stats[:matches_won][1])
+                       sets_won = (match.team1 == @standing.team ? stats[:sets_won][0] : stats[:sets_won][1])
+                       points_diff = (match.team1 == @standing.team ? stats[:points_diff] : -stats[:points_diff])
+                   %>
+                   <td><%= matches_won %>/1</td>
+                   <td><%=sets_won%>/<%=match.score.size%></td>
+                   <td><%=points_diff %></td>
+            <%end%>
+          </tr>
+          </tbody>
+        </table>
+
+    <%end%>
+    </p>
+<% end %>
+
+<%= link_to 'League', @standing.league %>

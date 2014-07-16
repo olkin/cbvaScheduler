@@ -15,7 +15,7 @@
   <%@tier_standings.each do |standing|%>
       <tr>
         <td><%=standing.rank%></td>
-        <td><%= link_to "#{standing.team.name}", standing.team %>
+        <td><%= link_to "#{standing.team.name}", standing %>
           <br/> <%= standing.team.captain %> </td>
         <td><%= standing.matches_played %></td>
         <td><%= standing.matches_won %></td>

@@ -16,7 +16,7 @@
               <tr>
                 <td><%= f.object.game %></td>
                 <td><%= f.object.court %></td>
-                <td><%= link_to match.team1.name, match.team1 %><br/><%= match.team1.captain%></td>
+                <td><%= link_to match.team1.name, standing_path(match.team1_standing) %><br/><%= match.team1.captain%></td>
                 <% if vip? %>
                     <td colspan="2" rowspan="2"><%= f.text_field :score, value: (f.object.score.map{|x,y| "#{x}:#{y}"}.join(", ") if f.object.score) %>
                 <%else%>
@@ -29,7 +29,7 @@
               <tr>
                 <td></td>
                 <td></td>
-                <td><%= link_to match.team2.name, match.team2 %><br/><%= match.team2.captain%></td>
+                <td><%= link_to match.team2.name, standing_path(match.team2_standing) %><br/><%= match.team2.captain%></td>
                 <% if vip? %>
                     <td/>
                     <td/>
