@@ -34,7 +34,7 @@
         @standings = @week.standings if @week
       %>
 
-      <%if @standings%>
+      <%if @standings.any?%>
           <%= render "standings/index"%>
       <%end%>
   <%end%>
