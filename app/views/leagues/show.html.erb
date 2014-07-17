@@ -30,7 +30,8 @@
       <%end%>
   <%else%>
       <h3>Registration is not finished yet</h3>
-      <% @week = @league.weeks.find_by(week:nil)
+      <%
+         @week = @league.weeks.find_by(week:nil) if @league.weeks
         @standings = @week.standings if @week
       %>
 
