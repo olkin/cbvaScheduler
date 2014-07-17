@@ -31,11 +31,11 @@
   <%else%>
       <h3>Registration is not finished yet</h3>
       <%
-         @week = @league.weeks.find_by(week:nil) if @league.weeks
+         @week = @league.weeks.find_by(week:nil)
         @standings = @week.standings if @week
       %>
 
-      <%if @standings.any?%>
+      <%if @standings and @standings.any?%>
           <%= render "standings/index"%>
       <%end%>
   <%end%>
