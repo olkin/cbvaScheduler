@@ -4,6 +4,8 @@
     <%if vip? %>
         <th>Rank</th>
         <th>Tier</th>
+    <%else%>
+        <th>#</th>
     <%end%>
     <th>Team</th>
     <th>Captain</th>
@@ -17,11 +19,13 @@
   </thead>
 
   <tbody>
-  <% @standings.each do |standing| %>
+  <% @standings.each_with_index  do |standing, idx| %>
       <tr>
         <%if vip?%>
             <td><%= standing.rank %></td>
             <td><%= standing.tier %></td>
+        <%else%>
+            <td><%=idx + 1%></td>
         <%end%>
         <td><%= standing.team.name %></td>
         <td><%= standing.team.captain %></td>
