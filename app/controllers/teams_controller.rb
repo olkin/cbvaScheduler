@@ -6,7 +6,11 @@ class TeamsController < ApplicationController
   # GET /teams
   # GET /teams.json
   def index
-    @teams = @league.teams.all
+    if @league
+      @teams = @league.teams.all
+    elsif
+      @teams = Team.search(params[:search])
+    end
   end
 
   # GET /teams/new
@@ -69,7 +73,7 @@ class TeamsController < ApplicationController
     end
 
     def set_league
-      @league = League.find(params[:league_id])
+      @league = League.find(params[:league_id]) if params[:league_id]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

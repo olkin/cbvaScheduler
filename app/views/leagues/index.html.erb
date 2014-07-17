@@ -3,6 +3,9 @@
   <h2>July 19-20, 2014 @ Schanks & CBVA, Calgary</h2>
 
   <%if @leagues and @leagues.any?%>
+
+      <%= render "layouts/team_search" %>
+
       <ul class="rounded-list">
         <% @leagues.each do |league_type| %>
             <li class="text-left">
