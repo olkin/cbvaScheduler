@@ -3,6 +3,8 @@
 /* mixins, variables, etc. */
 
 $grayMediumLight: #eaeaea;
+$linkColor: red;
+$hoverColor: blue;
 
 @mixin box_sizing {
   -moz-box-sizing: border-box;
@@ -15,6 +17,8 @@ $grayMediumLight: #eaeaea;
 html {
   overflow-y: scroll;
 }
+
+*{font-family:Papyrus, fantasy;;}
 
 body {
   padding-top: 60px;
@@ -41,8 +45,29 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
 
+.hero-unit h1 {
+  font-size: 40px;
+}
+
+.navbar-inverse .navbar-inner {
+  background: lightblue;
+  border-color: none;
+}
+
+.navbar-inverse .brand,
+.navbar-inverse .nav > li > a {
+  color:$linkColor;
+  font-weight: bold;
+}
+
+.navbar-inverse .nav > li > a:focus,
+.navbar-inverse .nav > li > a:hover {
+  background-color: transparent;
+  color: $hoverColor;
+}
+
 h1 {
-  font-size: 3em;
+  font-size: 1.8em;
   letter-spacing: -2px;
   margin-bottom: 30px;
   text-align: center;
@@ -69,14 +94,14 @@ p {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
-  color: white;
+  color: $linkColor;
   text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 9px;
   font-weight: bold;
   line-height: 1;
   &:hover {
-    color: white;
+    color: $hoverColor;
     text-decoration: none;
   }
 }
@@ -161,9 +186,67 @@ input {
   color: $grayLight;
 }
 
+.table {
+  width: auto;
+}
+
+.table th,
+.table td{
+  text-align: center;
+  vertical-align: middle;
+}
+
+#inline-container {
+  display: inline;
+}
+
 aside {
   textarea {
     height: 100px;
     margin-bottom: 5px;
   }
+}
+
+.hero-unit{
+  background: url("sun.png") no-repeat right top;
+}
+
+.rounded-list a{
+  position: relative;
+  display: block;
+  padding: .4em .4em .4em 2em;
+  *padding: .4em;
+  margin: .5em 0;
+  background: lightblue;
+  color: #444;
+  text-decoration: none;
+  border-radius: .3em;
+  transition: all .3s ease-out;
+}
+
+.rounded-list a:hover{
+  background: #eee;
+}
+
+.rounded-list a:hover:before{
+  transform: rotate(360deg);
+}
+
+.rounded-list a:before{
+  content: "";
+  background-color: red;
+  counter-increment: li;
+  position: absolute;
+  left: -1.3em;
+  top: 50%;
+  margin-top: -1.3em;
+  background: #87ceeb;
+  height: 2em;
+  width: 2em;
+  line-height: 2em;
+  border: .3em solid #fff;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2em;
+  transition: all .3s ease-out;
 }

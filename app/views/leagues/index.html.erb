@@ -1,20 +1,24 @@
 <div class="center hero-unit">
-  <h1>Welcome to Schanks CBVA tournament!</h1>
+  <h1>Welcome to 20th Annual <br/> Beach Volleyball Classic Tournament</h1>
+  <h2>July 19-20, 2014 @ Schanks & CBVA, Calgary</h2>
 
-  <table>
-    <tbody>
-    <% @leagues.each do |league_type| %>
-        <tr>
-          <td><%= league_type.desc %></td>
-          <td><%= link_to "#{league_type.description}", league_type %></td>
-          <%if admin?%>
-              <td><%= link_to 'Edit', edit_league_path(league_type) %></td>
-              <td><%= link_to 'Destroy', league_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-          <%end%>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
+  <%if @leagues and @leagues.any?%>
+      <ul class="rounded-list">
+        <% @leagues.each do |league_type| %>
+            <li class="text-left">
+              <h1><%= link_to "#{league_type.description}", league_type %></h1>
+              <%if admin?%>
+                  <td><%= link_to 'Edit', edit_league_path(league_type) %></td>
+                  <td><%= link_to 'Destroy', league_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <%end%>
+            </li>
+        <% end %>
+      </ul>
+  <%else%>
+      <div class="alert">
+        No leagues registered:-( Try again later
+      </div>
+  <%end%>
 
   <%= link_to 'New League type', new_league_path if admin? %>
 

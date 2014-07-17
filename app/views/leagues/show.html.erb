@@ -5,7 +5,6 @@
   <h1><%= @league.description %></h1>
 
   <% if @matches and @matches.any?%>
-      <h2>Schedule for day #<%= @week.week + 1%></h2>
       <%   matches_by_tier = @week.matches.group_by{ |match|
         team = match.team1
         standing = @standings.all.find_by(team: team)
@@ -15,15 +14,17 @@
           <a onclick="myFunction(<%=setting.tier%>);"> Tier #<%=setting.tier%></a><br/>
           <div id = "show_tier<%=setting.tier%>">
 
-            Tier Setting <br/>
+            Results for tier#<%=setting.tier%> <br/>
             <% standings_by_tier = @week.standings.group_by{|standing| standing.tier}%>
 
             <% @tier_standings = standings_by_tier[setting.tier]%>
             <%= render 'matches/cross_results'%>
 
             <% @tier_matches = matches_by_tier[setting.tier]%>
-            Tier Schedule <br/>
-            <%= render 'matches/index'%>
+            Schedule for tier#<%=setting.tier%>  <br/>
+            <div id="inline-container">
+                <%= render 'matches/index'%>
+            </div>
 
           </div>
       <%end%>
