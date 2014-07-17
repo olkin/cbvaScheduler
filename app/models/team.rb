@@ -12,7 +12,7 @@ class Team < ActiveRecord::Base
 
   def self.search(search)
     if search
-      Team.where('name LIKE ?', "%#{search}%").all
+      Team.where('lower(name) LIKE ? OR lower(captain) LIKE ?', "%#{search.downcase}%", "%#{search.downcase}%").all
     else
       Team.all
     end
