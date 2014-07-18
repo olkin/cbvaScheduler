@@ -21,14 +21,14 @@
 
       <% @week.tier_settings.each do |setting|%>
           <div id = "show_tier<%=setting.tier%>">
-            Results for tier#<%=setting.tier%> <br/>
+            Results for <%=setting.name || setting.tier%> <br/>
             <% standings_by_tier = @week.standings.group_by{|standing| standing.tier}%>
 
             <% @tier_standings = standings_by_tier[setting.tier]%>
             <%= render 'matches/cross_results'%>
 
             <% @tier_matches = matches_by_tier[setting.tier]%>
-            Schedule for tier#<%=setting.tier%>  <br/>
+            Schedule for tier#<%=setting.name || setting.tier%>  <br/>
             <div>
               <%= render 'matches/index'%>
             </div>
