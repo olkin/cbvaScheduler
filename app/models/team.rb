@@ -22,6 +22,6 @@ class Team < ActiveRecord::Base
     return unless name
     short_version = name.byteslice(0,17)
     short_version += '...' if name.size > short_version.size
-    short_version.ljust(20)
+    short_version
   end
 end

@@ -24,18 +24,19 @@ cur_week = @league.cur_week
         [
             times[match.game - 1],
             match.court_str,
-            "#{opponent.name} (#{opponent.captain})"
+            "#{opponent.name}\n#{opponent.captain}"
         ]
        end
 
        schedule.unshift(["Time", "Court", "Fun teams to play against"])
 
        pdf.move_down 5
-       pdf.table schedule, :position => 10, :cell_style => { :border_width => 0.7, :align => :center }, :row_colors => ["FFFFFF","F0F0F0"]
+       pdf.table schedule, :position => 10, :cell_style => { :border_width => 0.7, :align => :center, valign: :center }, :row_colors => ["FFFFFF","F0F0F0"]
         pdf.move_down 10
     end
 
-    pdf.text "You play #{eval(standing.tier_setting.set_points).size} sets until #{eval(standing.tier_setting.set_points).join(', ')}, capped"
+    sets = eval(standing.tier_setting.set_points).size
+    pdf.text "#{sets} #{'set'.pluralize(sets)} until #{eval(standing.tier_setting.set_points).join(', ')}, capped"
     pdf.text "Courts C1-C12 are located @ CBVA : 28 Street SE & 30 Avenue SE"
     pdf.text "Courts S1-S2 are located @ Schanks: 9627 Macleod Trail South"
     pdf.move_down 10
@@ -47,4 +48,57 @@ cur_week = @league.cur_week
 
     pdf.start_new_page
 
-end if cur_week
+end if cur_week and cur_week.week
+
+cur_week.tier_settings.each do |setting|
+    images = [[
+        {:image => "#{Rails.root}/app/assets/images/cbva_logo.png", :image_height => 50},
+        {:image => "#{Rails.root}/app/assets/images/SCHANKS.jpg", :image_height => 50}
+        ]]
+    pdf.table images, :cell_style => { :border_width => 0}
+
+  pdf.text "Welcome to 20th annual beach volleyball SCHANKS tournament (19-20 July 2014)"
+
+    pdf.text "#{@league.description}: Tier ##{setting.tier}, day #{cur_week.week + 1}"
+    matches = cur_week.matches
+    if matches
+        max_game = matches.maximum("game")
+        max_game.times do |idx|
+            game_matches = matches.where(game: idx + 1)
+
+            game_matches.each do |match|
+                if match.team1_standing.tier == setting.tier
+                    games = []
+                    games.push([
+                      {content: (eval(setting.match_times)[idx] || "") + "\n@" + (match.court_str || ""), rowspan: 2},
+                      match.team1.short_name + "\n" + match.team1.captain
+                    ])
+
+
+                    games.push([
+                      match.team2.short_name + "\n" + match.team2.captain
+                    ])
+
+                    eval(setting.set_points).size.times{
+                      games[0].push("")
+                      games[1].push("")
+                    }
+
+                    pdf.table games, :position => 10, :cell_style => { :border_width => 0.7,  :align => :center, valign: :center, size: 10 },
+                        :row_colors => ["FFFFFF","F0F0F0"]
+                    pdf.move_down 5
+                end
+            end if game_matches
+        end
+
+    end
+
+    sets = eval(setting.set_points).size
+    pdf.text "#{sets} #{'set'.pluralize(sets)} until #{eval(setting.set_points).join(', ')}, capped"
+    pdf.text "Courts C1-C12 are located @ CBVA : 28 Street SE & 30 Avenue SE"
+    pdf.text "Courts S1-S2 are located @ Schanks: 9627 Macleod Trail South"
+
+    pdf.start_new_page
+
+end if cur_week and cur_week.week
+
