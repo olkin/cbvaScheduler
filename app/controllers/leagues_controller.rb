@@ -11,8 +11,7 @@ class LeaguesController < ApplicationController
   # GET /leagues/1.json
   def show
     #show only for last week
-    cur_week_nr = @league.weeks.maximum("week") || 0
-    @week = @league.weeks.find_by_week(cur_week_nr)
+    @week = @league.cur_week
     if @week
       @matches = @week.matches
       @standings = @week.standings

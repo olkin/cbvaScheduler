@@ -13,4 +13,9 @@ class League < ActiveRecord::Base
       4 => [[[[1,4,1],[2,3,2]],[[1,3,1],[2,4,2]],[[1,2,1],[3,4,2]]]]
   }
 
+  def cur_week
+    cur_week_nr = Week.maximum("week") || 0
+    Week.find_by_week(cur_week_nr)
+  end
+
 end
