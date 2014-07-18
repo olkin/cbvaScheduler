@@ -14,7 +14,7 @@ cur_week.standings.each do |standing|
     pdf.text "You are registered for competition #{@league.description}"
 
     if standing
-       pdf.text "You start as team ##{standing.rank} in tier ##{standing.tier}"
+       pdf.text "You start as team ##{standing.rank} in #{standing.tier_setting.name}"
        pdf.text "Your schedule for July 19th, 2014:"
        times = eval(standing.tier_setting.match_times)
        prev_location = nil
