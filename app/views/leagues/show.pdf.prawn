@@ -40,7 +40,7 @@ cur_week.standings.each do |standing|
     pdf.move_down 10
 
     pdf.text "Good luck, have fun and stay hydrated!"
-    pdf.text "CBVA team"
+    pdf.text "CBVA organization team"
 
     pdf.text "Scores and schedule updates can be found @ www.schankscbva.ca or www.cbva.ca/main/tournaments.htm"
 
