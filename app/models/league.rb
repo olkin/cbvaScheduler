@@ -15,7 +15,7 @@ class League < ActiveRecord::Base
 
   def cur_week
     cur_week_nr = Week.maximum("week") || 0
-    Week.find_by_week(cur_week_nr)
+    self.weeks.find_by(week: cur_week_nr)
   end
 
 end
