@@ -44,6 +44,15 @@ class Match < ActiveRecord::Base
     {sets_won: set_results, matches_won: match_result, points_diff: points_difference}
   end
 
+  def court_str
+    return unless court
+    if court > 12
+      "S" + (court - 12).to_s
+    else
+      "C" + court.to_s
+    end
+  end
+
 
 
 end

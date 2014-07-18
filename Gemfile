@@ -18,6 +18,7 @@ group :development,:test do
   gem 'childprocess'
 end
 
+gem "prawnto_2", :require => "prawnto"
 
 group :test do
   gem 'selenium-webdriver', '2.35.1'
