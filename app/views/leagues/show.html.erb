@@ -10,10 +10,17 @@
         standing = @standings.all.find_by(team: team)
         standing.tier if standing
       } %>
-      <% @week.tier_settings.each do |setting|%>
-          <a onclick="myFunction(<%=setting.tier%>);"> Tier #<%=setting.tier%></a><br/>
-          <div id = "show_tier<%=setting.tier%>">
 
+
+      <h2>Choose your tier:
+        <% @week.tier_settings.each do |setting| %>
+            <a onclick="showTier(<%= setting.tier%>, <%= @week.tier_settings.size %>);"> Tier #<%=setting.tier%></a>
+        <% end %>
+        <a onclick="showTier(0, <%= @week.tier_settings.size %>);"> All tiers</a>
+      </h2>
+
+      <% @week.tier_settings.each do |setting|%>
+          <div id = "show_tier<%=setting.tier%>">
             Results for tier#<%=setting.tier%> <br/>
             <% standings_by_tier = @week.standings.group_by{|standing| standing.tier}%>
 
@@ -23,7 +30,7 @@
             <% @tier_matches = matches_by_tier[setting.tier]%>
             Schedule for tier#<%=setting.tier%>  <br/>
             <div id="inline-container">
-                <%= render 'matches/index'%>
+              <%= render 'matches/index'%>
             </div>
 
           </div>
@@ -32,7 +39,7 @@
       <h3>Registration is not finished yet</h3>
       <%
          @week = @league.weeks.find_by(week:nil)
-        @standings = @week.standings if @week
+         @standings = @week.standings if @week
       %>
 
       <%if @standings and @standings.any?%>
@@ -40,6 +47,7 @@
       <%end%>
   <%end%>
 
+  <br/>
   <%if admin?%>
       <%= link_to 'Edit', edit_league_path(@league) %> |
       <%= link_to 'Settings', league_weeks_path(@league) %> |
@@ -50,9 +58,12 @@
 
 
 <script>
-    function myFunction(tier) {
-        var visible = document.getElementById("show_tier"+tier).style.display != 'none';
-        document.getElementById("show_tier"+tier).style.display = (visible ? 'none' : '');
+    function showTier(tier, all_tiers) {
+        for (i = 1; i <= all_tiers; i++) {
+            var visible = (i == tier || tier == 0);
+            document.getElementById("show_tier"+i).style.display = (visible ? '' : 'none');
+        }
+
     }
 </script>
 
