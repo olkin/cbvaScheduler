@@ -28,6 +28,15 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to users_url, notice: "User #{@user.name} was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
   private
 
   def user_params

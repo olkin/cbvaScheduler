@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   root 'leagues#index'
   resources :sessions, only: [:new, :create, :destroy]
-  match '/signup',  to: 'users#new',            via: 'get'
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
   match '/about',   to: 'static_pages#about',   via: 'get'
@@ -29,6 +28,7 @@ Rails.application.routes.draw do
   resources :users do
     member do
       put :change_vip_status
+      put :destroy
     end
   end
 
