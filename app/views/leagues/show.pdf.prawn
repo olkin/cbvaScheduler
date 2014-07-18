@@ -63,8 +63,10 @@ cur_week.tier_settings.each do |setting|
     matches = cur_week.matches
     if matches
         max_game = matches.maximum("game")
+
         max_game.times do |idx|
             game_matches = matches.where(game: idx + 1)
+            table_nr = 0
 
             game_matches.each do |match|
                 if match.team1_standing.tier == setting.tier
@@ -79,13 +81,19 @@ cur_week.tier_settings.each do |setting|
                       match.team2.short_name + "\n" + match.team2.captain
                     ])
 
+                    widths = [40,80]
                     eval(setting.set_points).size.times{
                       games[0].push("")
                       games[1].push("")
+                      widths += [20]
                     }
+                    total_width = widths.inject(:+)
 
-                    pdf.table games, :position => 10, :cell_style => { :border_width => 0.7,  :align => :center, valign: :center, size: 10 },
-                        :row_colors => ["FFFFFF","F0F0F0"]
+                    pdf.move_up 85 if table_nr > 0
+
+                    pdf.table games, :position => -10 + (total_width+5)*table_nr , :column_widths => widths, :cell_style => { :height => 40, :border_width => 0.7,  :align => :center, valign: :center, size: 9 }, :row_colors => ["FFFFFF","F0F0F0"]
+                    table_nr += 1
+                    table_nr %= 3
                     pdf.move_down 5
                 end
             end if game_matches
