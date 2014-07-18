@@ -29,7 +29,7 @@
         <td rowspan="2">
           <%= court %><br/>@<%= eval(@match.team1_standing.tier_setting.match_times)[@match.game - 1]%>
         </td>
-        <td><%= link_to @match.team1.name, standing_path(@match.team1_standing) %><br/><%= @match.team1.captain%></td>
+        <td><%= link_to @match.team1.short_name, standing_path(@match.team1_standing) %><br/><%= @match.team1.captain%></td>
         <% if vip? %>
             <td colspan="<%= sets %>" rowspan="2"><%= f.text_field :score, value: (f.object.score.map{|x,y| "#{x}:#{y}"}.join(", ") if f.object.score) %></td>
         <%else%>
@@ -42,7 +42,7 @@
 
       <tr>
 
-        <td><%= link_to @match.team2.name, standing_path(@match.team2_standing) %><br/><%= @match.team2.captain%></td>
+        <td><%= link_to @match.team2.short_name, standing_path(@match.team2_standing) %><br/><%= @match.team2.captain%></td>
         <% if vip? %>
             <%sets.times {%> </td> <%}%>
         <%else%>
