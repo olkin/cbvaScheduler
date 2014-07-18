@@ -101,7 +101,7 @@ cur_week.tier_settings.each do |setting|
     end
 
     sets = eval(setting.set_points).size
-    pdf.text "#{sets} #{'set'.pluralize(sets)} until #{eval(setting.set_points).join(', ')}, capped"
+    pdf.text "#{sets} #{'set'.pluralize(sets)} until #{eval(setting.set_points).join(', ')}, no cap (2 points diff)"
     pdf.text "Courts C1-C12 are located @ CBVA : 28 Street SE & 30 Avenue SE"
     pdf.text "Courts S1-S2 are located @ Schanks: 9627 Macleod Trail South"
 
