@@ -34,15 +34,15 @@ cur_week.standings.each do |standing|
     end
 
     sets = eval(standing.tier_setting.set_points).size
-    pdf.text "#{sets} #{'set'.pluralize(sets)} until #{eval(standing.tier_setting.set_points).join(', ')}, no cap (2 points diff)"
+    pdf.text "#{sets} #{'set'.pluralize(sets)} to #{eval(standing.tier_setting.set_points).join(', ')}, no cap (win by 2)"
     pdf.text "Courts C1-C12 are located @ CBVA : 28 Street SE & 30 Avenue SE"
     pdf.text "Courts S1-S2 are located @ Schanks: 9627 Macleod Trail South"
     pdf.move_down 10
 
-    pdf.text "Good luck!!!"
+    pdf.text "Good luck, have fun and stay hydrated!"
     pdf.text "CBVA team"
 
-    pdf.text "Scores and schedule updates can be found @ www.schankscbva.ca"
+    pdf.text "Scores and schedule updates can be found @ www.schankscbva.ca or www.cbva.ca/main/tournaments.htm"
 
     pdf.start_new_page
 
