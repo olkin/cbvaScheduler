@@ -14,7 +14,7 @@
 
       <h2>Choose your tier:
         <% @week.tier_settings.each do |setting| %>
-            <a onclick="showTier(<%= setting.tier%>, <%= @week.tier_settings.size %>);"> Tier #<%=setting.tier%></a>
+            <a onclick="showTier(<%= setting.tier%>, <%= @week.tier_settings.size %>);"> <%=setting.name || setting.tier%></a>
         <% end %>
         <a onclick="showTier(0, <%= @week.tier_settings.size %>);"> All tiers</a>
       </h2>

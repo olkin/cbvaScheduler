@@ -21,12 +21,7 @@
 
   <p>
     <strong>Tier:</strong>
-    <%= @standing.tier %>
-  </p>
-
-  <p>
-    <strong>Rank:</strong>
-    <%= @standing.rank %>
+    <%= @standing.tier_setting ? @standing.tier_setting.name : @standing.tier %>
   </p>
 
   <% if @standing.matches.any?%>
