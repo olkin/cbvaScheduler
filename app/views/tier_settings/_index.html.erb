@@ -2,6 +2,7 @@
   <thead>
   <tr>
     <th>Tier</th>
+    <th>Name</th>
     <th>Total teams</th>
     <th>Teams down</th>
     <th>Day</th>
@@ -20,6 +21,7 @@
      @tier_settings.each do |tier_setting| %>
       <tr>
         <td><%= tier_setting.tier %></td>
+        <td><%= tier_setting.name %></td>
         <td><%= tier_setting.total_teams %></td>
         <td><%= tier_setting.teams_down %></td>
         <td><%= tier_setting.day %></td>
