@@ -11,10 +11,9 @@ cur_week.standings.each do |standing|
     pdf.text "Hello team #{standing.team.name}"
 
     pdf.text "Welcome to 20th annual beach volleyball SCHANKS tournament (19-20 July 2014)"
-    pdf.text "You are registered for competition #{@league.description}"
 
     if standing
-       pdf.text "You start as team ##{standing.rank} in #{standing.tier_setting.name}"
+       pdf.text "You play in #{standing.tier_setting.name} (#{@league.description})"
        pdf.text "Your schedule for July 19th, 2014:"
        times = eval(standing.tier_setting.match_times)
        prev_location = nil
