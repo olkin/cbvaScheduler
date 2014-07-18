@@ -77,14 +77,14 @@ cur_week.tier_settings.each do |setting|
 
 
                     games.push([
-                      match.team2.short_name + "\n" + match.team2.captain
+                      match.team2.name + "\n" + match.team2.captain
                     ])
 
                     widths = [40,80]
                     eval(setting.set_points).size.times{
                       games[0].push("")
                       games[1].push("")
-                      widths += [20]
+                      widths += [40]
                     }
                     total_width = widths.inject(:+)
 
