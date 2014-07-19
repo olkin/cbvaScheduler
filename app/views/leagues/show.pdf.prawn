@@ -48,6 +48,7 @@ cur_week.standings.each do |standing|
 
 end if cur_week and cur_week.week
 
+=begin
 cur_week.tier_settings.each do |setting|
     images = [[
         {:image => "#{Rails.root}/app/assets/images/cbva_logo.png", :image_height => 50},
@@ -107,4 +108,53 @@ cur_week.tier_settings.each do |setting|
     pdf.start_new_page
 
 end if cur_week and cur_week.week
+=end
 
+if cur_week and cur_week.week
+    standings_by_tier = cur_week.standings.group_by{|standing| standing[:tier]}
+
+    standings_by_tier.each do |tier, standings|
+        images = [[
+            {:image => "#{Rails.root}/app/assets/images/cbva_logo.png", :image_height => 50},
+            {:image => "#{Rails.root}/app/assets/images/SCHANKS.jpg", :image_height => 50}
+        ]]
+        pdf.table images, :cell_style => { :border_width => 0}
+
+        pdf.text "Welcome to 20th annual beach volleyball SCHANKS tournament (19-20 July, 2014)"
+
+        pdf.text "#{@league.description}: Tier ##{tier}, day #{cur_week.week + 1}"
+
+        schedule_sheet = [[""]]
+
+        widths = [120]
+        standings.each do |standing|
+            widths.push(50)
+            schedule_sheet[0].push(standing.team.short_name + "\n" + standing.team.captain)
+        end
+
+        2.times {
+            schedule_sheet[0].push("")
+            widths.push(50)
+        }
+
+        schedule_sheet += standings.each.map {|standing|
+            row = [standing.team.short_name + "\n" + standing.team.captain]
+            (standings.size + 2).times {row.push("")}
+            row
+        }
+
+         pdf.move_down 5
+         pdf.table(schedule_sheet, :column_widths => widths) do
+            style(row(0), size:9)
+         end
+         pdf.move_down 10
+
+        set_points = eval(cur_week.tier_settings.find_by(tier: tier).set_points)
+        pdf.text "#{set_points.size} #{'set'.pluralize(set_points.size)} to #{set_points.join(', ')}, no cap (win by 2)"
+        pdf.text "Courts C1-C12 are located @ CBVA : 28 Street SE & 30 Avenue SE"
+        pdf.text "Courts S1-S2 are located @ Schanks: 9627 Macleod Trail South"
+
+        pdf.start_new_page
+
+    end
+end
