@@ -122,9 +122,7 @@ if cur_week and cur_week.week
         ]]
         pdf.table images, :cell_style => { :border_width => 0}
 
-        pdf.text "Welcome to 20th annual beach volleyball SCHANKS tournament (19-20 July, 2014)"
-
-        pdf.text "#{@league.description}: #{tier_setting.name || tier} , day #{cur_week.week + 1}"
+        pdf.text "#{@league.description}: #{tier_setting.name || tier} , day #{cur_week.week + 1}", size:20
 
         schedule_sheet = [[""]]
 
