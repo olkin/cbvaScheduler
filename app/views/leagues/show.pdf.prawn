@@ -129,13 +129,13 @@ if cur_week and cur_week.week
 
         widths = [120]
         standings.each do |standing|
-            widths.push(55)
+            widths.push(65)
             schedule_sheet[0].push(standing.team.short_name + "\n" + standing.team.captain)
         end
 
         2.times {
             schedule_sheet[0].push("")
-            widths.push(30)
+            widths.push(40)
         }
 
         schedule_sheet += standings.each.map {|standing|
@@ -145,7 +145,7 @@ if cur_week and cur_week.week
         }
 
          pdf.move_down 5
-         pdf.table(schedule_sheet, :column_widths => widthsб :row_colors => ["FFFFFF","F0F0F0"]) do
+         pdf.table(schedule_sheet, :column_widths => widths, :row_colors => ["FFFFFF","F0F0F0"]) do
             style(row(0), size:9)
          end
          pdf.move_down 10
