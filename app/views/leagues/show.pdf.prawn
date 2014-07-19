@@ -146,7 +146,7 @@ if cur_week and cur_week.week
         }
 
          pdf.move_down 5
-         pdf.table(schedule_sheet, :column_widths => widths, :row_colors => ["FFFFFF","F0F0F0"], cell_style: {height:50, size: 14})
+         pdf.table(schedule_sheet, :column_widths => widths, :row_colors => ["FFFFFF","F0F0F0"], cell_style: {height:50})
 
          pdf.move_down 10
 
