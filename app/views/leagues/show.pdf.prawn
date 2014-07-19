@@ -17,7 +17,7 @@ cur_week.standings.each do |standing|
        pdf.text "Your schedule for July 19th, 2014:"
        times = eval(standing.tier_setting.match_times)
        prev_location = nil
-       schedule = standing.matches.map do |match|
+       schedule = standing.matches.sort{|x,y| x.game<=>y.game}.map do |match|
         opponent = match.team1 == standing.team ? match.team2 : match.team1
         [
             times[match.game - 1],
