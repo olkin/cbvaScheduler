@@ -128,7 +128,7 @@ if cur_week and cur_week.week
 
         schedule_sheet = [[""]]
 
-        widths = [180]
+        widths = [150]
         standings.each do |standing|
             widths.push(80)
             schedule_sheet[0].push(standing.team.name + "\n" + standing.team.captain)
@@ -146,8 +146,8 @@ if cur_week and cur_week.week
         }
 
          pdf.move_down 5
-         pdf.table(schedule_sheet, :column_widths => widths, :row_colors => ["FFFFFF","F0F0F0"], cell_style: {height:80})
-    
+         pdf.table(schedule_sheet, :column_widths => widths, :row_colors => ["FFFFFF","F0F0F0"], cell_style: {height:50, size: 14})
+
          pdf.move_down 10
 
         set_points = eval(tier_setting.set_points)
