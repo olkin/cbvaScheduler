@@ -129,7 +129,7 @@ if cur_week and cur_week.week
 
         widths = [120]
         standings.each do |standing|
-            widths.push(60)
+            widths.push(55)
             schedule_sheet[0].push(standing.team.short_name + "\n" + standing.team.captain)
         end
 
