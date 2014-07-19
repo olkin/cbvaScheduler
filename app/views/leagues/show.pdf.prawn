@@ -145,7 +145,7 @@ if cur_week and cur_week.week
         }
 
          pdf.move_down 5
-         pdf.table(schedule_sheet, :column_widths => widths) do
+         pdf.table(schedule_sheet, :column_widths => widthsб :row_colors => ["FFFFFF","F0F0F0"]) do
             style(row(0), size:9)
          end
          pdf.move_down 10
@@ -154,6 +154,8 @@ if cur_week and cur_week.week
         pdf.text "#{set_points.size} #{'set'.pluralize(set_points.size)} to #{set_points.join(', ')}, no cap (win by 2)"
         pdf.text "Courts C1-C12 are located @ CBVA : 28 Street SE & 30 Avenue SE"
         pdf.text "Courts S1-S2 are located @ Schanks: 9627 Macleod Trail South"
+
+        pdf.text "Good luck! Have fun!"
 
         pdf.start_new_page
 
