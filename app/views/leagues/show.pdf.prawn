@@ -140,22 +140,22 @@ if cur_week and cur_week.week
         }
 
         schedule_sheet += standings.each.map {|standing|
-            row = [standing.team.short_name + "\n" + standing.team.captain]
+            row = [standing.team.name + "\n" + standing.team.captain]
             (standings.size + 2).times {row.push("")}
             row
         }
 
          pdf.move_down 5
-         pdf.table(schedule_sheet, :column_widths => widths, :row_colors => ["FFFFFF","F0F0F0"]) do
-            style(row(0), size:9)
-         end
+         pdf.table(schedule_sheet, :column_widths => widths, :row_colors => ["FFFFFF","F0F0F0"], cell_style: {height:80})
+    
          pdf.move_down 10
 
         set_points = eval(tier_setting.set_points)
         pdf.text "#{set_points.size} #{'set'.pluralize(set_points.size)} to #{set_points.join(', ')}, no cap (win by 2)"
+        pdf.move_down 10
         pdf.text "Courts C1-C12 are located @ CBVA : 28 Street SE & 30 Avenue SE"
         pdf.text "Courts S1-S2 are located @ Schanks: 9627 Macleod Trail South"
-
+        pdf.move_down 30
         pdf.text "Good luck! Have fun!"
 
     end
