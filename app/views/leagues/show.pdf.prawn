@@ -8,9 +8,9 @@ cur_week.standings.each do |standing|
     {:image => "#{Rails.root}/app/assets/images/SCHANKS.jpg", :image_height => 50}
     ]]
     pdf.table images, :cell_style => { :border_width => 0}
-    pdf.text "Hello team #{standing.team.name}"
+    pdf.text "Hello team #{standing.team.name} (#{standing.team.captain})!"
 
-    pdf.text "Welcome to 20th annual beach volleyball SCHANKS tournament (19-20 July 2014)"
+    pdf.text "Welcome to 20th annual beach volleyball SCHANKS tournament (19-20 July, 2014)"
 
     if standing
        pdf.text "You play in #{standing.tier_setting.name} (#{@league.description})"
