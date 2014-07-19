@@ -114,6 +114,7 @@ if cur_week and cur_week.week
     standings_by_tier = cur_week.standings.group_by{|standing| standing[:tier]}
 
     standings_by_tier.each do |tier, standings|
+        pdf.start_new_page(layout: :landscape)
         tier_setting = cur_week.tier_settings.find_by(tier: tier)
         images = [[
             {:image => "#{Rails.root}/app/assets/images/cbva_logo.png", :image_height => 50},
@@ -127,15 +128,15 @@ if cur_week and cur_week.week
 
         schedule_sheet = [[""]]
 
-        widths = [120]
+        widths = [180]
         standings.each do |standing|
-            widths.push(65)
-            schedule_sheet[0].push(standing.team.short_name + "\n" + standing.team.captain)
+            widths.push(100)
+            schedule_sheet[0].push(standing.team.name + "\n" + standing.team.captain)
         end
 
         2.times {
             schedule_sheet[0].push("")
-            widths.push(40)
+            widths.push(50)
         }
 
         schedule_sheet += standings.each.map {|standing|
@@ -156,8 +157,6 @@ if cur_week and cur_week.week
         pdf.text "Courts S1-S2 are located @ Schanks: 9627 Macleod Trail South"
 
         pdf.text "Good luck! Have fun!"
-
-        pdf.start_new_page
 
     end
 end
