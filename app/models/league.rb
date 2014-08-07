@@ -1,6 +1,8 @@
 require 'json'
 
 class League < ActiveRecord::Base
+  NAME = 'Volleyball League'  #TODO: configure
+
   has_many :teams, dependent: :destroy
   has_many :weeks, dependent: :destroy
 

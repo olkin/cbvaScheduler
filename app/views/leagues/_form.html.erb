@@ -1,32 +1,35 @@
- <%= form_for(@league) do |f| %>
-  <% if @league.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@league.errors.count, "error") %> prohibited this league_type from being saved:</h2>
+<%= form_for(@league) do |f| %>
+    <% if @league.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@league.errors.count, "error") %> prohibited this league_type from being saved:</h2>
 
-      <ul>
-      <% @league.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+          <ul>
+            <% @league.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
 
     <div class="field">
-      <%= f.label :desc %><br>
+      <%= f.label :desc %>
+      <br>
       <%= f.text_field :desc %>
     </div>
     <div class="field">
-      <%= f.label :description %><br>
+      <%= f.label :description %>
+      <br>
       <%= f.text_field :description %>
     </div>
 
     <div class="field">
-      <%= f.label :start_date %><br>
-      <%= f.date_select :start_date, order: [:month, :day, :year], default: f.object[:start_date]%>
+      <%= f.label :start_date %>
+      <br>
+      <%= f.date_select :start_date, order: [:month, :day, :year], default: f.object[:start_date] %>
     </div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 
 <% end %>

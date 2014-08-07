@@ -132,3 +132,11 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 end
+
+def login_admin
+  admin = User.find_by_name('admin') || FactoryGirl.create(:user, name: 'admin')
+  visit signin_path
+  fill_in 'Email', with: admin.email
+  fill_in 'Password', with: admin.password
+  click_button 'Sign in'
+end
