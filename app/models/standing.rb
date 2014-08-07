@@ -1,44 +1,50 @@
 class Standing < ActiveRecord::Base
+  before_create do
+    self.matches_played ||= 0
+    self.matches_won ||= 0
+    self.sets_played ||= 0
+    self.sets_won ||= 0
+    self.points_diff ||= 0
+  end
+
   belongs_to :team
   belongs_to :week
   has_one :league, through: :team
+  has_one :tier_setting, ->(object) { where tier: object.tier }, through: :week, source: :tier_settings
 
-  accepts_nested_attributes_for :team, :allow_destroy => true
+  has_many :matches1, foreign_key: 'standing1_id', class_name: 'Match', dependent: :destroy
+  has_many :matches2, foreign_key: 'standing2_id', class_name: 'Match', dependent: :destroy
+
+ # accepts_nested_attributes_for :team, :allow_destroy => true
 
   validates :week, presence: true
   validates :team, uniqueness: {scope: :week}, presence: true
-  validates :rank, presence: true, numericality: { only_integer: true, greater_than: 0 }, uniqueness: {scope: :week}, allow_nil: true
-  validates :tier, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates_numericality_of :rank, only_integer: true, greater_than: 0
+  validates_uniqueness_of :rank , scope: [:week, :tier]
+  validates :tier, presence: true, numericality: {only_integer: true, greater_than: 0}
+  validate :team_week_league_validation
+
+  def team_week_league_validation
+    errors.add(:week, "Standing's team and week belong to different leagues") if self.team and self.week and self.team.league != self.week.league
+  end
 
   def matches
-    self.week.matches.all.select{|match| match.team1 == self.team || match.team2 == self.team}
+     matches1(true) + matches2(true)
   end
 
+=begin
   def update_stats
-    matches_played = matches.select{|match| match.score and !match.score.blank?}
-
-    scores = matches_played.inject([]) {|scores, match|
-      score = match.score
-      score = score.map{|score| score.reverse} if match.team2 == self.team
-      scores += score
-      scores
+    team_stats = Hash.new(0)
+    matches.each{ |match|
+      stats = match.stats ( match.team2 == team )
+      stats.each{|key, value| team_stats[key] += value} if stats
     }
 
-    team_stats = {matches_played: matches_played.size, matches_won:0, sets_played: scores.size, sets_won: 0, points_diff: 0}
-
-    matches_played.each { |match|
-      stats = match.stats
-      if stats
-        team_stats[:matches_won] += (match.team1 == self.team ? stats[:matches_won][0] : stats[:matches_won][1])
-        team_stats[:sets_won] += (match.team1 == self.team ? stats[:sets_won][0] : stats[:sets_won][1])
-        team_stats[:points_diff] += (match.team1 == self.team ? stats[:points_diff] : -stats[:points_diff])
-      end
-    }
-
-    self.update_attributes(team_stats)
+    update_attributes(team_stats)
   end
 
-  def tier_setting
-    self.week.tier_settings.find_by(tier: self.tier)
+  def setting?
+    week.setting?
   end
+=end
 end

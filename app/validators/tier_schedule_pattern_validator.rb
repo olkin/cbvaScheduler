@@ -6,85 +6,95 @@ class TierSchedulePatternValidator < ActiveModel::Validator
 
   def validate(record)
     add_error = Proc.new {
-      |error_msg| record.errors[:schedule_pattern] << error_msg
+        |error_msg| record.errors[:schedule_pattern] << error_msg
       return
     }
 
-    #Check out format first
     schedule_pattern = record.schedule_pattern
-    if schedule_pattern.is_a?String
-      begin
-        schedule_pattern = eval(schedule_pattern)
-      rescue TypeError
-        add_error["Invalid format of schedule: #{schedule_pattern.class.to_s}"]
-      end
-    end
 
-    add_error["Invalid format of cycles or empty: #{schedule_pattern.to_s}"] unless schedule_pattern.is_a?Array and schedule_pattern.any?
+    format_error = validate_format schedule_pattern
+    add_error[format_error] if format_error
 
-    schedule_pattern.each_with_index { |cycle_schedule, idx|
-      error_desc = "cycle # #{idx + 1}"
-      add_error["Invalid format for #{error_desc}"] unless cycle_schedule.is_a?Array
-      add_error["Invalid number of timeslots(#{cycle_schedule.size}) for #{error_desc} "] \
-        unless cycle_schedule.size.between?(MAX_GAMES_PER_DAY - MAX_BYES, MAX_GAMES_PER_DAY)
-
-      cycle_schedule.each_with_index { |timeslot_schedule, timeslot_idx |
-        error_desc = "game ##{timeslot_idx + 1}[#{idx + 1}]"
-        add_error["Invalid format for #{error_desc}"] \
-          unless timeslot_schedule.is_a?Array
-
-        timeslot_schedule.each { |game_schedule|
-          add_error["Invalid format for #{error_desc}: #{game_schedule.to_s}"] \
-            unless game_schedule.is_a?Array and game_schedule.size == GAME_SCH_MEMBERS_COUNT
-
-          game_schedule.map!{|x| x.to_i if x}
-          team1, team2, court = game_schedule
-          add_error["Invalid format for team for #{error_desc}: #{game_schedule.to_s}"] \
-            unless team1.is_a?Fixnum and team1 > 0 and team2.is_a?Fixnum and team2 > 0
-
-          add_error["Team #{team1} plays itself for #{error_desc}"] if team1 == team2
-
-          add_error["Court #{court} is invalid for #{error_desc}"] \
-            unless court.is_a?Fixnum and court.between?(1, MAX_COURTS)
-        }
-      }
-    }
 
     # check out that same team/court is not played/used at the same time
     schedule_pattern.each_with_index { |cycle_schedule, idx|
-      ranks_involved = cycle_schedule.map {|ts_schedule| ts_schedule.inject([]){|teams, game| teams + [game[0].to_i, game[1].to_i]}}
-      courts_involved = cycle_schedule.map {|ts_schedule| ts_schedule.inject([]){|teams, game| teams + [game[2].to_i]}}
-
-      find_ts_duplicates = Proc.new {
-          |ts_array| ts_array.map.with_index{
-            |items,ts| [items.select{|item| items.count(item)>1}.uniq, ts] \
-              if items.uniq.size != items.size}.compact
-      }
-
-      dup_ranks_ts =  find_ts_duplicates.call ranks_involved
-      dup_courts_ts = find_ts_duplicates.call courts_involved
-
-      dup_desc = Proc.new { |ts_array, item_str|
-        descriptions = ts_array.map{|items, game| "game #{game+1}: #{pluralize(items.count, item_str)} #{items.join(', ')}"}
-        descriptions.any? ? "Duplicates: #{descriptions.join(', ')}" : "No duplicates"
-      }
-
-      add_error[dup_desc.call dup_ranks_ts, 'team'] if dup_ranks_ts.any?
-      add_error[dup_desc.call dup_courts_ts, 'court'] if dup_courts_ts.any?
-
-      teams_played = ranks_involved.flatten
-      #not_enough_games_teams = teams_played.select{|rank| !teams_played.count(rank).between?(1, MAX_GAMES_PER_DAY - MAX_BYES)}.uniq
-      #add_error["#{'Team'.pluralize(not_enough_games_teams.size)} #{not_enough_games_teams.join(', ')} didn't get enough games"] if not_enough_games_teams.any?
-
-      if record.errors[:total_teams].empty?
-        teams = Array(1..record.total_teams)
-
-        missing_teams = teams - teams_played
-        add_error["No games for #{'team'.pluralize(missing_teams.size)} #{missing_teams.join(',')}"] if missing_teams.any?
-
-        extra_teams = teams_played - teams
-        add_error["Schedule for extra #{'team'.pluralize(extra_teams.size)} #{extra_teams.join(',')}"] if extra_teams.any?
-      end
+      validate_cycle cycle_schedule, idx, (record.total_teams unless record.errors[:total_teams].any?)
     }
   end
+
+  private
+  def validate_format(schedule_pattern)
+    return "Invalid format of cycles or empty: #{schedule_pattern.to_s}" \
+      unless schedule_pattern.is_a? Array and schedule_pattern.any?
+
+    schedule_pattern.each_with_index { |cycle_schedule, idx|
+      error_desc = "cycle # #{idx + 1}"
+      return "Invalid format for #{error_desc}" unless cycle_schedule.is_a?Array
+      return "No schedule for #{error_desc}" if cycle_schedule.empty?
+
+      return "Invalid number of timeslots(#{cycle_schedule.size}) for #{error_desc} " \
+        unless cycle_schedule.size.between?(MAX_GAMES_PER_DAY - MAX_BYES, MAX_GAMES_PER_DAY)
+
+      cycle_schedule.each_with_index { |timeslot_schedule, timeslot_idx|
+        error_desc = "game ##{timeslot_idx + 1}[#{idx + 1}]"
+        return "Invalid format for #{error_desc}" unless timeslot_schedule.is_a? Array
+
+        timeslot_schedule.each { |game_schedule|
+          return "Invalid format for #{error_desc}: #{game_schedule.to_s}" \
+            unless game_schedule.is_a? Array and game_schedule.size == GAME_SCH_MEMBERS_COUNT
+
+          #game_schedule.map! { |x| x.to_i if x }
+          team1, team2, court = game_schedule
+          return "Invalid format for team for #{error_desc}: #{game_schedule.to_s}" \
+            unless team1.is_a? Fixnum and team1 > 0 and team2.is_a? Fixnum and team2 > 0
+
+          return "Team #{team1} plays itself for #{error_desc}" if team1 == team2
+
+          return "Court #{court} is invalid for #{error_desc}" \
+            unless court.is_a? Fixnum and court.between?(1, MAX_COURTS)
+        }
+      }
+    }
+    nil
+  end
+
+  def validate_cycle(cycle_schedule, cycle, total_teams)
+    duplicates_errors = find_duplicates cycle_schedule, cycle
+    return duplicates_errors if duplicates_errors
+
+    teams_played = cycle_schedule.map{|ts_schedule| ts_schedule.map{|game| [game[0], game[1]]}}.flatten
+
+    invalid_schedule_teams = teams_played.select{|rank| !teams_played.count(rank).between?(MAX_GAMES_PER_DAY - MAX_BYES, MAX_GAMES_PER_DAY)}.uniq
+    return "Invalid # of games in schedule for #{'team'.pluralize(invalid_schedule_teams.size)} #{invalid_schedule_teams.join(', ')}" \
+      if invalid_schedule_teams.any?
+
+
+    if total_teams
+      teams = Array(1..total_teams)
+
+      missing_teams = teams - teams_played
+      return "No games for #{'team'.pluralize(missing_teams.size)} #{missing_teams.join(',')}" if missing_teams.any?
+
+      extra_teams = teams_played - teams
+      return "Schedule for extra #{'team'.pluralize(extra_teams.size)} #{extra_teams.join(',')}" if extra_teams.any?
+    end
+  end
+
+  def find_duplicates(cycle_schedule, cycle)
+    cycle_schedule.each_with_index { |ts_schedule, idx|
+      error_desc = "cycle##{cycle + 1} game##{idx + 1}"
+      ranks = ts_schedule.map { |game| [game[0], game[1]] }.flatten
+      duplicates = ranks.select { |rank| ranks.count(rank) > 1 }.uniq
+      return "#{pluralize(duplicates.count, 'Team')} #{duplicates.join(', ')} play at the same time in different location(#{error_desc}) " \
+        if duplicates.any?
+
+      courts_involved = ts_schedule.map { |game| game[2] }.flatten
+      duplicates = courts_involved.select { |court| courts_involved.count(court) > 1 }.uniq
+      return "#{pluralize(duplicates.count, 'Court')} #{duplicates.join(', ')} used at the same time during different games(#{error_desc}) " \
+        if duplicates.any?
+    }
+    nil
+  end
+
+
 end

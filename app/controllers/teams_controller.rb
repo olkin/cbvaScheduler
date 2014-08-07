@@ -8,7 +8,7 @@ class TeamsController < ApplicationController
   def index
     if @league
       @teams = @league.teams.all
-    elsif
+    else
       @teams = Team.search(params[:search])
     end
   end

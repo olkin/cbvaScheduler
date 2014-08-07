@@ -1,39 +1,81 @@
 require 'spec_helper'
 
 describe League do
-  let (:league) {FactoryGirl.build(:league) }
-
-  subject { league }
-
-  it { should respond_to(:desc) }
-  it { should respond_to(:description) }
-  it { should respond_to(:start_date)}
-  it { should respond_to(:teams) }
-
-  it {should be_valid}
-
-  describe "when desc is not present" do
-    before { league.desc = " " }
-    it { should_not be_valid }
+  before do
+    @league = FactoryGirl.create(:league)
   end
 
-  describe "when description is not present" do
-    before { league.description = " " }
-    it { should_not be_valid }
+  it { @league.should respond_to(:desc) }
+  it { @league.should respond_to(:description) }
+  it { @league.should respond_to(:start_date)}
+  it { @league.should respond_to(:teams) }
+  it { @league.should respond_to(:weeks) }
+
+  it {@league.should be_valid}
+
+  it 'should have valid abbreviation' do
+    invalid_abbrvs = [nil, '', ' ']
+    invalid_abbrvs.each{ |abbr|
+      @league.desc = abbr
+      @league.should_not be_valid
+    }
   end
 
-  describe "when desc is already taken" do
+
+  it 'should have valid description' do
+    invalid_descriptions = [nil, '', ' ']
+    invalid_descriptions.each{ |description|
+      @league.description = description
+      @league.should_not be_valid
+    }
+  end
+
+  it 'no teams associated on creation' do
+    @league.teams.should be_empty
+  end
+
+  it 'no weeks associated on creation' do
+    @league.weeks.should be_empty
+  end
+
+  context 'more than 1 league exists' do
     before do
-      league_with_same_desc = league.dup
-      league_with_same_desc.save
+      @league2 = FactoryGirl.create(:league)
     end
 
-    it { should_not be_valid }
+    it '2nd league is valid' do
+      @league2.should be_valid
+    end
+
+    it 'description is unique' do
+      @league2.description = @league.description
+      @league2.should_not be_valid
+    end
+
+    it 'desc is unique' do
+      @league2.desc = @league.desc
+      @league2.should_not be_valid
+    end
   end
 
-  it "allow other leagues to be created" do
-    league.save
-    league2 = FactoryGirl.create(:league)
-    league2.should be_valid
+  context 'has teams registered' do
+    before do
+      @team = FactoryGirl.create(:team, league: @league)
+    end
+
+    it 'should have teams associated' do
+      @league.teams.should_not be_empty
+    end
   end
+
+  context 'has weeks set up' do
+    before do
+      @week = FactoryGirl.create(:week, league: @league)
+    end
+
+    it 'should have teams associated' do
+      @league.weeks.should_not be_empty
+    end
+  end
+
 end
