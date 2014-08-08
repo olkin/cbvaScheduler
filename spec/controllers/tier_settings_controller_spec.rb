@@ -23,141 +23,125 @@ describe TierSettingsController do
   # This should return the minimal set of attributes required to create a valid
   # TierSetting. As you add validations to TierSetting, be sure to
   # adjust the attributes here as well.
- # let(:league) {FactoryGirl.create(:league)}
-  #let(:week) {FactoryGirl.create(:week, league: league)}
-  let(:week) {FactoryGirl.create(:week)}
-  let(:tier_setting) {FactoryGirl.build(:tier_setting, week: week)}
-  let(:valid_attributes) {tier_setting.attributes}
+#  let(:valid_attributes) {tier_setting.attributes}
+  
+  before {
+    @tier_setting = FactoryGirl.create(:tier_setting)
+  }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # TierSettingsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET index_1" do
-    it "assigns all tier_settings as @tier_settings" do
-      tier_setting.save!
-      get :index_1, {week_id: tier_setting.week.to_param}, valid_session
-      assigns(:tier_settings).should eq([tier_setting])
-    end
-  end
-
-  describe "GET show" do
-    it "assigns the requested tier_setting as @tier_setting" do
-      tier_setting.save!
-      get :show, {:id => tier_setting.to_param}, valid_session
-      assigns(:tier_setting).should eq(tier_setting)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new tier_setting as @tier_setting" do
-      get :new, {week_id: week.to_param}, valid_session
+  describe 'GET new' do
+    it 'assigns a new tier_setting as @tier_setting' do
+      get :new, {week_id: @tier_setting.week.to_param}, valid_session
       assigns(:tier_setting).should be_a_new(TierSetting)
     end
   end
 
-  describe "GET edit" do
-    it "assigns the requested tier_setting as @tier_setting" do
-      tier_setting.save!
-      get :edit, {:id => tier_setting.to_param}, valid_session
-      assigns(:tier_setting).should eq(tier_setting)
+  describe 'GET edit' do
+    it 'assigns the requested tier_setting as @tier_setting' do
+      @tier_setting.save!
+      get :edit, {:id => @tier_setting.to_param}, valid_session
+      assigns(:tier_setting).should eq(@tier_setting)
     end
   end
 
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new TierSetting" do
+  describe 'POST create' do
+    describe 'with valid params' do
+      it 'creates a new TierSetting' do
         expect {
-          post :create, {:tier_setting => valid_attributes, week_id: week.to_param}, valid_session
+          post :create, {:tier_setting => @tier_setting.attributes, week_id: @tier_setting.week.to_param}, valid_session
         }.to change(TierSetting, :count).by(1)
       end
 
-      it "assigns a newly created tier_setting as @tier_setting" do
-        post :create, {:tier_setting => valid_attributes,  week_id: week.to_param}, valid_session
+      it 'assigns a newly created tier_setting as @tier_setting' do
+        post :create, {:tier_setting => @tier_setting.attributes,  week_id: @tier_setting.week.to_param}, valid_session
         assigns(:tier_setting).should be_a(TierSetting)
         assigns(:tier_setting).should be_persisted
       end
 
-      it "redirects to the created tier_setting" do
-        post :create, {:tier_setting => valid_attributes, week_id: week.to_param}, valid_session
-        response.should redirect_to(week)
+      it 'redirects to the created tier_setting' do
+        post :create, {:tier_setting => @tier_setting.attributes, week_id: @tier_setting.week.to_param}, valid_session
+        response.should redirect_to(@tier_setting.week)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved tier_setting as @tier_setting" do
+    describe 'with invalid params' do
+      it 'assigns a newly created but unsaved tier_setting as @tier_setting' do
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        post :create, {:tier_setting => { "week_id" => "invalid value" },  week_id: week.to_param}, valid_session
+        post :create, {:tier_setting => { 'week_id' => 'invalid value' },  week_id: @tier_setting.week.to_param}, valid_session
         assigns(:tier_setting).should be_a_new(TierSetting)
       end
 
-      it "re-renders the 'new' template" do
+      it 're-renders the \'new\' template' do
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        post :create, {:tier_setting => { "week_id" => "invalid value" },  week_id: week.to_param}, valid_session
-        response.should render_template("new")
+        post :create, {:tier_setting => { 'week_id' => 'invalid value' },  week_id: @tier_setting.week.to_param}, valid_session
+        response.should render_template('new')
       end
     end
   end
 
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested tier_setting" do
-        tier_setting.save!
+  describe 'PUT update' do
+    describe 'with valid params' do
+      it 'updates the requested tier_setting' do
+        @tier_setting.save!
         # Assuming there are no other tier_settings in the database, this
         # specifies that the TierSetting created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        TierSetting.any_instance.should_receive(:update).with({ "week_id" => "1" })
-        put :update, {:id => tier_setting.to_param, :tier_setting => { "week_id" => "1" }}, valid_session
+        TierSetting.any_instance.should_receive(:update).with({ 'week_id' => '1' })
+        put :update, {:id => @tier_setting.to_param, :tier_setting => { 'week_id' => '1' }}, valid_session
       end
 
-      it "assigns the requested tier_setting as @tier_setting" do
-        tier_setting.save!
-        put :update, {:id => tier_setting.to_param, :tier_setting => valid_attributes}, valid_session
-        assigns(:tier_setting).should eq(tier_setting)
+      it 'assigns the requested tier_setting as @tier_setting' do
+        @tier_setting.save!
+        put :update, {:id => @tier_setting.to_param, :tier_setting => @tier_setting.attributes}, valid_session
+        assigns(:tier_setting).should eq(@tier_setting)
       end
 
-      it "redirects to the tier_setting" do
-        tier_setting.save!
-        put :update, {:id => tier_setting.to_param, :tier_setting => valid_attributes}, valid_session
-        response.should redirect_to(tier_setting.week)
+      it 'redirects to the tier_setting' do
+        @tier_setting.save!
+        put :update, {:id => @tier_setting.to_param, :tier_setting => @tier_setting.attributes}, valid_session
+        response.should redirect_to(@tier_setting.week)
       end
     end
 
-    describe "with invalid params" do
-      it "assigns the tier_setting as @tier_setting" do
-        tier_setting.save!
+    describe 'with invalid params' do
+      it 'assigns the tier_setting as @tier_setting' do
+        @tier_setting.save!
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        put :update, {:id => tier_setting.to_param, :tier_setting => { "week_id" => "invalid value" }}, valid_session
-        assigns(:tier_setting).should eq(tier_setting)
+        put :update, {:id => @tier_setting.to_param, :tier_setting => { 'week_id' => 'invalid value' }}, valid_session
+        assigns(:tier_setting).should eq(@tier_setting)
       end
 
-      it "re-renders the 'edit' template" do
-        tier_setting.save!
+      it 're-renders the \'edit\' template' do
+        @tier_setting.save!
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        put :update, {:id => tier_setting.to_param, :tier_setting => { "week_id" => "invalid value" }}, valid_session
-        response.should render_template("edit")
+        put :update, {:id => @tier_setting.to_param, :tier_setting => { 'week_id' => 'invalid value' }}, valid_session
+        response.should render_template('edit')
       end
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested tier_setting" do
-      tier_setting.save!
+  describe 'DELETE destroy' do
+    it 'destroys the requested tier_setting' do
+      @tier_setting.save!
       expect {
-        delete :destroy, {:id => tier_setting.to_param}, valid_session
+        delete :destroy, {:id => @tier_setting.to_param}, valid_session
       }.to change(TierSetting, :count).by(-1)
     end
 
-    it "redirects to the tier_settings list" do
-      tier_setting.save!
-      delete :destroy, {:id => tier_setting.to_param}, valid_session
-      response.should redirect_to(week)
+    it 'redirects to the tier_settings list' do
+      @tier_setting.save!
+      delete :destroy, {:id => @tier_setting.to_param}, valid_session
+      response.should redirect_to(@tier_setting.week)
     end
   end
 

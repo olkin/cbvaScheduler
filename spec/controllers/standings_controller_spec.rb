@@ -23,11 +23,10 @@ describe StandingsController do
   # This should return the minimal set of attributes required to create a valid
   # TierSetting. As you add validations to TierSetting, be sure to
   # adjust the attributes here as well.
-  # let(:league) {FactoryGirl.create(:league)}
-  #let(:week) {FactoryGirl.create(:week, league: league)}
-  #let(:week) {FactoryGirl.create(:week)}
-  let(:standing) {FactoryGirl.build(:standing)}
-  let(:valid_attributes) {standing.attributes}
+  before {
+    @standing = FactoryGirl.build(:standing)
+  }
+
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -36,24 +35,24 @@ describe StandingsController do
 
   describe 'GET show' do
     it 'assigns the requested standing as @standing' do
-      standing.save!
-      get :show, {:id => standing.to_param}, valid_session
-      assigns(:standing).should eq(standing)
+      @standing.save!
+      get :show, {:id => @standing.to_param}, valid_session
+      assigns(:standing).should eq(@standing)
     end
   end
 
   describe 'GET new' do
     it 'assigns a new standing as @standing' do
-      get :new, {week_id: standing.week.to_param}, valid_session
+      get :new, {week_id: @standing.week.to_param}, valid_session
       assigns(:standing).should be_a_new(Standing)
     end
   end
 
   describe 'GET edit' do
     it 'assigns the requested standing as @standing' do
-      standing.save!
-      get :edit, {:id => standing.to_param}, valid_session
-      assigns(:standing).should eq(standing)
+      @standing.save!
+      get :edit, {:id => @standing.to_param}, valid_session
+      assigns(:standing).should eq(@standing)
     end
   end
 
@@ -61,19 +60,19 @@ describe StandingsController do
     describe 'with valid params' do
       it 'creates a new Standing' do
         expect {
-          post :create, {:standing => valid_attributes, week_id: standing.week.to_param}, valid_session
+          post :create, {:standing => @standing.attributes, week_id: @standing.week.to_param}, valid_session
         }.to change(Standing, :count).by(1)
       end
 
       it 'assigns a newly created tier_setting as @tier_setting' do
-        post :create, {:standing => valid_attributes,  week_id: standing.week.to_param}, valid_session
+        post :create, {:standing => @standing.attributes,  week_id: @standing.week.to_param}, valid_session
         assigns(:standing).should be_a(Standing)
         assigns(:standing).should be_persisted
       end
 
       it 'redirects to the created tier_setting' do
-        post :create, {:standing => valid_attributes, week_id: standing.week.to_param}, valid_session
-        response.should redirect_to(standing.week)
+        post :create, {:standing => @standing.attributes, week_id: @standing.week.to_param}, valid_session
+        response.should redirect_to(@standing.week)
       end
     end
 
@@ -81,14 +80,14 @@ describe StandingsController do
       it 'assigns a newly created but unsaved tier_setting as @tier_setting' do
         # Trigger the behavior that occurs when invalid params are submitted
         Standing.any_instance.stub(:save).and_return(false)
-        post :create, {:standing => { 'rank' => '0' },  week_id: standing.week.to_param}, valid_session
+        post :create, {:standing => { 'rank' => '0' },  week_id: @standing.week.to_param}, valid_session
         assigns(:standing).should be_a_new(Standing)
       end
 
       it 're-renders the \'new\' template' do
         # Trigger the behavior that occurs when invalid params are submitted
         Standing.any_instance.stub(:save).and_return(false)
-        post :create, {:standing => { 'rank' => '0' },  week_id: standing.week.to_param}, valid_session
+        post :create, {:standing => { 'rank' => '0' },  week_id: @standing.week.to_param}, valid_session
         response.should render_template('new')
       end
     end
@@ -97,42 +96,42 @@ describe StandingsController do
   describe 'PUT update' do
     describe 'with valid params' do
       it 'updates the requested tier_setting' do
-        standing.save!
+        @standing.save!
         # Assuming there are no other tier_settings in the database, this
         # specifies that the TierSetting created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Standing.any_instance.should_receive(:update).with({ 'week_id' => '1' })
-        put :update, {:id => standing.to_param, :standing => { 'week_id' => '1' }}, valid_session
+        put :update, {:id => @standing.to_param, :standing => { 'week_id' => '1' }}, valid_session
       end
 
       it 'assigns the requested tier_setting as @tier_setting' do
-        standing.save!
-        put :update, {:id => standing.to_param, :standing => valid_attributes}, valid_session
-        assigns(:standing).should eq(standing)
+        @standing.save!
+        put :update, {:id => @standing.to_param, :standing => @standing.attributes}, valid_session
+        assigns(:standing).should eq(@standing)
       end
 
       it 'redirects to the tier_setting' do
-        standing.save!
-        put :update, {:id => standing.to_param, :standing => valid_attributes}, valid_session
-        response.should redirect_to(standing.week)
+        @standing.save!
+        put :update, {:id => @standing.to_param, :standing => @standing.attributes}, valid_session
+        response.should redirect_to(@standing.week)
       end
     end
 
     describe 'with invalid params' do
       it 'assigns the tier_setting as @tier_setting' do
-        standing.save!
+        @standing.save!
         # Trigger the behavior that occurs when invalid params are submitted
         Standing.any_instance.stub(:save).and_return(false)
-        put :update, {:id => standing.to_param, :standing => { 'week_id' => 'invalid value' }}, valid_session
-        assigns(:standing).should eq(standing)
+        put :update, {:id => @standing.to_param, :standing => { 'week_id' => 'invalid value' }}, valid_session
+        assigns(:standing).should eq(@standing)
       end
 
       it 're-renders the \'edit\' template' do
-        standing.save!
+        @standing.save!
         # Trigger the behavior that occurs when invalid params are submitted
         Standing.any_instance.stub(:save).and_return(false)
-        put :update, {:id => standing.to_param, :standing => { 'week_id' => 'invalid value' }}, valid_session
+        put :update, {:id => @standing.to_param, :standing => { 'week_id' => 'invalid value' }}, valid_session
         response.should render_template('edit')
       end
     end
@@ -140,16 +139,16 @@ describe StandingsController do
 
   describe 'DELETE destroy' do
     it 'destroys the requested tier_setting' do
-      standing.save!
+      @standing.save!
       expect {
-        delete :destroy, {:id => standing.to_param}, valid_session
+        delete :destroy, {:id => @standing.to_param}, valid_session
       }.to change(Standing, :count).by(-1)
     end
 
     it 'redirects to the tier_settings list' do
-      standing.save!
-      delete :destroy, {:id => standing.to_param}, valid_session
-      response.should redirect_to(standing.week)
+      @standing.save!
+      delete :destroy, {:id => @standing.to_param}, valid_session
+      response.should redirect_to(@standing.week)
     end
   end
 

@@ -16,9 +16,11 @@
 %>
 
 
-Tier Settings will be here <%= @tier_settings.size %>
+<h2>Tiers Settings</h2>
+<%= render 'tier_settings/index' %>
 
-Standings will be here <%= @standings.size %>
+<h2> Standings </h2>
+<%= render 'standings/index' %>
 
 <% if admin? and @week.errors.empty? %>
     <br>

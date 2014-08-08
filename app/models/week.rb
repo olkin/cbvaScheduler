@@ -19,6 +19,12 @@ class Week < ActiveRecord::Base
     self.standings.each {|standing| standing.reset_stats}
   end
 
+  def next_missing_tier
+    all_tiers = self.tier_settings.all.map { |setting| setting[:tier] }.uniq.sort
+    missing_tiers = (1..all_tiers.size).to_a - all_tiers
+    missing_tiers[0] || all_tiers.size + 1
+  end
+
   def submit_settings
 =begin
     #update week details

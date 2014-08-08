@@ -24,7 +24,9 @@ describe Week do
     week2.should_not be_valid
   end
 
-
+  it 'calculates next missing tier' do
+    @week.next_missing_tier.should eql 1
+  end
 
   it 'league should destroy associated weeks' do
     weeks = @week.league.weeks.all.to_a
@@ -66,6 +68,11 @@ describe Week do
     end
 
     it { should be_valid }
+
+
+    it 'calculates next missing tier' do
+      @week.next_missing_tier.should eql 2
+    end
 
     it 'number of registered teams should not be less of teams in tiers ' do
       @week.standings.last.destroy

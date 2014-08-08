@@ -17,7 +17,7 @@ Rails.application.routes.draw do
         put :save_settings
       end
 
-      resources :tier_settings
+      resources :tier_settings, except: [:index, :show]
       resources :standings, except: :index
       resources :matches
     end

@@ -12,7 +12,7 @@ describe 'weeks/show.html.erb' do
     render
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     rendered.should match /League#7/
-    rendered.should match(/Tier Settings/)
+    rendered.should match(/Tiers Settings/)
     rendered.should match(/Standings/)
   end
 
