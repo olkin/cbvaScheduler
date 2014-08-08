@@ -3,7 +3,7 @@ require "spec_helper"
 describe LeaguesController do
   describe "routing" do
 
-    it "routes to #index" do
+    it "routes to #index_1" do
       get("/leagues").should route_to("leagues#index")
     end
 

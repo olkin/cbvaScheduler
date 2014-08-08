@@ -34,10 +34,10 @@ describe TierSettingsController do
   # TierSettingsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET index" do
+  describe "GET index_1" do
     it "assigns all tier_settings as @tier_settings" do
       tier_setting.save!
-      get :index, {week_id: tier_setting.week.to_param}, valid_session
+      get :index_1, {week_id: tier_setting.week.to_param}, valid_session
       assigns(:tier_settings).should eq([tier_setting])
     end
   end

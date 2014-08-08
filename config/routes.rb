@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   #get 'weeks/show'
 
-  root 'leagues#index'
+  root 'leagues#index_1'
   resources :sessions, only: [:new, :create, :destroy]
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resources :teams, only: :index
 
   resources :leagues do
-    resources :weeks, path: "settings", :shallow => true do
+    resources :weeks, :shallow => true, only: [:index, :show, :destroy] do
       member do
         put :save_settings
       end
@@ -37,8 +37,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  #root 'welcome#index'
-  #root 'leagues#index'
+  #root 'welcome#index_1'
+  #root 'leagues#index_1'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

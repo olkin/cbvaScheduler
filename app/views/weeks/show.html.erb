@@ -1,31 +1,18 @@
-<p id="notice"><%= notice %></p>
-<div class="center hero-unit">
+<% provide(:title, "#{@week.name} for " + @week.league.description) %>
 
-  <% week_name = @week.week ? "week ##{@week.week}" : "registration week"%>
-    <h1><%= @week.league.description %>: <%= week_name%> setup</h1>
+<%= render 'existing_weeks' %>
 
-  <% if @week.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@week.errors.count, "error") %> to fix setup:</h2>
+<h1> <%= @week.league.description%> </h1>
 
-        <ul>
-          <% @week.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-  <% end %>
+<h1><%= @week.name %></h1>
 
-  <%= render "tier_settings/index"%>
-  <%= render "standings/index"%>
+<% if @week.week %>
+    <%= render 'matches' %>
+<% else %>
+    <%= render 'settings' %>
+<% end%>
 
-  <% if admin? and @week.errors.empty? %>
-      <%= link_to "Save settings", save_settings_week_path(@week), method: :put, class: "btn btn-large btn-primary" %>
-      <br>
-  <% end %>
+<br/>
+<%= link_to 'All Leagues', leagues_path %>
 
-  <% if admin? %>
-      <%= link_to 'Edit', edit_week_path(@week) %> |
-      <%= link_to 'Back', league_path(@week.league) %>
-   <%end%>
-</div>
+

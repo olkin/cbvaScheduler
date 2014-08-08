@@ -34,10 +34,10 @@ describe StandingsController do
   # TierSettingsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET index" do
+  describe "GET index_1" do
     it "assigns all standings as @standings" do
       standing.save!
-      get :index, {week_id: standing.week.to_param}, valid_session
+      get :index_1, {week_id: standing.week.to_param}, valid_session
       assigns(:standings).should eq([standing])
     end
   end

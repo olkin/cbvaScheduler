@@ -43,10 +43,12 @@ describe 'leagues' do
   end
 
   describe 'league page' do
-    let(:league) { FactoryGirl.create(:league) }
-    before { visit league_path(league) }
+    before {
+      @league = FactoryGirl.create(:league)
+      visit league_path(@league)
+    }
 
-    it { should have_title(league.description) }
+    it { should have_title(@league.description) }
     it { should have_content('Registration is not finished')}
   end
 end

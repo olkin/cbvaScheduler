@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe StandingsController do
   describe "routing" do
-    it "routes to #index" do
+    it "routes to #index_1" do
       get("/settings/2/standings").should route_to("standings#index", week_id: "2")
     end
 

@@ -33,9 +33,9 @@ describe TeamsController do
       @team = FactoryGirl.create(:team, league: league)
     end
 
-    describe "GET index" do
+    describe "GET index_1" do
       it "assigns all teams as @teams" do
-        get :index, {league_id: league.id}, valid_session
+        get :index_1, {league_id: league.id}, valid_session
         assigns(:teams).should eq([@team])
       end
     end

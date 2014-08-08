@@ -5,8 +5,8 @@ class TeamsControllerTest < ActionController::TestCase
     @team = teams(:one)
   end
 
-  test "should get index" do
-    get :index
+  test "should get index_1" do
+    get :index_1
     assert_response :success
     assert_not_nil assigns(:teams)
   end

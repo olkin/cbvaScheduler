@@ -2,11 +2,8 @@ module ApplicationHelper
 
   # Returns the full title on a per-page basis.
   def full_title(page_title)
-    base_title = "CBVA"
-    if page_title.empty?
-      base_title
-    else
-      "#{base_title} | #{page_title}"
-    end
+    base_title = League::NAME
+    base_title += " | " +  page_title unless page_title.blank?
+    base_title
   end
 end

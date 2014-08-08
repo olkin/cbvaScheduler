@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "standings/index" do
+describe "standings/index_1" do
   let(:week) {FactoryGirl.create(:week, id: 1)}
   let(:team) {FactoryGirl.create(:team, league: week.league, name: "Random")}
   before(:each) do

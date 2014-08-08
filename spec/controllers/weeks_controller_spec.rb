@@ -23,132 +23,68 @@ describe WeeksController do
   # This should return the minimal set of attributes required to create a valid
   # Week. As you add validations to Week, be sure to
   # adjust the attributes here as well.
-  let(:league) {FactoryGirl.create(:league)}
-  let(:valid_attributes) {FactoryGirl.build(:week, league: league).attributes}
+  before {
+    @week = FactoryGirl.create(:week)
+  }
+
+  #let(:valid_attributes) {FactoryGirl.build(:week, league: league).attributes}
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # WeeksController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET index" do
-    it "assigns all weeks as @weeks" do
-      week = league.weeks.create! valid_attributes
-      get :index, {league_id: league.to_param}, valid_session
-      response.should redirect_to(week)
+  describe 'GET index' do
+    it 'assigns week as @week' do
+      get :index, {league_id: @week.league.to_param}, valid_session
+      assigns(:week).should eq(@week)
+    end
+
+    it 'displays current week\'s details' do
+      get :index, {league_id: @week.league.to_param}, valid_session
+      response.should render_template('show')
     end
   end
 
-  describe "GET show" do
-    it "assigns the requested week as @week" do
-      week = league.weeks.create! valid_attributes
-      get :show, {:id => week.to_param}, valid_session
-      assigns(:week).should eq(week)
+  describe 'GET show' do
+    it 'assigns the requested week as @week' do
+      get :show, {:id => @week.to_param}, valid_session
+      assigns(:week).should eq(@week)
     end
   end
 
 
-  describe "GET edit" do
-    it "assigns the requested week as @week" do
-      week = league.weeks.create! valid_attributes
-      get :edit, {:id => week.to_param}, valid_session
-      assigns(:week).should eq(week)
-    end
-  end
-
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Week" do
-        expect {
-          post :create, {:week => valid_attributes, league_id: league.to_param}, valid_session
-        }.to change(Week, :count).by(1)
-      end
-
-      it "assigns a newly created week as @week" do
-        post :create, {:week => valid_attributes, league_id: league.to_param}, valid_session
-        assigns(:week).should be_a(Week)
-        assigns(:week).should be_persisted
-      end
-
-      it "redirects to the created week" do
-        post :create, {:week => valid_attributes, league_id: league.to_param}, valid_session
-        response.should redirect_to(league_weeks_path(league))
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved week as @week" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Week.any_instance.stub(:save).and_return(false)
-        post :create, {:week => {}, league_id: league.to_param}, valid_session
-        assigns(:week).should be_a_new(Week)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Week.any_instance.stub(:save).and_return(false)
-        post :create, {:week => {  }, league_id: league.to_param}, valid_session
-        response.should render_template("new")
-      end
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested week" do
-        week = Week.create! valid_attributes
-        # Assuming there are no other weeks in the database, this
-        # specifies that the Week created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Week.any_instance.should_receive(:update).with({ "week" => "5" })
-        put :update, {:id => week.to_param, :week => { "week" => "5" }}, valid_session
-      end
-
-      it "assigns the requested week as @week" do
-        week = Week.create! valid_attributes
-        put :update, {:id => week.to_param, :week => valid_attributes}, valid_session
-        assigns(:week).should eq(week)
-      end
-
-      it "redirects to the week" do
-        week = Week.create! valid_attributes
-        put :update, {:id => week.to_param, :week => valid_attributes}, valid_session
-        response.should redirect_to(league_weeks_path(league))
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the week as @week" do
-        week = Week.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Week.any_instance.stub(:save).and_return(false)
-        put :update, {:id => week.to_param, :week => {  }}, valid_session
-        assigns(:week).should eq(week)
-      end
-
-      it "re-renders the 'edit' template" do
-        week = Week.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Week.any_instance.stub(:save).and_return(false)
-        put :update, {:id => week.to_param, :week => {  }}, valid_session
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested week" do
-      week = Week.create! valid_attributes
+  describe 'DELETE destroy' do
+    it 'destroys the requested week' do
       expect {
-        delete :destroy, {:id => week.to_param}, valid_session
+        delete :destroy, {:id => @week.to_param}, valid_session
       }.to change(Week, :count).by(-1)
     end
 
-    it "redirects to the weeks list" do
-      week = Week.create! valid_attributes
-      delete :destroy, {:id => week.to_param}, valid_session
-      response.should redirect_to(league_weeks_url(league))
+    it 'redirects to the league page' do
+      delete :destroy, {:id => @week.to_param}, valid_session
+      response.should redirect_to(league_url(@week.league))
+    end
+  end
+
+  describe 'PUT save_settings' do
+    it 'adds new week' do
+      expect {
+        put :save_settings, {:id => @week.to_param}, valid_session
+      }.to change(Week, :count).by(1)
+    end
+
+    it 'updates existing week if exists' do
+      put :save_settings, {:id => @week.to_param}, valid_session
+
+      expect {
+        put :save_settings, {:id => @week.to_param}, valid_session
+      }.not_to change(Week, :count).by(1)
+    end
+
+    it 'redirects to league page' do
+      put :save_settings, {:id => @week.to_param}, valid_session
+      response.should redirect_to(league_url(@week.league))
     end
   end
 

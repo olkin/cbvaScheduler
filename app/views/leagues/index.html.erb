@@ -1,31 +1,29 @@
-<div class="center hero-unit">
-  <h1>Welcome to <%= League::NAME %></h1>
+<% provide(:title, "Welcome to #{League::NAME}") %>
 
-  <% if @leagues and @leagues.any? %>
+<h1>Welcome to <%= League::NAME %></h1>
 
-      <%= render 'layouts/team_search' %>
+<% if @leagues and @leagues.any? %>
 
-      <ul class="rounded-list">
-        <% @leagues.each do |league_type| %>
-            <li class="text-left">
-              <h1><%= link_to "#{league_type.description}", league_type %></h1>
-              <% if admin? %>
-                  <%= link_to 'Edit', edit_league_path(league_type) %> |
-                  <%= link_to 'Destroy', league_type, method: :delete, data: {confirm: 'Are you sure?'} %> |
-              <% end %>
-            </li>
-        <% end %>
-      </ul>
+    <%= render 'layouts/team_search' %>
 
-  <% else %>
+    <ul class="rounded-list">
+      <% @leagues.each do |league_type| %>
+          <li class="text-left">
+            <h1><%= link_to "#{league_type.description}", league_type %></h1>
+            <% if admin? %>
+                <%= link_to 'Edit', edit_league_path(league_type) %> |
+                <%= link_to 'Destroy', league_type, method: :delete, data: {confirm: 'Are you sure?'} %> |
+            <% end %>
+          </li>
+      <% end %>
+    </ul>
 
-      <div class="alert">
-        No open events. Try again later.
-      </div>
+<% else %>
 
-  <% end %>
+    <div class="alert">
+      No open events. Try again later.
+    </div>
 
-  <%= link_to 'New event', new_league_path if admin? %>
+<% end %>
 
-</div>
-
+<%= link_to 'New event', new_league_path if admin? %>

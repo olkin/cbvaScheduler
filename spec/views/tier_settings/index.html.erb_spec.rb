@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "tier_settings/index" do
+describe "tier_settings/index_1" do
   let(:week) {FactoryGirl.create(:week)}
   before(:each) do
     assign(:tier_settings, [

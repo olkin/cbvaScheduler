@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe TierSettingsController do
   describe "routing" do
-    it "routes to #index" do
+    it "routes to #index_1" do
       get("/settings/2/tier_settings").should route_to("tier_settings#index", week_id: "2")
     end
 

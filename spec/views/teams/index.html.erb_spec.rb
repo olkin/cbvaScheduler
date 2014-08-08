@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "teams/index" do
+describe "teams/index_1" do
  let(:league) {FactoryGirl.create(:league)}
 
   before(:each) do

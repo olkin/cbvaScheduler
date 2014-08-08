@@ -4,7 +4,7 @@ describe TeamsController do
   #let (:league) {FactoryGirl.create(:league)}
   describe "routing" do
 
-    it "routes to #index" do
+    it "routes to #index_1" do
       get("leagues/1/teams").should route_to("teams#index", :league_id => "1")
     end
 

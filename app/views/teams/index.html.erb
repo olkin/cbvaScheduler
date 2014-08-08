@@ -1,67 +1,65 @@
-<div class="center hero-unit">
-    <% if @league %>
-        <% provide(:title, @league.description  + " | Teams") %>
-        <h1> Teams for <%= @league.description%></h1>
+<% if @league %>
+    <% provide(:title, @league.description + " | Teams") %>
+    <h1> Teams for <%= @league.description %></h1>
 
-        <% if @league.errors.any?%>
-            <div id="error_explanation">
-              <h2> <%=pluralize(@league.errors.count, "problem") %> to fix:</h2>
+    <% if @league.errors.any? %>
+        <div id="error_explanation">
+          <h2> <%= pluralize(@league.errors.count, "problem") %> to fix:</h2>
 
-              <ul>
-                <% @league.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-              </ul>
-            </div>
-        <%end%>
-    <%else%>
-      <h1>Search results</h1>
-      <%= render "layouts/team_search"%>
-    <%end%>
-
-    <%if @teams.any?%>
-        <table class="table table-striped table-bordered table-hover">
-          <thead>
-            <tr>
-              <th># </th>
-              <th>Name</th>
-              <th>Captain</th>
-              <%if vip?%>
-                <th>Email</th>
-               <th colspan="2"></th>
-              <%end%>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% @teams.each_with_index do |team, idx| %>
-              <tr>
-                <td><%=idx + 1%></td>
-                <% cur_week = team.league.cur_week %>
-                <% standing = cur_week.standings.all.find_by(team: team) if cur_week%>
-                <td><%= link_to team.name, (standing_path(standing) if standing) %></td>
-                <td><%= team.captain %></td>
-                <%if vip?%>
-                    <td><%= team.email %></td>
-                    <td><%= link_to 'Edit', edit_team_path(team) %></td>
-                    <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-                <%end%>
-              </tr>
+          <ul>
+            <% @league.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
             <% end %>
-          </tbody>
-        </table>
-    <%else%>
-        No results
-    <%end%>
+          </ul>
+        </div>
+    <% end %>
+<% else %>
+    <h1>Search results</h1>
+    <%= render "layouts/team_search" %>
+<% end %>
 
-    <br/>
+<% if @teams.any? %>
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Captain</th>
+        <% if vip? %>
+            <th>Email</th>
+            <th colspan="2"></th>
+        <% end %>
+      </tr>
+      </thead>
 
-    <%if @league and admin?%>
-        <%= link_to 'Add Team', new_league_team_path(@league)%> |
-        <%= link_to 'Settings', league_weeks_path(@league)%> |
-        <%= link_to 'League', league_path(@league)%> |
-    <%end%>
+      <tbody>
+      <% @teams.each_with_index do |team, idx| %>
+          <tr>
+            <td><%= idx + 1 %></td>
+            <% cur_week = team.league.cur_week %>
+            <% standing = cur_week.standings.all.find_by(team: team) if cur_week %>
+            <td><%= link_to team.name, (standing_path(standing) if standing) %></td>
+            <td><%= team.captain %></td>
+            <% if vip? %>
+                <td><%= team.email %></td>
+                <td><%= link_to 'Edit', edit_team_path(team) %></td>
+                <td><%= link_to 'Destroy', team, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+            <% end %>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% else %>
+    No results
+<% end %>
 
-    <%= link_to "All leagues", leagues_path %>
-    <br>
-</div>
+<br/>
+
+<% if @league and admin? %>
+    <%= link_to 'Add Team', new_league_team_path(@league) %> |
+    <%= link_to 'Settings', league_weeks_path(@league) %> |
+    <%= link_to 'League', league_path(@league) %> |
+<% end %>
+
+<%= link_to "All leagues", leagues_path %>
+<br>
