@@ -12,51 +12,54 @@
     <% end %>
 
 
-    <% sets = eval(@match.team1_standing.tier_setting.set_points).size %>
+    <% sets = @match.tier_setting.set_points.size %>
     <table class="table table-striped table-bordered table-hover">
       <thead>
       <tr>
         <th>Court<br/> @ Time</th>
         <th>Teams</th>
-        <% sets.times do |game_idx|%>
-            <th>G<%= game_idx + 1%></th>
-        <%end%>
+        <% sets.times do |game_idx| %>
+            <th>G<%= game_idx + 1 %></th>
+        <% end %>
       </tr>
       </thead>
+
       <tbody>
+
       <tr>
-        <% court = f.object.court > 12 ? "S#{f.object.court - 12}" : "C#{f.object.court}" if f.object.court %>
         <td rowspan="2">
-          <%= court %><br/>@<%= eval(@match.team1_standing.tier_setting.match_times)[@match.game - 1]%>
+          <%= @match.court %> <br/> @<%= @match.tier_setting.match_times[@match.game - 1] %>
         </td>
-        <td><%= link_to @match.team1.short_name, standing_path(@match.team1_standing) %><br/><%= @match.team1.captain%></td>
-        <% if vip? %>
-            <td colspan="<%= sets %>" rowspan="2"><%= f.text_field :score, value: (f.object.score.map{|x,y| "#{x}:#{y}"}.join(", ") if f.object.score) %></td>
-        <%else%>
-            <%sets.times do |game_idx|%>
-                <td><%= @match.score[game_idx][0] if @match.score and @match.score[game_idx] %></td>
-            <%end%>
-        <%end%>
 
+        <td><%= link_to @match.team1.short_name, standing_path(@match.standing1) %>
+          <br/><%= @match.team1.captain %></td>
+        <% if vip? %>
+            <td colspan="<%= sets %>" rowspan="2"><%= f.text_field :score, value: f.object.score_line %></td>
+        <% else %>
+            <% sets.times do |game_idx| %>
+                <td><%= @match.score[game_idx][0] if @match.score and @match.score[game_idx] %></td>
+            <% end %>
+        <% end %>
       </tr>
 
       <tr>
 
-        <td><%= link_to @match.team2.short_name, standing_path(@match.team2_standing) %><br/><%= @match.team2.captain%></td>
-        <% if vip? %>
-            <%sets.times {%> </td> <%}%>
-        <%else%>
-            <%sets.times do |game_idx|%>
-                <td><%= @match.score[game_idx][1] if @match.score and @match.score[game_idx] %></td>
-            <%end%>
-        <%end%>
+        <td><%= link_to @match.team2.short_name, standing_path(@match.standing2) %>
+          <br/><%= @match.team2.captain %></td>
+        <% sets.times do |game_idx| %>
+            <td>
+              <% unless vip? %>
+                  <%= @match.score[game_idx][1] if @match.score and @match.score[game_idx] %>
+              <% end %>
+            </td>
+        <% end %>
       </tr>
 
-      <%if vip?%>
+      <% if vip? %>
           <tr>
-            <td colspan="<%= 2 + sets%>" ><%= f.submit "Update" if vip? %></td>
+            <td colspan="<%= 2 + sets %>"><%= f.submit "Update" if vip? %></td>
           </tr>
-      <%end%>
+      <% end %>
 
       </tbody>
     </table>

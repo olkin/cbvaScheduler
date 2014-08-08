@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
       resources :tier_settings, except: [:index, :show]
       resources :standings, except: :index
-      resources :matches
+      resources :matches, only: :update
     end
 
     resources :teams, :shallow => true, except: :show

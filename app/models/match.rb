@@ -4,6 +4,8 @@ class Match < ActiveRecord::Base
   belongs_to :standing1, class_name: 'Standing'
   belongs_to :standing2, class_name: 'Standing'
   has_one :week, through: :standing1
+  has_one :team1, through: :standing1, source: :team
+  has_one :team2, through: :standing2, source: :team
 
   validates_presence_of :standing1, :standing2, :game, :court
   validates_numericality_of :game, greater_than: 0
@@ -33,7 +35,7 @@ class Match < ActiveRecord::Base
     nil
   end
 
-  def score_line(standing)
+  def score_line(standing = self.standing1)
     return [] unless [self.standing1, self.standing2].include? standing
     score = self.score || []
     score = self.score.map { |game_score| game_score.reverse } if standing == self.standing2
