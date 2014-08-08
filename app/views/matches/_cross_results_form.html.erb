@@ -5,7 +5,7 @@
 
     <% @standings.each do |standing|%>
         <%= link_to "#{standing.team.name}", standing %>
-        <br/> <%= standing.team.captain %>
+        <%= standing.team.captain %>
     <%end%>
 
     <th>Matches<br/>won/played</th>
@@ -22,7 +22,7 @@
 
         <% @standings.each do |opponent|%>
             <!-- find game(s) between these teams, make it disabled for non-vip -->
-            <td/>
+            <td></td>
         <%end%>
 
         <td><%= "#{standing.matches_won}/#{standing.matches_played}/#{standing.matches.size}" %></td>

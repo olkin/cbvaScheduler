@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe "TierSettings" do
+describe 'TierSettings' do
 end

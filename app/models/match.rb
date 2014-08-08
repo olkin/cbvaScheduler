@@ -10,19 +10,19 @@ class Match < ActiveRecord::Base
   validates_presence_of :standing1, :standing2, :game, :court
   validates_numericality_of :game, greater_than: 0
   validates_numericality_of :court, greater_than: 0, less_than_or_equal_to: MAX_COURTS
-  validate :tier_setting_existance_validation
+  validate :setting_validation
   validates :score, score: true, allow_blank: true
   validate :standings_week_validation
 
   serialize :score
 
   def standings_week_validation
-    errors.add(:base, "Teams belong to different weeks") if self.standing1 and self.standing2 and self.standing1.week != self.standing2.week
+    errors.add(:base, 'Teams belong to different weeks') if self.standing1 and self.standing2 and self.standing1.week != self.standing2.week
   end
 
 
-  def tier_setting_existance_validation
-    errors.add(:base, "Tier settings for match are not defined") if self.tier_setting.nil?
+  def setting_validation
+    errors.add(:base, 'Tier settings for match are not defined') if self.tier_setting.nil?
   end
 
   def tier_setting
@@ -88,6 +88,8 @@ class Match < ActiveRecord::Base
         0
       when standing2
         1
+      else
+        2
     end
   end
 

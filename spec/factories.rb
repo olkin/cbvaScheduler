@@ -26,7 +26,7 @@ FactoryGirl.define do
     total_teams 2
     teams_down 0
     set_points [21, 21, 15]
-    match_times ['10:00', '12:00', '13:00']
+    match_times %w(10:00 12:00 13:00)
     schedule_pattern [[[[1,2,1]],[[1,2,1]],[[1,2,1]]]]
     cycle 1
   end

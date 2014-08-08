@@ -28,20 +28,20 @@ describe TeamsController do
   # TeamsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "when team is created" do
+  describe 'when team is created' do
     before(:each) do
       @team = FactoryGirl.create(:team, league: league)
     end
 
-    describe "GET index_1" do
-      it "assigns all teams as @teams" do
+    describe 'GET index_1' do
+      it 'assigns all teams as @teams' do
         get :index_1, {league_id: league.id}, valid_session
         assigns(:teams).should eq([@team])
       end
     end
 
-    describe "GET edit" do
-      it "assigns the requested team as @team" do
+    describe 'GET edit' do
+      it 'assigns the requested team as @team' do
         get :edit, {:id => @team.to_param}, valid_session
         assigns(:team).should eq(@team)
       end
@@ -51,98 +51,98 @@ describe TeamsController do
     it "re-renders the 'edit' template" do
       # Trigger the behavior that occurs when invalid params are submitted
       Team.any_instance.stub(:save).and_return(false)
-      put :update, {:id => @team.to_param, :team => { "name" => "invalid value" }}, valid_session
-      response.should render_template("edit")
+      put :update, {:id => @team.to_param, :team => { 'name' => 'invalid value'}}, valid_session
+      response.should render_template('edit')
     end
 
-    describe "DELETE destroy" do
-      it "destroys the requested team" do
+    describe 'DELETE destroy' do
+      it 'destroys the requested team' do
         expect {
           delete :destroy, {:id => @team.to_param}, valid_session
         }.to change(Team, :count).by(-1)
       end
 
-      it "redirects to the league teams list" do
+      it 'redirects to the league teams list' do
         delete :destroy, {:id => @team.to_param}, valid_session
         response.should redirect_to(league_teams_url(@team.league))
       end
     end
 
 
-    describe "PUT update" do
-      describe "with valid params" do
-        it "updates the requested team" do
+    describe 'PUT update' do
+      describe 'with valid params' do
+        it 'updates the requested team' do
           # Assuming there are no other teams in the database, this
           # specifies that the Team created on the previous line
           # receives the :update_attributes message with whatever params are
           # submitted in the request.
-          Team.any_instance.should_receive(:update).with({ "name" => "MyString" })
-          put :update, {:id => @team.to_param, :team => { "name" => "MyString" }}, valid_session
+          Team.any_instance.should_receive(:update).with({ 'name' => 'MyString'})
+          put :update, {:id => @team.to_param, :team => { 'name' => 'MyString'}}, valid_session
         end
 
-        it "assigns the requested team as @team" do
-          put :update, {:id => @team.to_param, :team => { "name" => "MyString" }}, valid_session
+        it 'assigns the requested team as @team' do
+          put :update, {:id => @team.to_param, :team => { 'name' => 'MyString'}}, valid_session
           assigns(:team).should eq(@team)
         end
 
-        it "redirects to all team" do
-          put :update, {:id => @team.to_param, :team => { "name" => "MyString" }}, valid_session
+        it 'redirects to all team' do
+          put :update, {:id => @team.to_param, :team => { 'name' => 'MyString'}}, valid_session
           response.should redirect_to(league_teams_path(@team.league))
         end
       end
 
-      describe "with invalid params" do
-        it "assigns the team as @team" do
+      describe 'with invalid params' do
+        it 'assigns the team as @team' do
           # Trigger the behavior that occurs when invalid params are submitted
           Team.any_instance.stub(:save).and_return(false)
-          put :update, {:id => @team.to_param, :team => { "name" => "invalid value" }}, valid_session
+          put :update, {:id => @team.to_param, :team => { 'name' => 'invalid value'}}, valid_session
           assigns(:team).should eq(@team)
         end
       end
     end
   end
 
-  describe "GET new" do
-    it "assigns a new team as @team" do
+  describe 'GET new' do
+    it 'assigns a new team as @team' do
       get :new, {league_id: league.id}, valid_session
       assigns(:team).should be_a_new(Team)
     end
   end
 
-  describe "POST create" do
-    describe "with valid params" do
-      it "creates a new Team" do
+  describe 'POST create' do
+    describe 'with valid params' do
+      it 'creates a new Team' do
         expect {
           post :create, {:team => valid_attributes, league_id: league.id}, valid_session
         }.to change(Team, :count).by(1)
       end
 
-      it "assigns a newly created team as @team" do
+      it 'assigns a newly created team as @team' do
         post :create, {:team => valid_attributes, league_id: league.id}, valid_session
         assigns(:team).should be_a(Team)
         assigns(:team).should be_persisted
       end
 
-      it "redirects to the league team list" do
+      it 'redirects to the league team list' do
         post :create, {:team => valid_attributes, league_id: league.id}, valid_session
         response.should redirect_to(league_teams_url(league))
         #notice: 'Team was successfully created.'
       end
     end
 
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved team as @team" do
+    describe 'with invalid params' do
+      it 'assigns a newly created but unsaved team as @team' do
         # Trigger the behavior that occurs when invalid params are submitted
         Team.any_instance.stub(:save).and_return(false)
-        post :create, {:team => { "name" => "invalid value" }, league_id: league.id}, valid_session
+        post :create, {:team => { 'name' => 'invalid value'}, league_id: league.id}, valid_session
         assigns(:team).should be_a_new(Team)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Team.any_instance.stub(:save).and_return(false)
-        post :create, {:team => { "name" => "invalid value"}, league_id: league.id}, valid_session
-        response.should render_template("new")
+        post :create, {:team => { 'name' => 'invalid value'}, league_id: league.id}, valid_session
+        response.should render_template('new')
       end
     end
   end

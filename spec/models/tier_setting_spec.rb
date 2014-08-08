@@ -99,7 +99,7 @@ describe TierSetting do
   end
 
   it 'match times valid' do
-    valid_match_times = [[10, 11, 12], ["10:00"], ["1 pm"], ["13:00"]]
+    valid_match_times = [[10, 11, 12], ['10:00'], ['1 pm'], ['13:00']]
     valid_match_times.each { |valid_data|
       @tier_setting.match_times = valid_data
       @tier_setting.should be_valid

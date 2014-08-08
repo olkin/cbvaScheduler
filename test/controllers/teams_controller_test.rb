@@ -5,18 +5,18 @@ class TeamsControllerTest < ActionController::TestCase
     @team = teams(:one)
   end
 
-  test "should get index_1" do
+  test 'should get index_1' do
     get :index_1
     assert_response :success
     assert_not_nil assigns(:teams)
   end
 
-  test "should get new" do
+  test 'should get new' do
     get :new
     assert_response :success
   end
 
-  test "should create team" do
+  test 'should create team' do
     assert_difference('Team.count') do
       post :create, team: { captain: @team.captain, email: @team.email, name: @team.name }
     end
@@ -24,22 +24,22 @@ class TeamsControllerTest < ActionController::TestCase
     assert_redirected_to team_path(assigns(:team))
   end
 
-  test "should show team" do
+  test 'should show team' do
     get :show, id: @team
     assert_response :success
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get :edit, id: @team
     assert_response :success
   end
 
-  test "should update team" do
+  test 'should update team' do
     patch :update, id: @team, team: { captain: @team.captain, email: @team.email, name: @team.name }
     assert_redirected_to team_path(assigns(:team))
   end
 
-  test "should destroy team" do
+  test 'should destroy team' do
     assert_difference('Team.count', -1) do
       delete :destroy, id: @team
     end

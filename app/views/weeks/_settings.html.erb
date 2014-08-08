@@ -1,6 +1,6 @@
 <% if vip? and @week.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@week.errors.count, "error") %> to fix setup:</h2>
+      <h2><%= pluralize(@week.errors.count, 'error') %> to fix setup:</h2>
 
       <ul>
         <% @week.errors.full_messages.each do |message| %>
@@ -24,6 +24,6 @@
 
 <% if admin? and @week.errors.empty? %>
     <br>
-    <%= link_to "Save settings", save_settings_week_path(@week), method: :put, class: "btn btn-large btn-primary" %>
+    <%= link_to 'Save settings', save_settings_week_path(@week), method: :put, class: 'btn btn-large btn-primary' %>
     <br>
 <% end %>

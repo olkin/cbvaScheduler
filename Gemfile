@@ -7,6 +7,7 @@ gem 'rails', '4.1.1'
 gem 'bootstrap-sass', '2.3.2.0'
 gem 'sprockets', '2.11.0'
 gem 'bcrypt-ruby', '3.1.2'
+gem 'simplecov', :require => false, :group => :test
 
 # Use sqlite3 as the database for Active Record
 group :development,:test do
@@ -18,7 +19,7 @@ group :development,:test do
   gem 'childprocess'
 end
 
-gem "prawnto_2", :require => "prawnto"
+gem 'prawnto_2', :require => 'prawnto'
 
 group :test do
   gem 'selenium-webdriver', '2.35.1'

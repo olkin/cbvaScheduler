@@ -97,8 +97,8 @@ describe Match do
       it 'determines score for team' do
         @match.score = [[21,15], [16,18]]
         @match.score_line.should eql @match.score_line(@match.standing1)
-        @match.score_line(@match.standing1).should eql "21:15, 16:18"
-        @match.score_line(@match.standing2).should eql "15:21, 18:16"
+        @match.score_line(@match.standing1).should eql '21:15, 16:18'
+        @match.score_line(@match.standing2).should eql '15:21, 18:16'
         standing3 = FactoryGirl.create(:standing)
         @match.score_line(standing3).should be_empty
       end

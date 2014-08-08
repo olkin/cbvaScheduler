@@ -234,13 +234,12 @@ aside {
 
 .rounded-list a:before{
   content: "";
-  background-color: red;
   counter-increment: li;
   position: absolute;
   left: -1.3em;
   top: 50%;
   margin-top: -1.3em;
-  background:  lightblue;
+  background: lightblue;
   height: 2em;
   width: 2em;
   line-height: 2em;

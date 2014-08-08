@@ -1,6 +1,6 @@
 <% matches_by_game = @tier_matches.group_by{ |match| match.game}.sort %>
 
-<% matches_by_game.each do |game, game_matches|%>
+<% matches_by_game.each do |_, game_matches|%>
     <p>
     <% game_matches.sort{|x,y| x[:court]<=>y[:court]}.each do |match| %>
        <% @match = match %>
