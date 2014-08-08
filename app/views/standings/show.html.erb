@@ -1,75 +1,38 @@
-  <p>
-    <strong>Team:</strong>
-    <%= @standing.team.name %>
-  </p>
+<p>
+  <strong>Team:</strong>
+  <%= @standing.team.name %>
+</p>
 
 
-  <p>
-    <strong>Captain:</strong>
-    <%= @standing.team.captain %>
-  </p>
+<p>
+  <strong>Captain:</strong>
+  <%= @standing.team.captain %>
+</p>
+
+<% if vip? %>
+    <p>
+      <strong>Email:</strong>
+      <%= @standing.team.email %>
+    </p>
+<% end %>
 
 
-  <p>
-    <strong>Email:</strong>
-    <%= @standing.team.email %>
-  </p>
+<p>
+  <strong>Pool:</strong>
+  <%=  @standing.tier %>
+</p>
+
+<p>
+  <strong>Team#</strong>
+  <%=  @standing.rank %>
+</p>
+
+<% if @standing.matches.any? %>
+    <h2>Results/Schedule for <%= @standing.week.name %></h2>
+    <%= render 'schedule' %>
+<%else%>
+    <h2>Schedule is not ready for <%= @standing.week.name %></h2>
+<%end%>
 
 
-  <p>
-    <strong>Tier:</strong>
-    <%= @standing.tier_setting ? @standing.tier_setting.name : @standing.tier %>
-  </p>
-
-  <% if @standing.matches.any?%>
-      <h2>Results/schedule for day#<%=(@standing.week.week||0) + 1 %></h2>
-
-      <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-          <th>Time</th>
-          <th>Court</th>
-          <th>Team</th>
-          <th>Score</th>
-          <th>Match won</th>
-          <th>Sets won</th>
-          <th>Points diff</th>
-        </tr>
-        </thead>
-        <tbody>
-        <%@standing.matches.each do |match|%>
-            <tr>
-              <td><%= eval(@standing.tier_setting.match_times)[match.game - 1] %></td>
-              <td><%= match.court > 12 ? "S#{match.court - 12}" : "C#{match.court}" if match.court %></td>
-              <td>
-                <% opponent = (match.team1 == @standing.team ? match.team2 : match.team1) %>
-                <%= link_to "#{opponent.name}(#{opponent.captain})", @standing.week.standings.all.find_by(team: opponent) %>
-              </td>
-
-              <td><% if match.score and !match.score.blank? %>
-                    <% score = match.score
-                       score = match.score.map{|score| score.reverse} if match.team2 == @standing.team
-                    %>
-                    <%= score.map{|x,y| "#{x}:#{y}"}.join(", ") %>
-                <%end%>
-              </td>
-              <% stats = match.stats %>
-              <% if stats %>
-                  <%
-                     matches_won = (match.team1 == @standing.team ? stats[:matches_won][0] : stats[:matches_won][1])
-                     sets_won = (match.team1 == @standing.team ? stats[:sets_won][0] : stats[:sets_won][1])
-                     points_diff = (match.team1 == @standing.team ? stats[:points_diff] : -stats[:points_diff])
-                  %>
-                  <td><%= matches_won %>/1</td>
-                  <td><%=sets_won%>/<%=match.score.size%></td>
-                  <td><%=points_diff %></td>
-              <%else%>
-              <td/><td/><td/>
-              <%end%>
-            </tr>
-        <%end%>
-        </tbody>
-      </table>
-  <% end %>
-
-  <%= link_to 'League', @standing.league %>
+<%= link_to 'League', @standing.league %>

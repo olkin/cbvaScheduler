@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       end
 
       resources :tier_settings
-      resources :standings
+      resources :standings, except: :index
       resources :matches
     end
 

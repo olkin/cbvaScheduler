@@ -1,49 +1,51 @@
-<table class="table table-striped table-bordered table-hover table-condensed">
-  <thead>
-  <tr>
-    <%if vip? %>
-        <th>Rank</th>
-        <th>Tier</th>
-    <%else%>
-        <th>#</th>
-    <%end%>
-    <th>Team</th>
-    <th>Captain</th>
-    <% if vip? %>
-        <th>Email</th>
-    <%end%>
-    <% if admin? %>
-        <th colspan="3"></th>
-    <%end%>
-  </tr>
-  </thead>
-
-  <tbody>
-  <% @standings.each_with_index  do |standing, idx| %>
+<h1>Standings</h1>
+<% if @standings %>
+    <table class='table table-striped table-bordered table-hover table-condensed'>
+      <thead>
       <tr>
-        <%if vip?%>
-            <td><%= standing.rank %></td>
-            <td><%= standing.tier_setting ? standing.tier_setting.name : standing.tier %></td>
-        <%else%>
-            <td><%=idx + 1%></td>
-        <%end%>
-        <td><%= standing.team.name %></td>
-        <td><%= standing.team.captain %></td>
-        <%if vip?%>
-            <td><%= standing.team.email %></td>
-        <%end%>
-        <% if admin? %>
-            <td><%= link_to 'Show', standing %></td>
-            <td><%= link_to 'Edit', edit_standing_path(standing) %></td>
-            <td><%= link_to 'Destroy', standing, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <%end%>
-      </tr>
-  <% end  if @standings%>
-  </tbody>
-</table>
+        <th>#</th>
+        <th>Pool/Tier</th>
+        <th>Team</th>
+        <th>Captain</th>
 
+        <% if vip? %>
+            <th>Email</th>
+        <% end %>
+
+        <% if admin? %>
+            <th colspan='2'></th>
+        <% end %>
+
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @standings.each do |standing| %>
+          <tr>
+            <td><%= standing.rank %></td>
+            <td><%= standing.tier %></td>
+            <td><%= standing.team.name %></td>
+            <td><%= standing.team.captain %></td>
+
+            <% if vip? %>
+                <td><%= standing.team.email %></td>
+            <% end %>
+
+            <% if admin? %>
+                <td><%= link_to 'Edit', edit_standing_path(standing) %></td>
+                <td><%= link_to 'Destroy', standing, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+            <% end %>
+
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+<% else %>
+    No teams registered yet.
+<% end %>
 <br>
 
 <% if admin? %>
     <%= link_to 'Add team', new_week_standing_path(@week) %>
-<%end%>
+<% end %>

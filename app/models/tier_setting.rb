@@ -1,4 +1,6 @@
 class TierSetting < ActiveRecord::Base
+
+
   belongs_to :week
   has_one :league, through: :week
 

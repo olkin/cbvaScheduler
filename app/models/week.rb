@@ -15,6 +15,10 @@ class Week < ActiveRecord::Base
     self.week ? "Week #{self.week + 1}" : "Current Settings"
   end
 
+  def update_stats
+    self.standings.each {|standing| standing.reset_stats}
+  end
+
   def submit_settings
 =begin
     #update week details

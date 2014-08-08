@@ -53,6 +53,17 @@ describe Match do
       end
     end
 
+    it 'gives the opponent' do
+      standing1 = @match.standing1
+      standing2 = @match.standing2
+
+      (@match.opponent standing1).should eql standing2
+      (@match.opponent standing2).should eql standing1
+
+      standing3 = FactoryGirl.create(:standing)
+      (@match.opponent standing3).should be_nil
+    end
+
 
     it 'has valid tier settings for the match' do
       @match.standing1.tier_setting.should_not be_nil
@@ -76,6 +87,62 @@ describe Match do
           @match.score = valid_score
           @match.should be_valid
         end
+      end
+
+      it 'determines score for team' do
+        @match.score = [[21,15], [16,18]]
+        @match.score_line(@match.standing1).should eql "21:15, 16:18"
+        @match.score_line(@match.standing2).should eql "15:21, 18:16"
+        standing3 = FactoryGirl.create(:standing)
+        @match.score_line(standing3).should be_empty
+      end
+
+      it 'gives statistics for match' do
+        @match.score = [[21,15], [16,21], [13,5]]
+        stats = @match.stats
+        idx = @match.stats_idx @match.standing1
+        idx.should eql 0
+        stats[idx][:matches_played].should eql 1
+        stats[idx][:sets_played].should eql 3
+        stats[idx][:points_diff].should eql 9
+        stats[idx][:sets_won].should eql 2
+        stats[idx][:matches_won].should eql 1
+
+
+        idx = @match.stats_idx @match.standing2
+        idx.should eql 1
+        stats[idx][:matches_played].should eql 1
+        stats[idx][:sets_played].should eql 3
+        stats[idx][:points_diff].should eql -9
+        stats[idx][:sets_won].should eql 1
+        stats[idx][:matches_won].should eql 0
+
+        standing3 = FactoryGirl.create(:standing)
+        idx = @match.stats_idx standing3
+        idx.should be_nil
+      end
+
+      it 'gives statistics for split match' do
+        @match.score = [[21,15], [16,21]]
+        stats = @match.stats
+        stats[0][:matches_won].should eql 1
+        stats[1][:matches_won].should eql 0
+      end
+
+
+      it 'gives statistics for tie match' do
+        @match.score = [[21,15], [15,21]]
+        stats = @match.stats
+        stats[0][:matches_won].should eql 0.5
+        stats[1][:matches_won].should eql 0.5
+      end
+
+      it 'gives stats of match is not played' do
+        stats = @match.stats
+        stats[0][:matches_played] = 0
+        stats[1][:sets_played] = 0
+        stats[0][:matches_won] = 0
+        stats[1][:points_diff] = 0
       end
 
       it 'doesn\'t accept invalid game score' do
