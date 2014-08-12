@@ -1,3 +1,7 @@
 <% @matches = @week.matches %>
 
-Matches will be here <%= @matches.size %>
+<% if @matches.any? %>
+    Matches will be here <%= @matches.size %>
+<% else %>
+    No matches
+<% end %>

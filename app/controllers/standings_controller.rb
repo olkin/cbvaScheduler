@@ -4,6 +4,7 @@ class StandingsController < ApplicationController
 
   # GET /standings/1
   def show
+    @weeks = @standing.league.weeks
   end
 
   # GET /standings/new

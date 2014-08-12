@@ -68,6 +68,10 @@ describe League do
     end
   end
 
+  it 'shows nil for cur_week' do
+    @league.cur_week.should be nil
+  end
+
   context 'has weeks set up' do
     before do
       @week = FactoryGirl.create(:week, league: @league)
@@ -75,6 +79,10 @@ describe League do
 
     it 'should have teams associated' do
       @league.weeks.should_not be_empty
+    end
+
+    it 'shows cur week' do
+      @league.cur_week.should eql @week
     end
   end
 

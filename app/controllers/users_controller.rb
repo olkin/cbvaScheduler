@@ -11,10 +11,10 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       sign_in @user
-      flash[:success] = 'Welcome to CBVA!'
+      flash[:success] = "Welcome to #{League::NAME}!"
       redirect_to @user
     else
-      render 'new'
+      render :new
     end
   end
 
@@ -22,20 +22,14 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+=begin
+  #TODO: update??
   def change_vip_status
     @user = User.find(params[:id])
     @user.update_attribute(:vip, !@user.vip)
     redirect_to users_path
   end
-
-  def destroy
-    @user = User.find(params[:id])
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: "User #{@user.name} was successfully destroyed." }
-      format.json { head :no_content }
-    end
-  end
+=end
 
   private
 

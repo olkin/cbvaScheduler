@@ -1,21 +1,8 @@
-<p>
-  <strong>Team:</strong>
-  <%= @standing.team.name %>
-</p>
+<% @league = @standing.league %>
+<%= render 'leagues/existing_weeks'%>
 
-
-<p>
-  <strong>Captain:</strong>
-  <%= @standing.team.captain %>
-</p>
-
-<% if vip? %>
-    <p>
-      <strong>Email:</strong>
-      <%= @standing.team.email %>
-    </p>
-<% end %>
-
+<% @team = @standing.team %>
+<%= render 'teams/show' %>
 
 <p>
   <strong>Pool:</strong>

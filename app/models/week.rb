@@ -1,4 +1,5 @@
 class Week < ActiveRecord::Base
+  default_scope { order('week DESC') }
   belongs_to :league
   has_many :tier_settings, dependent: :destroy
   has_many :standings, dependent:  :destroy
@@ -15,9 +16,11 @@ class Week < ActiveRecord::Base
     self.week ? "Week #{self.week + 1}" : 'Current Settings'
   end
 
+=begin
   def update_stats
     self.standings.each {|standing| standing.reset_stats}
   end
+=end
 
   def next_missing_tier
     all_tiers = self.tier_settings.all.map { |setting| setting[:tier] }.uniq.sort

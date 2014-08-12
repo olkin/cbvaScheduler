@@ -36,9 +36,7 @@
       <% @teams.each_with_index do |team, idx| %>
           <tr>
             <td><%= idx + 1 %></td>
-            <% cur_week = team.league.cur_week %>
-            <% standing = cur_week.standings.all.find_by(team: team) if cur_week %>
-            <td><%= link_to team.name, (standing_path(standing) if standing) %></td>
+            <td><%= link_to team.name, team %></td>
             <td><%= team.captain %></td>
             <% if vip? %>
                 <td><%= team.email %></td>

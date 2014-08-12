@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'leagues/index_1' do
+describe 'leagues/index' do
 
   context 'no leagues registered' do
     it 'displays a message' do

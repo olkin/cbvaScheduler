@@ -53,19 +53,24 @@ describe WeeksController do
     end
   end
 
+  pending 'DELETE destroy only by admin'
+  #pending 'save settings'
 
   describe 'DELETE destroy' do
     it 'destroys the requested week' do
       expect {
         delete :destroy, {:id => @week.to_param}, valid_session
-      }.to change(Week, :count).by(-1)
+      }.to change(Week, :count).by(0)
     end
 
-    it 'redirects to the league page' do
+    it 'redirects to the week page' do
       delete :destroy, {:id => @week.to_param}, valid_session
-      response.should redirect_to(league_url(@week.league))
+      response.should redirect_to(@week)
+      flash[:notice].should match(/cannot be destroyed/)
     end
   end
+
+=begin
 
   describe 'PUT save_settings' do
     it 'adds new week' do
@@ -87,5 +92,6 @@ describe WeeksController do
       response.should redirect_to(league_url(@week.league))
     end
   end
+=end
 
 end

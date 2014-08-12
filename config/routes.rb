@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   #get 'weeks/show'
 
-  root 'leagues#index_1'
+  root 'leagues#index'
   resources :sessions, only: [:new, :create, :destroy]
   match '/signin',  to: 'sessions#new',         via: 'get'
   match '/signout', to: 'sessions#destroy',     via: 'delete'
@@ -22,15 +22,15 @@ Rails.application.routes.draw do
       resources :matches, only: :update
     end
 
-    resources :teams, :shallow => true, except: :show
+    resources :teams, :shallow => true
   end
 
-  resources :users do
-    member do
-      put :change_vip_status
-      put :destroy
-    end
-  end
+  resources :users , except: [:destroy, :edit] #do
+#    member do
+#       put :change_vip_status
+#       put :destroy
+#     end
+#   end
 
 
   # The priority is based upon order of creation: first created -> highest priority.

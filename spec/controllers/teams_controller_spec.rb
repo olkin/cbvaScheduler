@@ -20,8 +20,9 @@ require 'spec_helper'
 
 describe TeamsController do
 
-  let(:league) {FactoryGirl.create(:league)}
-  let(:valid_attributes) {FactoryGirl.attributes_for(:team).merge(:league_id=>league.id)}
+  before {
+    @team = FactoryGirl.build(:team)
+  }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -29,13 +30,11 @@ describe TeamsController do
   let(:valid_session) { {} }
 
   describe 'when team is created' do
-    before(:each) do
-      @team = FactoryGirl.create(:team, league: league)
-    end
+    before { @team.save! }
 
-    describe 'GET index_1' do
+    describe 'GET index' do
       it 'assigns all teams as @teams' do
-        get :index_1, {league_id: league.id}, valid_session
+        get :index, {league_id: @team.league.id}, valid_session
         assigns(:teams).should eq([@team])
       end
     end
@@ -104,28 +103,31 @@ describe TeamsController do
 
   describe 'GET new' do
     it 'assigns a new team as @team' do
-      get :new, {league_id: league.id}, valid_session
+      get :new, {league_id: @team.league.id}, valid_session
       assigns(:team).should be_a_new(Team)
     end
   end
 
   describe 'POST create' do
+    before {
+      @league  = FactoryGirl.create(:league)
+    }
     describe 'with valid params' do
       it 'creates a new Team' do
         expect {
-          post :create, {:team => valid_attributes, league_id: league.id}, valid_session
+          post :create, {:team => @team.attributes, league_id: @league.id}, valid_session
         }.to change(Team, :count).by(1)
       end
 
       it 'assigns a newly created team as @team' do
-        post :create, {:team => valid_attributes, league_id: league.id}, valid_session
+        post :create, {:team => @team.attributes, league_id: @league.id}, valid_session
         assigns(:team).should be_a(Team)
         assigns(:team).should be_persisted
       end
 
       it 'redirects to the league team list' do
-        post :create, {:team => valid_attributes, league_id: league.id}, valid_session
-        response.should redirect_to(league_teams_url(league))
+        post :create, {:team => @team.attributes, league_id: @league.id}, valid_session
+        response.should redirect_to(league_teams_url(@league))
         #notice: 'Team was successfully created.'
       end
     end
@@ -134,14 +136,14 @@ describe TeamsController do
       it 'assigns a newly created but unsaved team as @team' do
         # Trigger the behavior that occurs when invalid params are submitted
         Team.any_instance.stub(:save).and_return(false)
-        post :create, {:team => { 'name' => 'invalid value'}, league_id: league.id}, valid_session
+        post :create, {:team => { 'name' => 'invalid value'}, league_id: @league.id}, valid_session
         assigns(:team).should be_a_new(Team)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Team.any_instance.stub(:save).and_return(false)
-        post :create, {:team => { 'name' => 'invalid value'}, league_id: league.id}, valid_session
+        post :create, {:team => { 'name' => 'invalid value'}, league_id: @league.id}, valid_session
         response.should render_template('new')
       end
     end

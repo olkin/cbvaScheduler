@@ -61,18 +61,29 @@ describe TierSetting do
     }
   end
 
+  it 'valid schedule pattern format' do
+    valid_schedules = [
+        [[[[1,2,3]],[[2,1,4]],[[1,2,1]]]]
+    ]
+
+    valid_schedules.each { |schedule|
+      FactoryGirl.build(:tier_setting,  schedule_pattern: schedule, total_teams: 2).should be_valid
+    }
+
+  end
 
   it 'schedule pattern is invalid' do
     invalid_formats = [nil,[],[[]],
                        [[[1,2,3]],[[1,2,3]]],
-                       [[[1,3,3]],[[1,2,3]]],
+                       [[[[1,3,3]],[[1,2,3]]]],
                        [[[1,2,3],[1,2,4],[[1,2,3]],[[1,2,3]]]],
                        [[[1,2,3],[1,2,3],[[1,2,3]],[[1,2,3]]]],
                        [[[1,2,13],[[1,2,3]],[[1,2,3]]]],
                        [[[1,2,3],[[]],[[1,2,3]]]],
                        [[[1,2,3],[],[[1,2,3]]]],
                        [[[1,2,3],1,[[1,2,3]]]],
-                       [[[1,2,3],nil,[[1,2,3]]]]
+                       [[[1,2,3],nil,[[1,2,3]]]],
+                       [[[['1','2','3']],[['2','1','4']],[['1','2','1']]]]
 
     ]
 

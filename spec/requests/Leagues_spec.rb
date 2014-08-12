@@ -45,10 +45,10 @@ describe 'leagues' do
   describe 'league page' do
     before {
       @league = FactoryGirl.create(:league)
-      visit league_path(@league)
+      get league_path(@league)
     }
 
-    it { should have_title(@league.description) }
-    it { should have_content('Registration is not finished')}
+    it { response.status.should be 302}
+    it { response.should redirect_to league_weeks_path(@league)}
   end
 end

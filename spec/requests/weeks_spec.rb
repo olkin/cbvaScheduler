@@ -15,9 +15,11 @@ describe 'Weeks' do
     it 'works!' do
       visit week_path(@week)
       page.title.should match /#{@week.league.description}/
-      page.should have_content(/Tier Settings/)
+      page.should have_content(/Tiers Settings/)
       page.should have_content(/Standings/)
-      page.should_not have_content(/Matches/)
+      page.should_not have_content(/No matches/)
     end
   end
+
+  pending 'display real week with(out) matches'
 end

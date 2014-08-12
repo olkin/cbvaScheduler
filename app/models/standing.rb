@@ -1,5 +1,6 @@
 class Standing < ActiveRecord::Base
   before_create { reset_stats }
+  default_scope { order('week_id, tier, rank')}
 
   belongs_to :team
   belongs_to :week

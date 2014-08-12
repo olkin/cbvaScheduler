@@ -12,7 +12,7 @@ describe 'Teams' do
     end
   end
 
-  describe 'team page' do
+  describe 'teams page' do
     before{
       @team1 = FactoryGirl.create(:team, league: league, name: 'Team1')
       @team2 = FactoryGirl.create(:team, league: league, name: 'Team2')
@@ -22,42 +22,30 @@ describe 'Teams' do
       it { should have_content(@team1.name) }
       it { should have_content(@team2.name) }
       it { should have_content(league.teams.count) }
-      it { should have_link('Settings', href: league_weeks_path(league)) }
-      it { should have_link('League', href: league_path(league))}
   end
 
-  describe 'team creation' do
-    before {visit league_teams_path(league)}
-    it 'should not create a team' do
-      expect { click_link 'Add Team' }.not_to change(Team, :count)
-    end
+  describe 'team page' do
+    before{
+      @team1 = FactoryGirl.create(:team, league: league, name: 'TName', captain: 'CName')
+      visit team_url(@team1)
+    }
 
-    context 'with information' do
-      before { click_link 'Add Team'
-      }
+    it { should have_content(/TName/) }
+    it { should have_content(/CName/) }
+  end
 
-      describe 'with invalid information' do
+  describe 'team page with standing' do
+    before{
+      @week = FactoryGirl.create(:week)
+      team = FactoryGirl.build(:team,  name: 'TName', captain: 'CName', league: @week.league)
+      @standing = FactoryGirl.create(:standing, team: team, tier: 3, rank: 1, week: @week)
+      visit team_url(@standing.team)
+    }
 
-        describe 'error messages' do
-          before { click_button 'Create Team'
-          }
-          it { should have_content('error') }
-        end
-      end
-
-      describe 'with valid information' do
-
-        before do
-          valid_attributes = FactoryGirl.attributes_for(:team)
-          fill_in 'Name',    with: valid_attributes[:name]
-          fill_in 'Captain', with: valid_attributes[:captain]
-        end
-
-        it 'should create a team' do
-          expect { click_button 'Create Team' }.to change(Team, :count).by(1)
-        end
-      end
-    end
+    it { should have_content(/TName/) }
+    it { should have_content(/CName/) }
+    it { should have_content(/3/) }
+    it { should have_content(/1/) }
   end
 
 end

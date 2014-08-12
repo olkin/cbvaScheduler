@@ -26,7 +26,8 @@ describe TierSettingsController do
 #  let(:valid_attributes) {tier_setting.attributes}
   
   before {
-    @tier_setting = FactoryGirl.create(:tier_setting)
+    @week = FactoryGirl.create(:week)
+    @tier_setting = FactoryGirl.build(:tier_setting, week: @week)
   }
 
   # This should return the minimal set of values that should be in the session
@@ -36,7 +37,7 @@ describe TierSettingsController do
 
   describe 'GET new' do
     it 'assigns a new tier_setting as @tier_setting' do
-      get :new, {week_id: @tier_setting.week.to_param}, valid_session
+      get :new, {week_id: @week.to_param}, valid_session
       assigns(:tier_setting).should be_a_new(TierSetting)
     end
   end
@@ -53,19 +54,19 @@ describe TierSettingsController do
     describe 'with valid params' do
       it 'creates a new TierSetting' do
         expect {
-          post :create, {:tier_setting => @tier_setting.attributes, week_id: @tier_setting.week.to_param}, valid_session
+          post :create, {:tier_setting => @tier_setting.attributes, week_id: @week.to_param}, valid_session
         }.to change(TierSetting, :count).by(1)
       end
 
       it 'assigns a newly created tier_setting as @tier_setting' do
-        post :create, {:tier_setting => @tier_setting.attributes,  week_id: @tier_setting.week.to_param}, valid_session
+        post :create, {:tier_setting => @tier_setting.attributes,  week_id: @week.to_param}, valid_session
         assigns(:tier_setting).should be_a(TierSetting)
         assigns(:tier_setting).should be_persisted
       end
 
       it 'redirects to the created tier_setting' do
-        post :create, {:tier_setting => @tier_setting.attributes, week_id: @tier_setting.week.to_param}, valid_session
-        response.should redirect_to(@tier_setting.week)
+        post :create, {:tier_setting => @tier_setting.attributes, week_id: @week.to_param}, valid_session
+        response.should redirect_to(@week)
       end
     end
 
@@ -73,14 +74,14 @@ describe TierSettingsController do
       it 'assigns a newly created but unsaved tier_setting as @tier_setting' do
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        post :create, {:tier_setting => { 'week_id' => 'invalid value' },  week_id: @tier_setting.week.to_param}, valid_session
+        post :create, {:tier_setting => { 'week_id' => 'invalid value' },  week_id: @week.to_param}, valid_session
         assigns(:tier_setting).should be_a_new(TierSetting)
       end
 
       it 're-renders the \'new\' template' do
         # Trigger the behavior that occurs when invalid params are submitted
         TierSetting.any_instance.stub(:save).and_return(false)
-        post :create, {:tier_setting => { 'week_id' => 'invalid value' },  week_id: @tier_setting.week.to_param}, valid_session
+        post :create, {:tier_setting => { 'week_id' => 'invalid value' },  week_id: @week.to_param}, valid_session
         response.should render_template('new')
       end
     end
@@ -100,6 +101,8 @@ describe TierSettingsController do
 
       it 'assigns the requested tier_setting as @tier_setting' do
         @tier_setting.save!
+        puts "TS: #{@tier_setting.inspect}"
+        puts "TSA: #{@tier_setting.attributes}"
         put :update, {:id => @tier_setting.to_param, :tier_setting => @tier_setting.attributes}, valid_session
         assigns(:tier_setting).should eq(@tier_setting)
       end
@@ -107,7 +110,7 @@ describe TierSettingsController do
       it 'redirects to the tier_setting' do
         @tier_setting.save!
         put :update, {:id => @tier_setting.to_param, :tier_setting => @tier_setting.attributes}, valid_session
-        response.should redirect_to(@tier_setting.week)
+        response.should redirect_to(@week)
       end
     end
 
@@ -141,7 +144,7 @@ describe TierSettingsController do
     it 'redirects to the tier_settings list' do
       @tier_setting.save!
       delete :destroy, {:id => @tier_setting.to_param}, valid_session
-      response.should redirect_to(@tier_setting.week)
+      response.should redirect_to(@week)
     end
   end
 

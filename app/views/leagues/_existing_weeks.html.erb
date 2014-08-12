@@ -1,7 +1,5 @@
-<% @weeks = @week.league.weeks.order('week DESC') %>
-
 <ul>
-  <% @weeks.each { |week|%>
+  <% @league.weeks.each { |week|%>
       <% if admin? or week.week %>
           <li><%= link_to week.name, week_path(week) %> </li>
       <% end %>

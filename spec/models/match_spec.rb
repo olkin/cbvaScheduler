@@ -125,7 +125,7 @@ describe Match do
 
         standing3 = FactoryGirl.create(:standing)
         idx = @match.stats_idx standing3
-        idx.should be_nil
+        idx.should eql 2
       end
 
       it 'gives statistics for split match' do
@@ -133,6 +133,13 @@ describe Match do
         stats = @match.stats
         stats[0][:matches_won].should eql 1
         stats[1][:matches_won].should eql 0
+      end
+
+      it 'gives statistics  with 2nd team win' do
+        @match.score = [[15,21], [16,21]]
+        stats = @match.stats
+        stats[1][:matches_won].should eql 1
+        stats[0][:matches_won].should eql 0
       end
 
 

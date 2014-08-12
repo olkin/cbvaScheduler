@@ -1,6 +1,7 @@
 <% provide(:title, "#{@week.name} for " + @week.league.description) %>
 
-<%= render 'existing_weeks' %>
+<% @league = @week.league %>
+<%= render 'leagues/existing_weeks' %>
 
 <h1> <%= @week.league.description%> </h1>
 

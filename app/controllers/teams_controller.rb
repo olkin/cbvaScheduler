@@ -1,16 +1,12 @@
 class TeamsController < ApplicationController
   before_action :set_league, only: [:new, :create, :index]
-  before_action :set_team, only: [:edit, :update, :destroy]
+  before_action :set_team, only: [:edit, :update, :destroy, :show]
 
 
   # GET /teams
   # GET /teams.json
   def index
-    if @league
-      @teams = @league.teams.all
-    else
-      @teams = Team.search(params[:search])
-    end
+    @teams = @league.teams.all
   end
 
   # GET /teams/new
@@ -20,6 +16,16 @@ class TeamsController < ApplicationController
 
   # GET /teams/1/edit
   def edit
+  end
+
+  def show
+    cur_week = @team.league.cur_week
+    cur_standing = cur_week.standings.find_by(team_id: @team.id) if cur_week
+    if cur_standing
+      redirect_to standing_path(cur_standing)
+    else
+      render :show
+    end
   end
 
   # POST /teams
@@ -54,11 +60,7 @@ class TeamsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_team
-    if @league
-      @team = @league.teams.find(params[:id])
-    else
-      @team = Team.find(params[:id])
-    end
+    @team = Team.find(params[:id])
   end
 
   def set_league

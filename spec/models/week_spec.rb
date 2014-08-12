@@ -37,6 +37,17 @@ describe Week do
     end
   end
 
+  it 'default week is a setting week' do
+    @week.setting?.should be_true
+  end
+
+
+  it '# week is a not setting week' do
+    @week.week = 1
+    @week.setting?.should be_false
+  end
+
+
   it 'has matches associated' do
     @week.matches.should be_empty
 

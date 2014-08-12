@@ -48,10 +48,39 @@ class TierSettingsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def tier_setting_params
-    tier_params = params.require(:tier_setting).permit(:week_id, :tier, :total_teams, :teams_down, :day, :cycle, :set_points, :match_times, :name)
+    tier_params = params.require(:tier_setting).permit(:week_id, :tier, :total_teams, :teams_down, :day, :cycle,  :name)
     #work-around to accept array of arrays
-    tier_params[:schedule_pattern] = params[:tier_setting][:schedule_pattern] if params[:tier_setting][:schedule_pattern]
+    schedule_params = params[:tier_setting][:schedule_pattern]
+    tier_params[:schedule_pattern] = schedule_params_to_int(schedule_params) if schedule_params # not to add a nil value to hash if doesn't exist
+
+    tier_params[:match_times] = params[:tier_setting][:match_times] if params[:tier_setting][:match_times]
+
+    set_points = params[:tier_setting][:set_points]
+    tier_params[:set_points] = set_points_to_int(set_points) if set_points # not to add a nil value to hash if doesn't exist
+
     tier_params
+
+  end
+
+  #TODO: this will be replaced by proper reading of schedule pattern
+  def schedule_params_to_int schedule
+    begin
+      schedule.map!{ |cycle|
+        cycle.map!{|ts|
+          ts.map!{ |game|
+            game.map!(&:to_i)
+          }
+        }
+      }
+    end
+
+    schedule
+  end
+
+  def set_points_to_int set_points
+    begin
+     set_points.map!(&:to_i)
+    end
   end
 
   def set_week

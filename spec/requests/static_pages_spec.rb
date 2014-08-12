@@ -8,16 +8,6 @@ describe 'Static pages' do
     it { should have_title(full_title(page_title)) }
   end
 
-  describe 'Home page' do
-    before { visit root_path }
-
-    let(:heading)    { 'CBVA' }
-    let(:page_title) { '' }
-
-    it { should_not have_title('| Home') }
-    it_should_behave_like 'all static pages'
-  end
-
   describe 'Contact page' do
     before { visit contact_path }
 
@@ -43,10 +33,7 @@ describe 'Static pages' do
     expect(page).to have_title(full_title('About Us'))
     click_link 'Contact'
     expect(page).to have_selector('h1', text: 'Contact')
-    click_link 'Home'
-    click_link 'Sign up now!'
-    expect(page).to have_selector('h1', text: 'Sign up')
-    click_link 'cbva'
+    click_link League::NAME
     expect(page).to have_selector('h1', text: 'Welcome to')
   end
 
