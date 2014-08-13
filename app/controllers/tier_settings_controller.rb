@@ -79,7 +79,7 @@ class TierSettingsController < ApplicationController
 
   def set_points_to_int set_points
     begin
-     set_points.map!(&:to_i)
+      set_points.map!(&:to_i)
     end
   end
 

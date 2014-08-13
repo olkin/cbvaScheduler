@@ -10,15 +10,10 @@ class Team < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
   validates :email, format: { with: VALID_EMAIL_REGEX }, :allow_blank => true
 
-=begin
   def self.search(search)
-    if search
-      Team.where('lower(name) LIKE ? OR lower(captain) LIKE ?', "%#{search.downcase}%", "%#{search.downcase}%").all
-    else
-      Team.all
-    end
+    Team.where('lower(name) LIKE ? OR lower(captain) LIKE ?', "%#{search.downcase}%", "%#{search.downcase}%").all if search
   end
-=end
+
   def short_name
     return unless name
     short_version = name.byteslice(0,17)

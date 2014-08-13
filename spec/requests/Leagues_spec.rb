@@ -21,7 +21,6 @@ describe 'leagues' do
 
       visit leagues_path
       page.should have_content('New event')
-
     end
 
     context 'a league is registered' do
@@ -39,6 +38,15 @@ describe 'leagues' do
         page.should have_content('Edit')
         page.should have_content('Destroy')
       end
+
+      it 'searches team by name' do
+        visit leagues_path
+        fill_in 'search', with: 'team'
+        click_button 'Search'
+
+        page.should have_content('Search results')
+      end
+
     end
   end
 
@@ -51,4 +59,6 @@ describe 'leagues' do
     it { response.status.should be 302}
     it { response.should redirect_to league_weeks_path(@league)}
   end
+
+
 end

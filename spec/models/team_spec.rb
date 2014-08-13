@@ -64,6 +64,7 @@ describe Team do
     end
   end
 
+
   context 'more than 1 teams registered in the league' do
     before { @team2 = FactoryGirl.create(:team, league: @team.league) }
 
@@ -74,6 +75,24 @@ describe Team do
     it 'has unique team names within league' do
       @team2.name = @team.name
       @team2.should_not be_valid
+    end
+
+    it 'searches by team name' do
+      @team.name = 'Team1'
+      @team2.name = 'Team2'
+
+      Team.search('ea').size.should eql 2
+      Team.search('Team13').should be_empty
+    end
+
+    it 'team search is case-insensitive' do
+      @team.name = 'Team1'
+      Team.search('team').should_not be_empty
+    end
+
+    it 'searches by captain name' do
+      @team.captain = 'Captain1'
+      Team.search('Captain').should_not be_empty
     end
   end
 

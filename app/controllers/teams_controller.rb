@@ -6,7 +6,11 @@ class TeamsController < ApplicationController
   # GET /teams
   # GET /teams.json
   def index
-    @teams = @league.teams.all
+    if params[:search]
+      @teams = Team.search(params[:search])
+    else
+      @teams = @league.teams.all
+    end
   end
 
   # GET /teams/new

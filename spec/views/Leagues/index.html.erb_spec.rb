@@ -11,6 +11,11 @@ describe 'leagues/index' do
 
   end
 
+  it 'no leagues registered no search' do
+    render
+    assert_select 'input.btn', value: /Search/, count: 0
+  end
+
   context 'leagues are registered' do
     before do
       @leagues = assign(:leagues,
@@ -36,6 +41,11 @@ describe 'leagues/index' do
       render
       assert_select 'ul>li', text: /Edit/, count: 0
       assert_select 'ul>li', text: /Destroy/, count: 0
+    end
+
+    it 'search by team' do
+      render
+      assert_select 'input.btn', value: /Search/, count: 1
     end
 
 

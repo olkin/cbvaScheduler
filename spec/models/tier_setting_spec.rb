@@ -18,6 +18,7 @@ describe TierSetting do
   it { should respond_to(:week) }
   it { should respond_to(:tier) }
   it { should respond_to(:league) }
+  it { should respond_to(:standings)}
 
   it { should be_valid}
 
@@ -70,6 +71,10 @@ describe TierSetting do
       FactoryGirl.build(:tier_setting,  schedule_pattern: schedule, total_teams: 2).should be_valid
     }
 
+  end
+
+  it 'gives no associated standings' do
+    @tier_setting.standings.should be_empty
   end
 
   it 'schedule pattern is invalid' do
@@ -125,6 +130,13 @@ describe TierSetting do
     }
   end
 
+  it 'gives associated teams' do
+    FactoryGirl.create(:standing, week: @tier_setting.week, tier: @tier_setting.tier)
+    @tier_setting.standings.size.should eql 1
+    FactoryGirl.create(:standing, week: @tier_setting.week, tier: @tier_setting.tier + 1)
+    @tier_setting.standings.size.should eql 1
+  end
+
 
   context '1 tier registered' do
     before {@tier_setting2 = FactoryGirl.create(:tier_setting, tier: 2, week: @tier_setting.week)}
@@ -143,5 +155,6 @@ describe TierSetting do
       @tier_setting2.should_not be_valid
     end
   end
+
 
 end

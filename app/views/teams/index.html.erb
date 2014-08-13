@@ -15,7 +15,8 @@
     <% end %>
 <% else %>
     <h1>Search results</h1>
-    <%= render 'layouts/team_search' %>
+    <%= render 'leagues/team_search' %>
+    <br/>
 <% end %>
 
 <% if @teams.any? %>
@@ -23,7 +24,10 @@
       <thead>
       <tr>
         <th>#</th>
-        <th>Name</th>
+        <% unless @league %>
+            <th>Event</th>
+        <% end %>
+        <th>Team</th>
         <th>Captain</th>
         <% if vip? %>
             <th>Email</th>
@@ -36,6 +40,9 @@
       <% @teams.each_with_index do |team, idx| %>
           <tr>
             <td><%= idx + 1 %></td>
+            <% unless @league %>
+                <td><%= team.league.desc %> </td>
+            <% end %>
             <td><%= link_to team.name, team %></td>
             <td><%= team.captain %></td>
             <% if vip? %>

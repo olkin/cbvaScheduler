@@ -1,5 +1,6 @@
 class Match < ActiveRecord::Base
   MAX_COURTS = 14
+  default_scope { order('game')}
 
   belongs_to :standing1, class_name: 'Standing'
   belongs_to :standing2, class_name: 'Standing'

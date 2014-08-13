@@ -1,6 +1,7 @@
 class TierSetting < ActiveRecord::Base
   belongs_to :week
   has_one :league, through: :week
+  has_many :standings, ->(object) { where tier: object.tier }, through: :week
 
   validates :tier, presence: true, uniqueness: {scope: :week}, numericality: {greater_than: 0, only_integer: true}
   validates :total_teams, numericality:{ greater_than_or_equal_to: 2, only_integer: true}, allow_blank: false

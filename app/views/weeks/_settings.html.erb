@@ -15,11 +15,8 @@
    @standings = @week.standings.order('tier, rank')
 %>
 
-
-<h2>Tiers Settings</h2>
 <%= render 'tier_settings/index' %>
 
-<h2> Standings </h2>
 <%= render 'standings/index' %>
 
 <% if admin? and @week.errors.empty? %>
