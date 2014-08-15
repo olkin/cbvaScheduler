@@ -153,7 +153,6 @@ describe Week do
       @week.tier_settings.find_by_tier(2).update_attribute(:teams_down, 2)
       @week.should_not be_valid
     end
-
   end
 
 end

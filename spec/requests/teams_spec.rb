@@ -4,12 +4,19 @@ describe 'Teams' do
   subject { page }
   let(:league) { FactoryGirl.create(:league) }
 
-  describe 'GET /teams' do
-    it 'works! (now write some real specs)' do
+  describe 'GET league/teams' do
+    it 'works! ' do
       # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
       get league_teams_path(league)
       response.status.should be(200)
     end
+
+    it 'get all teams for admin' do
+      login_admin
+      get teams_path
+      response.status.should be(200)
+    end
+
   end
 
   describe 'teams page' do

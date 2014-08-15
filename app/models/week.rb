@@ -90,6 +90,7 @@ class Week < ActiveRecord::Base
       team_offset += setting[:total_teams]
     }
 =end
+    true
   end
 
   def setting?

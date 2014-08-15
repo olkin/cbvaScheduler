@@ -1,5 +1,5 @@
 class WeeksController < ApplicationController
-  before_action :set_week, only: [:destroy, :show, :save_settings]
+  before_action :set_week, only: [:destroy, :show, :save]
   #before_action :authenticate, except: [:index, :show]
 
 
@@ -28,7 +28,6 @@ class WeeksController < ApplicationController
     end
   end
 
-=begin
   def save_settings
     error_reason = 'No admin rights' unless admin?
     error_reason ||= ('Not a setting week' unless @week.setting?)
@@ -41,7 +40,6 @@ class WeeksController < ApplicationController
       redirect_to league_url(@week.league), notice: 'Settings has been changed. Schedule is updated.'
     end
   end
-=end
 
   private
 

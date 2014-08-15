@@ -39,6 +39,7 @@ describe 'Standings' do
       page.should_not have_content(/hibited this team from being saved/)
       page.should have_content(/ was successfully added to registration./)
       page.should have_content('to fix setup')
+      page.should_not have_button('Save settings')
     end
 
     it 'can edit a tier' do
@@ -51,7 +52,7 @@ describe 'Standings' do
       page.should have_content('to fix setup')
     end
 
-    it 'next tier has default tier#'
+    it 'next tier displays default tier#'
 
     it 'can destroy a tier' do
       FactoryGirl.create(:standing, week: @week)

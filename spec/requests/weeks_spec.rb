@@ -33,11 +33,28 @@ describe 'Weeks' do
       page.should have_button('Search')
     end
 
-    it 'shows settings  to admin' do
-      page.should have_link('Settings')
-      page.should_not have_link('PDF Schedules')
+    context 'admin actions' do
+      before { login_admin }
+
+      it 'shows settings ' do
+        visit week_path(@week)
+        page.should have_link('Settings')
+        page.should_not have_link('PDF Schedules')
+      end
+
+      it 'allows to save valid week' do
+        FactoryGirl.create(:tier_setting, week: @week)
+        FactoryGirl.create(:standing, week: @week, rank: 1)
+        FactoryGirl.create(:standing, week: @week, rank: 2)
+
+        visit week_path(@week)
+        page.should have_link('Save settings')
+      end
     end
+
+
   end
+
 
   pending 'displays settings week'
 

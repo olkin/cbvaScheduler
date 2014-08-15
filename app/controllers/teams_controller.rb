@@ -7,8 +7,10 @@ class TeamsController < ApplicationController
   def index
     if params[:search]
       @teams = Team.search(params[:search])
-    else
+    elsif @league
       @teams = @league.teams.all
+    elsif admin?
+      @teams = Team.all
     end
   end
 

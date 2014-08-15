@@ -35,6 +35,7 @@ describe 'TierSettings' do
       page.should_not have_content(/prohibited this tier_setting from being saved/)
       page.should have_content(/ were added successfully./)
       page.should have_content('to fix setup')
+      page.should_not have_button('Save settings')
     end
 
     it 'can edit a tier' do
