@@ -6,7 +6,7 @@ describe 'leagues/index' do
     it 'displays a message' do
       render
       assert_select 'ul>li', count: 0
-      assert_select 'div', /No open events/
+      rendered.should have_content /No open events/
     end
 
   end

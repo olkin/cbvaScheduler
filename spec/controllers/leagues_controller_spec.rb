@@ -4,7 +4,9 @@ describe LeaguesController do
 
   context 'with valid attributes' do
 
-    before { @league = FactoryGirl.create(:league)}
+    before {
+      @league = FactoryGirl.create(:league)
+    }
 
     describe 'GET new' do
       it 'assigns a new league as league' do

@@ -1,6 +1,8 @@
 class StandingsController < ApplicationController
   before_action :set_week, only: [:new, :create]
   before_action :set_standing, only: [:show, :edit, :update, :destroy]
+#  before_action :authenticate, except: [:show]
+
 
   # GET /standings/1
   def show

@@ -16,12 +16,56 @@ describe 'leagues' do
       page.should_not have_content('New event')
     end
 
-    it 'admin can create a new league' do
-      login_admin
-
+    it 'doesn\'t display any event' do
       visit leagues_path
-      page.should have_content('New event')
+      page.should have_content('No open events')
+
+      click_link 'Leagues'
+      page.should have_content('No open events')
+
+      page.should_not have_button('Search')
     end
+
+
+    context 'admin\'s actions:' do
+      before{
+        login_admin
+        visit leagues_path
+
+        click_link 'Add event'
+
+        @league = FactoryGirl.build(:league, description: 'AnyName')
+        fill_in 'Desc', with: @league.desc
+        fill_in 'Description', with: 'AnyName'
+        click_button 'Create League'
+      }
+
+      it 'creates a league' do
+        page.should have_content('Event AnyName was successfully created')
+        page.should have_selector('ul>li')
+
+        page.should_not have_content('No open events')
+        page.should have_content('Add event')
+        page.should have_button('Search')
+      end
+
+      it 'edits existing league' do
+        click_link 'Edit'
+        fill_in 'Description', with: 'AnotherName'
+        click_button 'Update League'
+
+        page.should have_content('Event AnotherName was successfully updated')
+        page.should have_content('AnotherName')
+      end
+
+      it 'removes existing league' do
+        click_link 'Destroy'
+        page.should have_content('Event AnyName was successfully destroyed')
+        page.should have_content('No open events')
+      end
+
+    end
+
 
     context 'a league is registered' do
       before {
@@ -45,6 +89,8 @@ describe 'leagues' do
         click_button 'Search'
 
         page.should have_content('Search results')
+        #TODO: check that 'team' is displayed in search text field
+        page.should have_content('No results')
       end
 
     end

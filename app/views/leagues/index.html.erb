@@ -7,23 +7,13 @@
     <%= render 'team_search' %>
 
     <ul class="rounded-list">
-      <% @leagues.each do |league_type| %>
-          <li class="text-left">
-            <h1><%= link_to "#{league_type.description}", league_type %></h1>
-            <% if admin? %>
-                <%= link_to 'Edit', edit_league_path(league_type) %> |
-                <%= link_to 'Destroy', league_type, method: :delete, data: {confirm: 'Are you sure?'} %> |
-            <% end %>
-          </li>
-      <% end %>
+      <%= render @leagues %>
     </ul>
 
 <% else %>
-
-    <div class="alert">
       No open events. Try again later.
-    </div>
-
 <% end %>
 
-<%= link_to 'New event', new_league_path if admin? %>
+<br/>
+
+<%= link_to 'Add event', new_league_path if admin? %>

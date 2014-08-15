@@ -13,7 +13,7 @@ class Week < ActiveRecord::Base
   validates_with StandingsValidator
 
   def name
-    self.week ? "Week #{self.week + 1}" : 'Current Settings'
+    self.week ? "Week #{self.week + 1}" : 'Settings'
   end
 
 =begin

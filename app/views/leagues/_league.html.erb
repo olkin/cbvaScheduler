@@ -1,0 +1,7 @@
+<li class="text-left">
+  <h1><%= link_to "#{league.description}", league %></h1>
+  <% if admin? %>
+      <%= link_to 'Edit', edit_league_path(league) %>
+      <%= link_to 'Destroy', league, method: :delete, data: {confirm: 'Are you sure?'} %>
+  <% end %>
+</li>

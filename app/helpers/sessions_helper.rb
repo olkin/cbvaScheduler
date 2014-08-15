@@ -12,11 +12,11 @@ module SessionsHelper
   end
 
   def admin?
-    !current_user.nil? and current_user.name == 'admin'
+    signed_in? and current_user.name == 'admin'
   end
 
   def vip?
-    signed_in? and (admin? or current_user.vip)
+    admin? or (signed_in? and current_user.vip)
   end
 
   def current_user=(user)
@@ -33,6 +33,10 @@ module SessionsHelper
                                   User.digest(User.new_remember_token))
     cookies.delete(:remember_token)
     self.current_user = nil
+  end
+
+  def authenticate
+    (redirect_to signin_path, notice: 'Authentication is needed to change the settings') unless vip?
   end
 
 end

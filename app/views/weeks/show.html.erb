@@ -5,16 +5,22 @@
 
 <h1> <%= @week.league.description%> </h1>
 
-<h1><%= @week.name %></h1>
+<% if vip? or @week.week %>
 
-<% if @week.week %>
-    <%= render 'matches' %>
+    <h1><%= @week.name %></h1>
+
+    <% if @week.week %>
+        <%= render 'matches' %>
+    <% elsif vip? %>
+        <%= render 'settings' %>
+    <% end%>
+
 <% else %>
-    <%= render 'settings' %>
-<% end%>
+    No schedule available. Check again later.
+<%end%>
+
 
 <br/>
-<%= link_to 'PDF Schedules', week_path(@week, format: 'pdf') %> |
-<%= link_to 'All Leagues', leagues_path %>
+<%= link_to 'All Events', leagues_path %>
 
 

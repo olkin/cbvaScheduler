@@ -1,7 +1,7 @@
 <%= form_for [@week, @standing] do |f| %>
   <% if @standing.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@standing.errors.count, 'error') %> prohibited this tier_setting from being saved:</h2>
+      <h2><%= pluralize(@standing.errors.count, 'error') %> prohibited this team from being saved:</h2>
 
       <ul>
       <% @standing.errors.full_messages.each do |message| %>

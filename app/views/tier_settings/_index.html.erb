@@ -4,7 +4,6 @@
       <thead>
       <tr>
         <th>Tier</th>
-        <th>Name</th>
         <th>Total teams</th>
         <th>Teams down</th>
         <th>Day</th>
@@ -13,7 +12,7 @@
         <th>Set points</th>
         <th>Times</th>
         <% if admin? %>
-            <th colspan="3"></th>
+            <th colspan="2"></th>
         <% end %>
       </tr>
       </thead>
@@ -29,5 +28,5 @@
 <br>
 
 <% if admin? %>
-    <%= link_to 'New Tier setting', new_week_tier_setting_path(@week) %>
+    <%= link_to 'Add Tier', new_week_tier_setting_path(@week) %>
 <% end %>

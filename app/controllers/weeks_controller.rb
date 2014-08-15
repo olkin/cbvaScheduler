@@ -1,5 +1,7 @@
 class WeeksController < ApplicationController
   before_action :set_week, only: [:destroy, :show, :save_settings]
+  #before_action :authenticate, except: [:index, :show]
+
 
   def index
     @league = League.find(params[:league_id])

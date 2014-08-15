@@ -1,6 +1,7 @@
 class TierSettingsController < ApplicationController
   before_action :set_week, only: [:new, :create]
   before_action :set_tier_setting, only: [:edit, :update, :destroy]
+#  before_action :authenticate
 
   # GET /tier_settings/new
   def new
@@ -53,7 +54,7 @@ class TierSettingsController < ApplicationController
     schedule_params = params[:tier_setting][:schedule_pattern]
     tier_params[:schedule_pattern] = schedule_params_to_int(schedule_params) if schedule_params # not to add a nil value to hash if doesn't exist
 
-    tier_params[:match_times] = params[:tier_setting][:match_times] if params[:tier_setting][:match_times]
+    tier_params[:match_times] = match_times_to_int params[:tier_setting][:match_times] if params[:tier_setting][:match_times]
 
     set_points = params[:tier_setting][:set_points]
     tier_params[:set_points] = set_points_to_int(set_points) if set_points # not to add a nil value to hash if doesn't exist
@@ -65,22 +66,36 @@ class TierSettingsController < ApplicationController
   #TODO: this will be replaced by proper reading of schedule pattern
   def schedule_params_to_int schedule
     begin
-      schedule.map!{ |cycle|
+      schedule = eval(schedule) if schedule.is_a?String
+      result = (schedule).map!{ |cycle|
         cycle.map!{|ts|
-          ts.map!{ |game|
+          ts.map! do |game|
             game.map!(&:to_i)
-          }
+          end
         }
       }
+    rescue
     end
 
-    schedule
+    result || schedule
   end
 
   def set_points_to_int set_points
     begin
+      set_points = eval(set_points) if set_points.is_a?String
       set_points.map!(&:to_i)
+    rescue
     end
+
+    set_points
+  end
+
+  def match_times_to_int match_times
+    begin
+      match_times = eval(match_times) if match_times.is_a?String
+    rescue
+    end
+    match_times
   end
 
   def set_week
