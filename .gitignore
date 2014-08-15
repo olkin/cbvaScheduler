@@ -15,6 +15,9 @@
 /log/*.log
 /tmp
 
+# Ignore test coverage results
+/coverage/
+
 # Ignore other unneeded files.
 database.yml
 doc/
