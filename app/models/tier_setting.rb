@@ -1,4 +1,6 @@
 class TierSetting < ActiveRecord::Base
+  default_scope { order('week_id, tier')}
+
   belongs_to :week
   has_one :league, through: :week
   has_many :standings, ->(object) { where tier: object.tier }, through: :week

@@ -28,72 +28,95 @@ class Week < ActiveRecord::Base
     missing_tiers[0] || all_tiers.size + 1
   end
 
-  def submit_settings
-=begin
-    #update week details
-    cur_week_nr = @week.league.weeks.maximum("week") || 0
-    @week.league.weeks.where(week: cur_week_nr).destroy_all
-    cur_week = @week.dup
-    cur_week.week = cur_week_nr
-    cur_week.save
-
-    #update standings
-    new_standings = @week.standings.all.sort_by { |standing| [standing[:tier], standing[:rank]]}
-    @week.standings.update_all(rank: nil)
-    rank = 0
-    @week.tier_settings.all.order(:tier).each { |setting|
-      tier = setting[:tier]
-      setting[:total_teams].times{
-        break unless new_standings[rank]
-        setting_standing = @week.standings.find_by_team_id(new_standings[rank][:team_id])
-        setting_standing.tier = tier
-        setting_standing.rank = rank + 1
-        setting_standing.save
-
-        #setting_standing.save
-        new_standing = setting_standing.dup
-        new_standing.week_id = cur_week.id
-        new_standing.save
-        rank += 1
-      }
-    }
-
-    #update schedule after standings are done
-    team_offset = 0
-    standings = @week.standings
-    @week.tier_settings.all.order(:tier).each { |setting|
-      cycles_schedule = eval(setting.schedule_pattern)
-      cycle = setting.cycle
-      if !(cycle and cycle.between?(1, cycles_schedule.size))
-        cycle = 1
-        #setting = @week.tier_settings.find_by_tier(setting[:tier])
-        setting.cycle = 1
-        setting.save
-      end
-
-      new_setting = setting.dup
-      new_setting.week_id = cur_week.id
-      new_setting.save
-
-      schedule = cycles_schedule[cycle - 1]
-
-      schedule.each_with_index { |ts_schedule, game_idx|
-        ts_schedule.each { |game|
-          team1 = standings.find_by_rank(game[0].to_i + team_offset).team_id
-          team2 = standings.find_by_rank(game[1].to_i + team_offset).team_id
-          court = game[2]
-          puts "Game #{game_idx + 1}: #{team1} vs #{team2} on #{court}"
-          new_match = cur_week.matches.create(team1_id: team1, team2_id: team2, court: court, game: game_idx + 1)
-          new_match.save
-        }
-      }
-      team_offset += setting[:total_teams]
-    }
-=end
-    true
+  def submit
+    if self.setting?
+      submit_settings if valid?
+    else
+      submit_results
+    end
   end
 
   def setting?
     self.week.nil?
   end
+
+  private
+  def submit_settings
+    cur_week_nr = self.league.cur_week.week || 0
+
+    duplicate_settings cur_week_nr
+
+    generate_schedule cur_week_nr
+
+    true
+  end
+
+
+  def submit_results
+    return false unless self.week
+
+    # update stats
+
+    # rerank based on results
+
+    # duplicate settings of this week to setting week
+
+    # submit settings to a new week (new week should be created)
+  end
+
+  def rerank standings
+    standings.update_all(rank: nil)   # not to have dups
+
+    standings_ranks = self.tier_settings.map { |setting|
+      (1..setting.total_teams).to_a.map { |rank| [setting.tier, rank] }
+    }.flatten(1)
+
+    standings.each_with_index { |standing, idx|
+      standing.tier = standings_ranks[idx][0]
+      standing.rank = standings_ranks[idx][1]
+      standing.save
+    }
+  end
+
+  def duplicate_settings cur_week_nr
+    return if cur_week_nr == self.week
+
+    self.league.weeks.where(week: cur_week_nr).destroy_all
+    new_week = self.dup
+    new_week.week = cur_week_nr
+    new_week.save
+
+    self.tier_settings.each {|setting| new_week.tier_settings.create(setting.dup.attributes) }
+
+    # order setting standings & copy to current week
+    standings = self.standings    # will be ordered
+    rerank standings
+
+    # and also save for current week
+    standings.each { |standing| new_week.standings.create(standing.dup.attributes) }
+
+  end
+
+  def generate_schedule cur_week_nr
+    cur_week = self.league.weeks.find_by_week(cur_week_nr)
+    return unless cur_week
+
+    cur_week.tier_settings.each { |setting|
+      cycle = (setting.cycle || 1) - 1
+      schedule = setting.schedule_pattern[cycle - 1] || setting.schedule_pattern.first
+      schedule.each_with_index { |ts_schedule, game_idx|
+        game_nr = game_idx + 1
+        ts_schedule.each { |game|
+          standing1 = cur_week.standings.find_by(rank: game[0], tier: setting.tier)
+          standing2 = cur_week.standings.find_by(rank: game[1], tier: setting.tier)
+          court = game[2]
+
+          new_match = Match.new(standing1: standing1, standing2: standing2, court: court, game: game_nr)
+          new_match.save
+        }
+      }
+    }
+  end
+
+
 end

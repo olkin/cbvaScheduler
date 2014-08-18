@@ -106,6 +106,62 @@ describe Week do
       @week.should_not be_valid
     end
 
+    context 'schedule for the week is generated' do
+      before {
+        @week.submit
+        @cur_week = @week.league.cur_week
+      }
+
+      it 'new week is created' do
+        Week.count.should eql 2
+        @cur_week.should_not eql @week
+        @cur_week.week.should eql 0
+      end
+
+      it 'settings are copied to the week' do
+        TierSetting.count.should eql 2
+        @cur_week.tier_settings.first.schedule_pattern.should eql @week.tier_settings.first.schedule_pattern
+      end
+
+      it 'standings are copied to the week' do
+        @cur_week.standings.count.should eql 2
+        @week.league.teams.count.should eql 2
+        Standing.count.should eql 4
+      end
+
+      it 'matches are generated for the new week' do
+        Match.count.should eql 3
+      end
+
+      context 'cur week is replaced by settings on submit' do
+        before {
+          @cur_week.standings.destroy_all
+          new_schedule_pattern =  @cur_week.tier_settings.first.schedule_pattern
+          new_schedule_pattern[0][0][0][2] = 3 #changed court #
+
+          @week.tier_settings.first.update_attribute(:schedule_pattern, new_schedule_pattern)
+
+          @week.submit
+          @cur_week = @week.league.cur_week
+        }
+
+        it 'old settings are replaced by new settings' do
+          TierSetting.count.should be 2
+        end
+
+        it 'old standings are replaced by new standings' do
+          Standing.count.should be 4
+        end
+
+        it 'old matches are removed' do
+          puts Match.all.inspect
+          Match.count.should be 3
+          @cur_week.matches.find_by_game(1).court.should eql 3
+        end
+      end
+
+    end
+
   end
 
 
