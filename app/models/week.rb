@@ -16,6 +16,10 @@ class Week < ActiveRecord::Base
     self.week ? "Week #{self.week + 1}" : 'Settings'
   end
 
+  def setting?
+    self.week.nil?
+  end
+
 =begin
   def update_stats
     self.standings.each {|standing| standing.reset_stats}
@@ -34,10 +38,6 @@ class Week < ActiveRecord::Base
     else
       submit_results
     end
-  end
-
-  def setting?
-    self.week.nil?
   end
 
   private

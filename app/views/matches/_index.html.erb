@@ -1,11 +1,7 @@
-<% matches_by_game = @tier_matches.group_by{ |match| match.game}.sort %>
-
-<% matches_by_game.each do |_, game_matches|%>
+<% @matches.group_by{ |match| match.game}.sort.each do |_,game_matches| %>
     <p>
-    <% game_matches.sort{|x,y| x[:court]<=>y[:court]}.each do |match| %>
-       <% @match = match %>
-       <%= render 'matches/form' %>
-    <% end %>
+        <% game_matches.sort!{ |x,y| x.court<=>y.court}%>
+        <%= render game_matches%>
     </p>
 <%end%>
 

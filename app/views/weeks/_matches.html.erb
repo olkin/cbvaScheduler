@@ -1,8 +1,8 @@
 <% @matches = @week.matches %>
 
 <% if @matches.any? %>
-    Matches will be here <%= @matches.size %>
-
+    <%= render 'matches/index'%>
+    <br/>
     <%= link_to 'PDF Schedules', week_path(@week, format: 'pdf') %> |
 <% else %>
     No matches

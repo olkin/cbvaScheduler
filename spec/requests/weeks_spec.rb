@@ -42,21 +42,31 @@ describe 'Weeks' do
         page.should_not have_link('PDF Schedules')
       end
 
-      it 'allows to save valid week' do
-        FactoryGirl.create(:tier_setting, week: @week)
-        FactoryGirl.create(:standing, week: @week, rank: 1)
-        FactoryGirl.create(:standing, week: @week, rank: 2)
+      context 'with valid settings' do
+        before {
+          FactoryGirl.create(:tier_setting, week: @week)
+          FactoryGirl.create(:standing, week: @week, rank: 1)
+          FactoryGirl.create(:standing, week: @week, rank: 2)
+        }
 
-        visit week_path(@week)
-        page.should have_link('Save settings')
+        it 'allows to save valid week' do
+          visit week_path(@week)
+          click_link 'Save settings'
+          page.should have_content('Week 1')
+
+          team_name = Standing.first.team.name
+          first(:link, team_name).click
+        end
       end
+
+
     end
 
 
   end
 
 
-  pending 'displays settings week'
+  pending 'displays settings for week'
 
   pending 'displays real week matches'
 

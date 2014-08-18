@@ -39,7 +39,7 @@ class Match < ActiveRecord::Base
   def score_line(standing = self.standing1)
     return [] unless [self.standing1, self.standing2].include? standing
     score = self.score || []
-    score = self.score.map { |game_score| game_score.reverse } if standing == self.standing2
+    score = score.map { |game_score| game_score.reverse } if standing == self.standing2
     score.map { |game_score| game_score.join(':')}.join(', ')
   end
 

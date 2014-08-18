@@ -1,5 +1,5 @@
 class WeeksController < ApplicationController
-  before_action :set_week, only: [:destroy, :show, :save]
+  before_action :set_week, only: [:destroy, :show, :save_settings]
   #before_action :authenticate, except: [:index, :show]
 
 
@@ -32,7 +32,7 @@ class WeeksController < ApplicationController
     error_reason = 'No admin rights' unless admin?
     error_reason ||= ('Not a setting week' unless @week.setting?)
     error_reason ||= ('Can\'t supply invalid week' unless @week.valid?)
-    error_reason ||= ('Error during submitting settings' unless @week.submit_settings)
+    error_reason ||= ('Error during submitting settings' unless @week.submit)
 
     if error_reason
       redirect_to @week, notice: "#{@week.name} cannot be changed (#{error_reason})"
