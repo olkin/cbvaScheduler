@@ -9,12 +9,9 @@ class MatchesController < ApplicationController
     @match = Match.find(params[:id])
 
     if @match.update(score: score_params)
-      notice = "Match #{@match.team1.name} vs #{@match.team2.name} was updated with score #{@match.score_line}"
-
-      redirect_to week_path(@match.week), notice: notice
+      redirect_to week_path(@match.week), notice: "Match #{@match.team1.name} vs #{@match.team2.name} was updated with score #{@match.score_line}"
     else
       render :show
-      #notice = "Match was NOT updated with score #{@match.score}. Reason(s): #{@match.errors.full_messages}"
     end
 
   end

@@ -27,7 +27,7 @@ class Week < ActiveRecord::Base
 =end
 
   def next_missing_tier
-    all_tiers = self.tier_settings.all.map { |setting| setting[:tier] }.uniq.sort
+    all_tiers = self.tier_settings.all.map(&:tier).uniq.sort
     missing_tiers = (1..all_tiers.size).to_a - all_tiers
     missing_tiers[0] || all_tiers.size + 1
   end
