@@ -17,4 +17,22 @@ class TierSetting < ActiveRecord::Base
   serialize :schedule_pattern
   serialize :set_points
   serialize :match_times
+
+  def sets
+    self.set_points.join(', ') if self.set_points
+  end
+
+  def sets=(points)
+    points = points.scan(/\d+/).map(&:to_i) if points.is_a?String
+    self.set_points = points
+  end
+
+  def times
+    self.match_times.join(', ') if self.match_times
+  end
+
+  def times=(time)
+    time = time.split(",").map(&:strip) if time.is_a?String
+    self.match_times = time
+  end
 end

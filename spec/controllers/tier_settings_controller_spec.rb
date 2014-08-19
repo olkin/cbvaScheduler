@@ -28,6 +28,7 @@ describe TierSettingsController do
   before {
     @week = FactoryGirl.create(:week)
     @tier_setting = FactoryGirl.build(:tier_setting, week: @week)
+    @valid_attributes = @tier_setting.attributes.merge({sets: @tier_setting.sets, times: @tier_setting.times})
   }
 
   # This should return the minimal set of values that should be in the session
@@ -54,18 +55,18 @@ describe TierSettingsController do
     describe 'with valid params' do
       it 'creates a new TierSetting' do
         expect {
-          post :create, {:tier_setting => @tier_setting.attributes, week_id: @week.to_param}, valid_session
+          post :create, {:tier_setting => @valid_attributes, week_id: @week.to_param}, valid_session
         }.to change(TierSetting, :count).by(1)
       end
 
       it 'assigns a newly created tier_setting as @tier_setting' do
-        post :create, {:tier_setting => @tier_setting.attributes,  week_id: @week.to_param}, valid_session
+        post :create, {:tier_setting => @valid_attributes,  week_id: @week.to_param}, valid_session
         assigns(:tier_setting).should be_a(TierSetting)
         assigns(:tier_setting).should be_persisted
       end
 
       it 'redirects to the created tier_setting' do
-        post :create, {:tier_setting => @tier_setting.attributes, week_id: @week.to_param}, valid_session
+        post :create, {:tier_setting => @valid_attributes, week_id: @week.to_param}, valid_session
         response.should redirect_to(@week)
       end
     end
@@ -101,8 +102,6 @@ describe TierSettingsController do
 
       it 'assigns the requested tier_setting as @tier_setting' do
         @tier_setting.save!
-        puts "TS: #{@tier_setting.inspect}"
-        puts "TSA: #{@tier_setting.attributes}"
         put :update, {:id => @tier_setting.to_param, :tier_setting => @tier_setting.attributes}, valid_session
         assigns(:tier_setting).should eq(@tier_setting)
       end

@@ -25,7 +25,7 @@ class Match < ActiveRecord::Base
   end
 
   def score_line=(score)
-    self.score = score.scan(/(\d+)\D+(\d+)/).map{|x,y| [x.to_i, y.to_i]} if score
+    self.score = score.scan(/(\d+)\D+(\d+)/).map{|scores| scores.map(&:to_i)} if score
   end
 
   def standings_week_validation
