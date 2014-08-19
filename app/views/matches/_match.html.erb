@@ -34,7 +34,7 @@
         <td><%= link_to match.team1.short_name, standing_path(match.standing1) %>
           <br/><%= match.team1.captain %></td>
         <% if vip? %>
-            <td colspan="<%= sets %>" rowspan="2"><%= f.text_field :score, value: f.object.score_line %></td>
+            <td colspan="<%= sets %>" rowspan="2"><%= f.text_field :score_line %></td>
         <% else %>
             <% sets.times do |game_idx| %>
                 <td><%= match.score[game_idx][0] if match.score and match.score[game_idx] %></td>

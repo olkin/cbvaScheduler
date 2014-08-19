@@ -8,7 +8,7 @@ class MatchesController < ApplicationController
   def update
     @match = Match.find(params[:id])
 
-    if @match.update(score: score_params)
+    if @match.update(score_params)
       redirect_to week_path(@match.week), notice: "Match #{@match.team1.name} vs #{@match.team2.name} was updated with score #{@match.score_line}"
     else
       render :show
@@ -19,11 +19,7 @@ class MatchesController < ApplicationController
   private
 
   def score_params
-    scores = params[:match][:score]
-
-    scores = scores.scan(/(\d+)\D+(\d+)/).map{|x,y| [x.to_i, y.to_i]} if scores
-
-    scores
+    params.require(:match).permit(:score_line)
   end
 
 end

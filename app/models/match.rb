@@ -17,6 +17,17 @@ class Match < ActiveRecord::Base
 
   serialize :score
 
+  def score_line(standing = self.standing1)
+    return [] unless [self.standing1, self.standing2].include? standing
+    score = self.score || []
+    score = score.map(&:reverse) if standing == self.standing2
+    score.map{|game_score| game_score.join(':')}.join(', ') if score
+  end
+
+  def score_line=(score)
+    self.score = score.scan(/(\d+)\D+(\d+)/).map{|x,y| [x.to_i, y.to_i]} if score
+  end
+
   def standings_week_validation
     errors.add(:base, 'Teams belong to different weeks') if self.standing1 and self.standing2 and self.standing1.week != self.standing2.week
   end
@@ -34,13 +45,6 @@ class Match < ActiveRecord::Base
     players = [self.standing1, self.standing2]
     return (players - [standing]).first if players.include? standing
     nil
-  end
-
-  def score_line(standing = self.standing1)
-    return [] unless [self.standing1, self.standing2].include? standing
-    score = self.score || []
-    score = score.map(&:reverse)  if standing == self.standing2
-    score.map{ |game_score| game_score.join(':')}.join(', ')
   end
 
   def stats
