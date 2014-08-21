@@ -2,9 +2,9 @@
 
 <h1>Welcome to <%= League::NAME %></h1>
 
-<% if @leagues and @leagues.any? %>
+<% if @leagues.any? %>
 
-    <%= render 'team_search' %>
+    <%= render 'teams/search' %>
 
     <ul class="rounded-list">
       <%= render @leagues %>
@@ -16,4 +16,6 @@
 
 <br/>
 
-<%= link_to 'Add event', new_league_path if admin? %>
+<% admin_area do%>
+    <%= link_to 'Add event', new_league_path %>
+<% end %>

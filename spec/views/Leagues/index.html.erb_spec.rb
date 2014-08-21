@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'leagues/index' do
+  before { @leagues = []}
 
   context 'no leagues registered' do
     it 'displays a message' do

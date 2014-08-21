@@ -9,7 +9,7 @@ class TeamsController < ApplicationController
       @teams = Team.search(params[:search])
     elsif @league
       @teams = @league.teams.all
-    elsif admin?
+    elsif
       @teams = Team.all
     end
   end

@@ -1,5 +1,6 @@
-<% @league = @standing.league %>
-<%= render 'leagues/existing_weeks'%>
+<ul>
+    <%= render partial: "weeks/week_link", collection: @standing.league.weeks, as: :week %>
+</ul>
 
 <% @team = @standing.team %>
 <%= render 'teams/show' %>
