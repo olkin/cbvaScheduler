@@ -1,7 +1,0 @@
-<% @matches.group_by{ |match| match.game}.sort.each do |_,game_matches| %>
-    <p>
-        <% game_matches.sort!{ |x,y| x.court<=>y.court}%>
-        <%= render game_matches%>
-    </p>
-<%end%>
-

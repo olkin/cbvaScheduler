@@ -1,25 +1,16 @@
 <%= form_for(match) do |f| %>
-    <% if match.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(match.errors.count, 'error') %> prohibited this match from being saved:</h2>
 
-          <ul>
-            <% match.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
+    <% error_div(match) %>
 
+    <% sets = match.sets_count %>
 
-    <% sets = match.tier_setting.set_points.size %>
     <table class="table table-striped table-bordered table-hover">
       <thead>
       <tr>
         <th>Court<br/> @ Time</th>
         <th>Teams</th>
-        <% sets.times do |game_idx| %>
-            <th>G<%= game_idx + 1 %></th>
+        <% sets.times do |idx| %>
+            <th><%= "G#{idx + 1}" %></th>
         <% end %>
       </tr>
       </thead>
@@ -27,37 +18,26 @@
       <tbody>
 
       <tr>
-        <td rowspan="2">
-          <%= match.court %> <br/> @<%= match.tier_setting.match_times[match.game - 1] %>
-        </td>
-
-        <td><%= link_to match.team1.short_name, standing_path(match.standing1) %>
-          <br/><%= match.team1.captain %></td>
-        <% if vip? %>
-            <td colspan="<%= sets %>" rowspan="2"><%= f.text_field :score_line %></td>
-        <% else %>
-            <% sets.times do |game_idx| %>
-                <td><%= match.score[game_idx][0] if match.score and match.score[game_idx] %></td>
-            <% end %>
+        <td> <%= "Court #{match.court}" %> </td>
+        <td> <%= standing_field(match.standing1) %> </td>
+        <% sets.times do |game_idx| %>
+            <td><%= text_field_for_score(match.score, game_idx, 0) %></td>
         <% end %>
       </tr>
 
       <tr>
-
-        <td><%= link_to match.team2.short_name, standing_path(match.standing2) %>
-          <br/><%= match.team2.captain %></td>
+        <td> @<%= match.time_str %> </td>
+        <td> <%= standing_field(match.standing2) %></td>
         <% sets.times do |game_idx| %>
-            <% unless vip? %>
-                <td>
-                  <%= match.score[game_idx][1] if match.score and match.score[game_idx] %>
-                </td>
-            <% end %>
+            <td><%= text_field_for_score(match.score, game_idx, 1) %></td>
         <% end %>
       </tr>
 
-      <% if vip? %>
+      <% vip_area do %>
           <tr>
-            <td colspan="<%= 2 + sets %>"><%= f.submit 'Update' if vip? %></td>
+            <td colspan="<%= 2 + sets %>">
+              <%= f.submit 'Update' if vip? %>
+            </td>
           </tr>
       <% end %>
 

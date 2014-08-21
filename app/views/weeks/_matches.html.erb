@@ -1,7 +1,8 @@
 <% @matches = @week.matches %>
 
 <% if @matches.any? %>
-    <%= render 'matches/index'%>
+    <!-- display matches grouped by game# -->
+    <%= render @matches %>
     <br/>
     <%= link_to 'PDF Schedules', week_path(@week, format: 'pdf') %> |
 <% else %>

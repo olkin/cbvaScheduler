@@ -19,7 +19,27 @@ class MatchesController < ApplicationController
   private
 
   def score_params
-    params.require(:match).permit(:score_line)
+    #TODO: don't know yet how to make a virtual attribute as array/hash
+    begin
+      result = []
+      params[:score].each_value {|game_scores|
+        game_score = []
+        game_scores.each_value { |team_score|
+          game_score << (team_score.to_i unless team_score.blank?)
+        }
+
+        result << (game_score unless game_score.compact.empty?)
+      }
+
+      #drop the last nils
+      result = result.reverse.drop_while{|x| x.nil?}.reverse
+
+    rescue
+      result = params[:score]
+    end
+
+
+    {score: result}
   end
 
 end

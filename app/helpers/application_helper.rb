@@ -28,4 +28,8 @@ module ApplicationHelper
   def admin_area(&block)
     concat content_tag(:div, capture(&block), :class => 'admin') if admin?
   end
+
+  def vip_area(&block)
+    concat content_tag(:div, capture(&block), :class => 'vip') if vip?
+  end
 end

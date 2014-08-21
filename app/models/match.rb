@@ -98,6 +98,15 @@ class Match < ActiveRecord::Base
     end
   end
 
+  def sets_count
+    (tier_setting.set_points.size if tier_setting) || 0
+  end
+
+
+  def time_str
+    (tier_setting.match_times[game - 1] if tier_setting) || "Unknown time"
+  end
+
   private
 
 =begin

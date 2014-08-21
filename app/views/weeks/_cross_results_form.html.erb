@@ -4,21 +4,23 @@
     <th>Team</th>
 
     <% @standings.each do |standing|%>
-        <%= link_to "#{standing.team.name}", standing %>
-        <%= standing.team.captain %>
+        <th>
+            <%= link_to "#{standing.team.short_name}", standing %>
+            <%= standing.team.captain %>
+        </th>
     <%end%>
 
     <th>Matches<br/>won/played</th>
     <th>Sets<br/>won/played</th>
     <th>Points<br/>diff</th>
-    <!-- <th>Cur Rank</th> -->
   </tr>
   </thead>
   <tbody>
   <% @standings.each do |standing|%>
       <tr>
         <td><%= link_to "#{standing.team.short_name}", standing %>
-          <br/> <%= standing.team.captain %> </td>
+          <br/> <%= standing.team.captain %>
+        </td>
 
         <% @standings.each do |opponent|%>
             <!-- find game(s) between these teams, make it disabled for non-vip -->
@@ -28,7 +30,6 @@
         <td><%= "#{standing.matches_won}/#{standing.matches_played}/#{standing.matches.size}" %></td>
         <td><%= "#{standing.sets_won}/#{standing.sets_played}" %></td>
         <td><%= standing.points_diff %></td>
-        <!--<td></td> -->
       </tr>
   <%end%>
   </tbody>

@@ -53,6 +53,14 @@ describe Match do
       end
     end
 
+    it 'gives number of sets to be played' do
+      @match.sets_count.should eql 3
+    end
+
+    it 'gives time of the match' do
+      @match.time_str.should eql '10:00'
+    end
+
     it 'gives the opponent' do
       standing1 = @match.standing1
       standing2 = @match.standing2
