@@ -1,15 +1,5 @@
 <%= form_for [@week, @tier_setting] do |f| %>
-  <% if @tier_setting.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@tier_setting.errors.count, 'error') %> prohibited this tier_setting from being saved:</h2>
-
-      <ul>
-      <% @tier_setting.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <% error_div(@tier_setting) %>
 
   <div class="field">
     <%= f.label :tier %><br>

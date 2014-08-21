@@ -8,7 +8,7 @@
   <td><%= tier_setting.sets %></td>
   <td><%= tier_setting.times %></td>
 
-  <% if admin? %>
+  <% admin_area do %>
       <td><%= link_to 'Edit', edit_tier_setting_path(tier_setting) %></td>
       <td><%= link_to 'Destroy', tier_setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   <% end %>
