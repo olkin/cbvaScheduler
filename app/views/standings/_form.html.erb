@@ -1,22 +1,13 @@
 <%= form_for [@week, @standing] do |f| %>
-  <% if @standing.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@standing.errors.count, 'error') %> prohibited this team from being saved:</h2>
-
-      <ul>
-      <% @standing.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <% error_div(@standing) %>
 
     <%= f.fields_for :team do |builder| %>
 
         <%= builder.hidden_field :league_id, value: @standing.week.league.id %>
 
         <div class="field">
-          <%= builder.label :name %><br>
+          <%= builder.label :name %>
+          <br>
           <%= builder.text_field :name %>
         </div>
         <div class="field">
@@ -28,7 +19,7 @@
           <%= builder.text_field :email %>
         </div>
 
-    <% end -%>
+    <% end %>
 
   <div class="field">
     <%= f.label :rank %><br>

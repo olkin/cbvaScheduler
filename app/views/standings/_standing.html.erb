@@ -1,14 +1,14 @@
 <tr>
   <td><%= standing.rank %></td>
   <td><%= standing.tier %></td>
-  <td><%= link_to standing.team.name, team_path(standing.team) %></td>
+  <td><%= link_to standing.team.name, standing.team %></td>
   <td><%= standing.team.captain %></td>
 
-  <% if vip? %>
+  <% vip_area do %>
       <td><%= standing.team.email %></td>
   <% end %>
 
-  <% if admin? %>
+  <% admin_area do %>
       <td><%= link_to 'Edit', edit_standing_path(standing) %></td>
       <td><%= link_to 'Destroy', standing, method: :delete, data: {confirm: 'Are you sure?'} %></td>
   <% end %>

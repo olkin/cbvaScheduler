@@ -2,8 +2,7 @@
     <%= render partial: "weeks/week_link", collection: @standing.league.weeks, as: :week %>
 </ul>
 
-<% @team = @standing.team %>
-<%= render 'teams/show' %>
+<%= render @standing.team %>
 
 <p>
   <strong>Pool:</strong>
@@ -15,13 +14,7 @@
   <%=  @standing.rank %>
 </p>
 
-<% if @standing.matches.any? %>
-    <h2>Results/Schedule for <%= @standing.week.name %></h2>
-    <%= render 'schedule' %>
-<%else%>
-    <h2>Schedule is not ready for <%= @standing.week.name %></h2>
-<%end%>
-
+<%= render 'schedule' %>
 
 <%= link_to 'PDF version', standing_path(@standing, format: 'pdf')%> |
 <%= link_to 'League', @standing.league %>

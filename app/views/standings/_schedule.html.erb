@@ -1,45 +1,51 @@
-<table class='table table-striped table-bordered'>
-  <thead>
-  <tr>
-    <th>Time</th>
-    <th>Court</th>
-    <th>Team</th>
-    <th>Score</th>
-    <th>Match won</th>
-    <th>Sets won</th>
-    <th>Points diff</th>
-  </tr>
-  </thead>
+<h2>Results/Schedule for <%= @standing.week.name %></h2>
 
-  <tbody>
-  <% @standing.matches.each do |match| %>
+<% if @standing.matches.any?%>
+    <table class='table table-striped table-bordered'>
+      <thead>
+      <tr>
+        <th>Time</th>
+        <th>Court</th>
+        <th>Team</th>
+        <th>Score</th>
+        <th>Match won</th>
+        <th>Sets won</th>
+        <th>Points diff</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @standing.matches.each do |match| %>
+
+          <tr>
+            <td><%= match.time_str %></td>
+            <td><%= match.court %></td>
+
+            <td>
+              <% opponent = match.opponent @standing %>
+              <%= link_to opponent.details, opponent %>
+            </td>
+
+            <td> <%= match.score_line @standing %></td>
+
+            <% stats = match.stats %>
+            <% idx = match.stats_idx @standing %>
+            <td><%= "#{stats[idx][:matches_won]}/#{stats[idx][:matches_played]}" %></td>
+            <td><%= "#{stats[idx][:sets_won]}/#{stats[idx][:sets_played]}" %></td>
+            <td><%= stats[idx][:points_diff] %></td>
+
+          </tr>
+      <% end %>
 
       <tr>
-        <td><%= match.tier_setting.match_times[match.game - 1] %></td>
-        <td><%= match.court %></td>
-
-        <td>
-          <% opponent = match.opponent @standing %>
-          <%= link_to opponent.details, opponent %>
-        </td>
-
-        <td> <%= match.score_line @standing %></td>
-
-        <% stats = match.stats %>
-        <% idx = match.stats_idx @standing %>
-        <td><%= "#{stats[idx][:matches_won]}/#{stats[idx][:matches_played]}" %></td>
-        <td><%= "#{stats[idx][:sets_won]}/#{stats[idx][:sets_played]}" %></td>
-        <td><%= stats[idx][:points_diff] %></td>
-
+        <td colspan="4">Total:</td>
+        <td><%= "#{@standing.matches_won}/#{@standing.matches_played}" %> </td>
+        <td><%= "#{@standing.sets_won}/#{@standing.sets_played}" %> </td>
+        <td><%= @standing.points_diff %> </td>
       </tr>
-  <% end %>
+      </tbody>
 
-  <tr>
-    <td colspan="4">Total:</td>
-    <td><%= "#{@standing.matches_won}/#{@standing.matches_played}" %> </td>
-    <td><%= "#{@standing.sets_won}/#{@standing.sets_played}" %> </td>
-    <td><%= @standing.points_diff %> </td>
-  </tr>
-  </tbody>
-
-</table>
+    </table>
+<% else %>
+    Schedule is not ready.
+<% end %>
