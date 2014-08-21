@@ -1,6 +1,0 @@
-<%= form_tag teams_path, :method => 'get', class: 'form-search' do %>
-    <p>
-      <%= text_field_tag :search, params[:search], size: 5, class: 'input-medium search-query input-large', placeholder: 'Team or captain name' %>
-      <%= submit_tag 'Search', class: 'btn btn-info', name: nil %>
-    </p>
-<% end %>
