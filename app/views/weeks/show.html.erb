@@ -6,7 +6,7 @@
 
 <% if @week.week %>
     <h1><%= @week.name %></h1>
-    <%= render(@week.matches) || '"No matches' %>
+    <%= render(@week.matches) || 'No matches' %>
     <br/>
     <%= link_to 'PDF Schedules', week_path(@week, format: 'pdf') %> |
 <%else%>

@@ -2,7 +2,10 @@
 <h1>Contact <%= League::NAME %> </h1>
 
 <p>
-    This is a test project for <%= League::NAME %>. Contact <a href="mailto:pilip.olkin+project@gmail.com">Project Developer</a>  for more details about the project.
+    This is a test project for <%= League::NAME %>. Contact
+  <%= mail_to 'pilip.olkin+project@gmail.com','Project Developer', subject: "#{League::NAME} details",
+              body: 'Dear Olga, Please give me more details about your project. Thanks!'%>
+  for more details about the project.
 </p>
 
 <!--
