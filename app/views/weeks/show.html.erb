@@ -1,24 +1,30 @@
 <% provide(:title, "#{@week.name} for " + @week.league.description) %>
 
-<ul>
-    <%= render partial: "weeks/week_link", collection: @week.league.weeks, as: :week %>
-</ul>
+<ul><%= render partial: 'week_link', collection: @week.league.weeks, as: :week %></ul>
 
 <h1> <%= @week.league.description%> </h1>
 
-<% if vip? or @week.week %>
-
+<% if @week.week %>
     <h1><%= @week.name %></h1>
+    <%= render(@week.matches) || '"No matches' %>
+    <br/>
+    <%= link_to 'PDF Schedules', week_path(@week, format: 'pdf') %> |
+<%else%>
+    <%admin_area do%>
+        <% error_div(@week) %>
 
-    <% if @week.week %>
-        <%= render 'matches' %>
-    <% elsif vip? %>
-        <%= render 'settings' %>
-    <% end%>
+        <h1> Tier settings </h1>
+        <ul> <%= render(@week.tier_settings) || 'Tiers are not setup' %>  </ul>
+        <h1> Standings </h1>
+        <ul> <%= render(@week.standings) || 'No teams registered' %> </ul>
 
-<% else %>
-    No schedule available. Check again later.
-<%end%>
+        <% if @week.errors.empty? %>
+            <br>
+            <%= link_to 'Save settings', save_settings_week_path(@week), method: :put, class: 'btn btn-large btn-primary' %>
+            <br>
+        <% end %>
+    <%end%>
+<% end %>
 
 <%= link_to 'All Events', leagues_path %>
 

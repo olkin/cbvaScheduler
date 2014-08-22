@@ -14,7 +14,7 @@
   <%=  @standing.rank %>
 </p>
 
-<%= render 'schedule' %>
+<%= render @standing.matches %>
 
 <%= link_to 'PDF version', standing_path(@standing, format: 'pdf')%> |
 <%= link_to 'League', @standing.league %>

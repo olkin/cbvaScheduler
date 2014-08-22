@@ -1,15 +1,14 @@
-<tr>
-  <td><%= tier_setting.tier %></td>
-  <td><%= tier_setting.total_teams %></td>
-  <td><%= tier_setting.teams_down %></td>
-  <td><%= tier_setting.day %></td>
-  <td><%= tier_setting.schedule_pattern %></td>
-  <td><%= tier_setting.cycle %></td>
-  <td><%= tier_setting.sets %></td>
-  <td><%= tier_setting.times %></td>
-
-  <% admin_area do %>
-      <td><%= link_to 'Edit', edit_tier_setting_path(tier_setting) %></td>
-      <td><%= link_to 'Destroy', tier_setting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  <% end %>
-</tr>
+<li>
+    <ul class = 'tier_setting'>
+      <li>Tier:<%= tier_setting.tier %></li>
+      <li>Total teams: <%= tier_setting.total_teams %></li>
+      <li>Teams down: <%= tier_setting.teams_down %></li>
+      <li>Day: <%= tier_setting.day %></li>
+      <li>Schedule pattern: <%= tier_setting.schedule_pattern %></li>
+      <li>Cycle: <%= tier_setting.cycle %></li>
+      <li>Set points: <%= tier_setting.sets %></li>
+      <li>Times: <%= tier_setting.times %></li>
+      <li><%= link_to 'Edit', edit_tier_setting_path(tier_setting) %></li>
+      <li><%= link_to 'Destroy', tier_setting, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+    </ul>
+</li>

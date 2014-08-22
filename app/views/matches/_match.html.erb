@@ -7,35 +7,29 @@
     <table class="table table-striped table-bordered table-hover">
       <thead>
       <tr>
-        <th>Court<br/> @ Time</th>
+        <th>Court <%=match.court%><br/> @<%= match.time_str %></th>
         <th>Teams</th>
         <% sets.times do |idx| %>
             <th><%= "G#{idx + 1}" %></th>
         <% end %>
+
+        <th>M wins</th>
+        <th>S wins</th>
+        <th>P</th>
       </tr>
       </thead>
 
       <tbody>
 
-      <tr>
-        <td> <%= "Court #{match.court}" %> </td>
-        <td> <%= standing_field(match.standing1) %> </td>
-        <% sets.times do |game_idx| %>
-            <td><%= text_field_for_score(match.score, game_idx, 0) %></td>
-        <% end %>
-      </tr>
+      <% stats = match.stats %>
 
-      <tr>
-        <td> @<%= match.time_str %> </td>
-        <td> <%= standing_field(match.standing2) %></td>
-        <% sets.times do |game_idx| %>
-            <td><%= text_field_for_score(match.score, game_idx, 1) %></td>
-        <% end %>
-      </tr>
+      <% 2.times { |team_idx| %>
+          <tr> <%= team_data(match, stats, team_idx)%></tr>
+      <% }%>
 
       <% vip_area do %>
           <tr>
-            <td colspan="<%= 2 + sets %>">
+            <td colspan="<%= 2 + sets + 3%>">
               <%= f.submit 'Update' if vip? %>
             </td>
           </tr>

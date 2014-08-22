@@ -1,18 +1,14 @@
-<p>
-  <strong>Team:</strong>
-  <%= team.name %>
-</p>
-
-
-<p>
-  <strong>Captain:</strong>
-  <%= team.captain %>
-</p>
-
-<% vip_area do%>
-    <p>
-      <strong>Email:</strong>
-      <%= team.email %>
-    </p>
-<% end %>
-
+<li>
+  <ul>
+    <li>League: <%= team.league.description %></li>
+    <li>Name: <%= link_to team.name, team %></li>
+    <li>Captain: <%= team.captain %></li>
+    <% vip_area do %>
+        <li>Email: <%= team.email %></li>
+    <% end %>
+    <% admin_area do %>
+        <li><%= link_to 'Edit', edit_team_path(team) %></li>
+        <li><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+    <% end %>
+  </ul>
+</li>

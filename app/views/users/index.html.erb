@@ -1,21 +1,7 @@
-<%if admin?%>
-<table>
-  <thead>
-  <tr>
-    <th>User</th>
-    <th>Email</th>
-    <%admin_area do%>
-        <th></th>
-    <%end%>
-  </tr>
-  </thead>
-
-  <tbody>
-    <%= render @users %>
-  </tbody>
-</table>
-<%end%>
+<ul>
+<%= render @users %>
+</ul>
 <br>
 
-<%= link_to 'Add user', new_user_path%> |
-<%= link_to 'Leagues', leagues_path%>
+<%= link_to 'Add user', new_user_path %> |
+<%= link_to 'Leagues', leagues_path %>

@@ -1,51 +1,11 @@
 <h1>Search results</h1>
 <%= render 'search' %>
+
 <h2><%= " #{pluralize(@teams.size, 'team')} found "%> </h2>
 
-<% if @teams.any? %>
-    <table class="table table-striped table-bordered table-hover">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Event</th>
-        <th>Team</th>
-        <th>Captain</th>
-
-        <% vip_area do %>
-            <th>Email</th>
-        <% end %>
-
-        <% admin_area do %>
-            <th colspan="2"></th>
-        <%end %>
-      </tr>
-      </thead>
-
-      <tbody>
-      <% @teams.each_with_index do |team, idx| %>
-          <tr>
-            <td><%= idx + 1 %></td>
-            <td><%= team.league.description %> </td>
-            <td><%= link_to team.name, team %></td>
-            <td><%= team.captain %></td>
-
-            <% vip_area do %>
-                <td><%= team.email %></td>
-            <% end %>
-
-            <% admin_area do %>
-                <td><%= link_to 'Edit', edit_team_path(team) %></td>
-                <td><%= link_to 'Destroy', team, method: :delete, data: {confirm: 'Are you sure?'} %></td>
-            <%end%>
-
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-<% else %>
-    No results
-<% end %>
-
+<ul>
+    <%= render(@teams) || 'No results' %>
+</ul>
 <br/>
 
 <% admin_area do %>

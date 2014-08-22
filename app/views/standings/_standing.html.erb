@@ -1,16 +1,9 @@
-<tr>
-  <td><%= standing.rank %></td>
-  <td><%= standing.tier %></td>
-  <td><%= link_to standing.team.name, standing.team %></td>
-  <td><%= standing.team.captain %></td>
-
-  <% vip_area do %>
-      <td><%= standing.team.email %></td>
-  <% end %>
-
-  <% admin_area do %>
-      <td><%= link_to 'Edit', edit_standing_path(standing) %></td>
-      <td><%= link_to 'Destroy', standing, method: :delete, data: {confirm: 'Are you sure?'} %></td>
-  <% end %>
-
-</tr>
+<li>
+    <ul id="standing">
+      <li>Rank: <%= standing.rank %></li>
+      <li>Tier: <%= standing.tier %></li>
+      <%= render standing.team %>
+      <li><%= link_to 'Edit', edit_standing_path(standing) %></li>
+      <li><%= link_to 'Desuloy', standing, method: :delete, data: {confirm: 'Are you sure?'} %></li>
+    </ul>
+</li>

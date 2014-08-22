@@ -47,6 +47,17 @@ class Match < ActiveRecord::Base
     nil
   end
 
+  def standing(idx)
+    case idx
+    when 0
+      standing1
+    when 1
+      standing2
+    else
+        nil
+    end
+  end
+
   def stats
     set_wins = [0, 0]
     total_points_diff = 0

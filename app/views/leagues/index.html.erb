@@ -2,17 +2,11 @@
 
 <h1>Welcome to <%= League::NAME %></h1>
 
-<% if @leagues.any? %>
+<%= render 'teams/search' %>
 
-    <%= render 'teams/search' %>
-
-    <ul class="rounded-list">
-      <%= render @leagues %>
-    </ul>
-
-<% else %>
-      No open events. Try again later.
-<% end %>
+<ul class="rounded-list">
+  <%= render(@leagues) || ' No open events. Try again later.' %>
+</ul>
 
 <br/>
 
